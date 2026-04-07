@@ -1,0 +1,14 @@
+body, html {
+    box-sizing: border-box;
+    background-color: #032541;
+    font-family: "Source Sans Pro",Arial,sans-serif;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+}

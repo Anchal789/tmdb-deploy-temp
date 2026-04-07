@@ -1,0 +1,103 @@
+.header {
+	position: relative;
+
+	/* animation */
+	transition-timing-function: ease-in;
+	transition: all 0.5s;
+	flex: 1 1 auto;
+	display: flex;
+	justify-content: center;
+}
+
+.header::after {
+	content: "";
+	background-image: url("https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1_white-ff84c271cc8c93e00aa0264a425434c329089bdfc6a392987332b5f32903f75c.svg");
+	opacity: 0.3;
+	width: 100vw;
+	height: 100vh;
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-repeat: no-repeat;
+	background-position: 50% calc(50% - 200px);
+	background-size: 20%;
+	z-index: -1;
+}
+
+.nav {
+	z-index: 1;
+	position: fixed;
+	top: 0;
+	width: 100%;
+
+	/* animation */
+	transition-timing-function: ease-in;
+	transition: all 0.5s;
+	background-color: #032541;
+}
+
+.hide-nav {
+	visibility: hidden;
+}
+
+.navigationBar {
+	font-size: 0.9rem;
+	font-weight: 600;
+	padding: 12px 40px;
+	display: flex;
+	max-width: 1400px;
+}
+
+.nav-list-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.nav-logo {
+	font-size: 2.1rem;
+	padding: 0 15px 0 0;
+}
+
+.nav-list-container ul {
+	display: flex;
+	list-style: none;
+	width: 100%;
+}
+
+.nav-list-container ul:first-child {
+	justify-content: flex-start;
+}
+
+.nav-list-container ul:first-child li {
+	margin-right: 5%;
+}
+
+.nav-list-container ul:last-child {
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.nav-list-container ul:last-child li {
+	margin-left: 5%;
+}
+
+.nav-list-container ul li a {
+	color: #fff;
+}
+
+.box-visible {
+	width: 28px;
+	height: 26px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	padding: 3px 5px;
+	font-size: 0.9rem;
+	font-weight: 500;
+}
