@@ -1,14 +1,46 @@
-body, html {
-    box-sizing: border-box;
-    background-color: #032541;
-    font-family: "Source Sans Pro",Arial,sans-serif;
+@font-face {
+	font-family: "Source Sans Pro";
+	src: url("../src/assets/source-sans-pro/SourceSansPro-Bold.ttf") format("woff2");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
 }
 
-* {
+html {
+	font-size: 16px;
+	height: 100%;
+}
+
+html,
+body {
+	font-family: "Source Sans Pro", Arial, sans-serif;
+}
+
+body {
+	font-weight: 500;
+	min-height: 100%;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 }
 
 a {
 	text-decoration: none;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #dbdbdb;
 }
