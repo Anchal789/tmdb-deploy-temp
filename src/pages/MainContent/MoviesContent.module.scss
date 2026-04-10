@@ -1,0 +1,12 @@
+@use "../../styles/variables" as *;
+
+.moviesContent {
+	background-color: $color-white;
+    margin-top: 64px;
+}
+
+.container {
+	margin: 0 auto;
+	max-width: $maxScreenWidth;
+    padding: 0 40px;
+}
