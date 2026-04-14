@@ -1,5 +1,7 @@
-const Movies = () => {
-    return <div>Movies</div>
+import styles from "./Movies.module.scss"
+
+const MoviesContainer = () => {
+    return <div className={styles.movies}>Movies</div>
 };
 
-export default Movies
+export default MoviesContainer

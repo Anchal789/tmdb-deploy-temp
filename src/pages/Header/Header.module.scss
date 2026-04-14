@@ -17,8 +17,8 @@
 	background-color: #032541;
 
 	&.hide-header {
-        transform: translateY(-100%); // Pulls it up exactly by its height
-    }
+		transform: translateY(-100%); // Pulls it up exactly by its height
+	}
 
 	.nav {
 		width: 100%;
@@ -156,4 +156,33 @@
 			}
 		}
 	}
+}
+
+.popover-list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.popover-list-item {
+	padding: 0.25rem 3rem 0.25rem 1rem;
+	cursor: pointer;
+}
+
+.popover-list-item:hover {
+	background-color: #dee2e6;
+}
+
+.popover-list-item:active {
+	background-color: #01b3e4;
+}
+
+.popover-list-link:active {
+	color: $color-white;
+}
+.popover-list-link {
+	text-decoration: none;
+	color: $color-black;
+	font-size: $font-size-xs-small;
+	line-height: $line-height-22;
 }

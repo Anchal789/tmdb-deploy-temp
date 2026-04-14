@@ -1,10 +1,29 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/tmdb-logo.svg";
 import styles from "./Header.module.scss";
+import Popover from "@mui/material/Popover";
+import { useNavigate } from "react-router";
 
 const Header = () => {
-	const [scrollPosition, setScrollPosition] = useState(0);
-	const [hide, setHide] = useState(false);
+	const [scrollPosition, setScrollPosition] = useState<number>(0);
+	const [hide, setHide] = useState<boolean>(false);
+	const [activeMenu, setActiveMenu] = useState<"movies" | "tv" | null>(null);
+	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+	const handlePopoverOpen = (
+		event: React.MouseEvent<HTMLElement>,
+		menu: "movies" | "tv",
+	) => {
+		setAnchorEl(event.currentTarget);
+		setActiveMenu(menu);
+	};
+
+	const handlePopoverClose = () => {
+		setAnchorEl(null);
+		setActiveMenu(null);
+	};
+
+	const open = Boolean(anchorEl);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -22,25 +41,6 @@ const Header = () => {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [scrollPosition]);
 
-
-	// const [scrollPosition, setScrollPosition] = useState(0);
-	// const [hide, setHide] = useState(false);
-
-	// useEffect(() => {
-    //     const controlNavbar = () => {
-    //         const currentScrollY = window.scrollY;
-    //         if (currentScrollY > scrollPosition && currentScrollY > 64) {
-    //             setHide(false);
-    //         } else {
-    //             setHide(true);
-    //         }
-    //         setScrollPosition(currentScrollY);
-    //     };
-
-    //     window.addEventListener("scroll", controlNavbar);
-    //     return () => window.removeEventListener("scroll", controlNavbar);
-    // }, [scrollPosition]);
-
 	return (
 		<header className={styles.header}>
 			<nav className={`${styles.nav} ${hide ? styles["hide-nav"] : ""}`}>
@@ -50,15 +50,51 @@ const Header = () => {
 							<img src={logo} alt='logo' width='154' height='20' />
 						</a>
 						<ul className={styles["nav-list"]}>
-							<li>
-								<a href='/' className={styles["list-content"]}>
+							<li
+								onMouseEnter={(e) => handlePopoverOpen(e, "movies")}
+								onMouseLeave={handlePopoverClose}
+								style={{ position: "relative" }}
+							>
+								<a
+									className={styles["list-content"]}
+									aria-owns={open ? "mouse-over-popover" : undefined}
+									aria-haspopup='true'
+								>
 									Movies
 								</a>
+								<PopoverContent
+									anchorEl={anchorEl}
+									open={activeMenu === "movies"}
+									listContent={[
+										{ name: "Popular", url: "/movie" },
+										{ name: "Now Playing", url: "/movie/now-playing" },
+										{ name: "Upcoming", url: "/movie/upcoming" },
+										{ name: "Top Rated", url: "/movie/top-rated" },
+									]}
+								/>
 							</li>
-							<li>
-								<a href='/' className={styles["list-content"]}>
+							<li
+								onMouseEnter={(e) => handlePopoverOpen(e, "tv")}
+								onMouseLeave={handlePopoverClose}
+								style={{ position: "relative" }}
+							>
+								<a
+									className={styles["list-content"]}
+									aria-owns={open ? "mouse-over-popover" : undefined}
+									aria-haspopup='true'
+								>
 									TV Shows
 								</a>
+								<PopoverContent
+									anchorEl={anchorEl}
+									open={activeMenu === "tv"}
+									listContent={[
+										{ name: "Popular", url: "/tv" },
+										{ name: "Airing Today", url: "/tv/airing-today" },
+										{ name: "On TV", url: "/tv/on-the-air" },
+										{ name: "Top Rated", url: "/tv/top-rated" },
+									]}
+								/>
 							</li>
 							<li>
 								<a href='/' className={styles["list-content"]}>
@@ -99,10 +135,7 @@ const Header = () => {
 								</a>
 							</li>
 							<li className={styles["list-items"]}>
-								<a
-									href='/'
-									className={`${styles["list-content"]}`}
-								>
+								<a href='/' className={`${styles["list-content"]}`}>
 									Join TMDB
 								</a>
 							</li>
@@ -124,3 +157,58 @@ const Header = () => {
 };
 
 export default Header;
+
+const PopoverContent = ({
+	anchorEl,
+	open,
+	listContent,
+}: {
+	anchorEl: HTMLElement | null;
+	open: boolean;
+	listContent?: Array<{
+		name: string;
+		url: string;
+	}>;
+}) => {
+	const navigate = useNavigate();
+	return (
+		<Popover
+			className={styles.popover}
+			open={open}
+			anchorEl={anchorEl}
+			sx={{
+				pointerEvents: "none",
+			}}
+			PaperProps={{
+				sx: {
+					pointerEvents: "auto",
+					paddingTop: "6px",
+					marginTop: "-0.35rem",
+				},
+			}}
+			anchorOrigin={{
+				vertical: "bottom",
+				horizontal: "left",
+			}}
+			transformOrigin={{
+				vertical: "top",
+				horizontal: "left",
+			}}
+			disableRestoreFocus
+			disableEnforceFocus
+			disableScrollLock
+		>
+			<ul className={styles["popover-list"]}>
+				{listContent?.map((item, index) => (
+					<li key={index} className={styles["popover-list-item"]} onClick={() => navigate(item.url)}>
+						<p
+							className={styles["popover-list-link"]}
+						>
+							{item.name}
+						</p>
+					</li>
+				))}
+			</ul>
+		</Popover>
+	);
+};
