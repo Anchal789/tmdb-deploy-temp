@@ -176,13 +176,15 @@
 .popover-list-item:active {
 	background-color: #01b3e4;
 }
-
-.popover-list-link:active {
-	color: $color-white;
-}
 .popover-list-link {
 	text-decoration: none;
 	color: $color-black;
-	font-size: $font-size-xs-small;
+	font-size: $font-size-small;
 	line-height: $line-height-22;
+	font-weight: 500;
+}
+
+
+.popover-list-link:active {
+	color: $color-white;
 }
