@@ -7,7 +7,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import store from "./store/store.ts";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+		},
+	}
+});
 
 createRoot(document.getElementById("root") ?? document.body).render(
 	<StrictMode>

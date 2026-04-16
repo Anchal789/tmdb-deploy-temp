@@ -1,0 +1,36 @@
+import { SORTING_PAYLOAD_KEYS } from "./../appConstants/filterConstants";
+export interface DiscoverFiltersType {
+	"air_date.gte"?: string | null;
+	"air_date.lte"?: string | null;
+	certification?: string | null;
+	certification_country?: string | null;
+	debug?: string | null;
+	"first_air_date.gte"?: string | null;
+	"first_air_date.lte"?: string | null;
+	include_adult?: boolean | null;
+	include_softcore?: boolean | null;
+	"latest_ceremony.gte"?: string | null;
+	"latest_ceremony.lte"?: string | null;
+	page?: number | null;
+	"primary_release_date.gte"?: string | null;
+	"primary_release_date.lte"?: string | null;
+	region?: string | null;
+	"release_date.gte"?: string | null;
+	"release_date.lte"?: string | null;
+	show_me?: string | null;
+	sort_by?: typeof SORTING_PAYLOAD_KEYS | null;
+	"vote_average.gte"?: number | null;
+	"vote_average.lte"?: number | null;
+	"vote_count.gte"?: number | null;
+	watch_region?: string | null;
+	with_genres?: string | null;
+	with_keywords?: string | null;
+	with_networks?: string | null;
+	with_origin_country?: string | null;
+	with_original_language?: string | null;
+	with_watch_monetization_types?: string | null;
+	with_watch_providers?: string | null;
+	with_release_type?: number | string | null;
+	"with_runtime.gte"?: number | null;
+	"with_runtime.lte"?: number | null;
+}

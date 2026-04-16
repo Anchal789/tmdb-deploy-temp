@@ -15,6 +15,7 @@ const Button = ({
 			fullWidth
 			disabled={disabled || loading}
 			className={className}
+		variant="contained"
 			{...props}
 			sx={{
 				borderRadius: "8px",

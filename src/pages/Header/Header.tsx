@@ -29,7 +29,7 @@ const Header = () => {
 		const handleScroll = () => {
 			const currentPosition = window.pageYOffset;
 
-			if (currentPosition > 50) {
+			if (currentPosition > 100) {
 				setHide(currentPosition > scrollPosition);
 			} else {
 				setHide(false);
@@ -42,8 +42,8 @@ const Header = () => {
 	}, [scrollPosition]);
 
 	return (
-		<header className={styles.header}>
-			<nav className={`${styles.nav} ${hide ? styles["hide-nav"] : ""}`}>
+		<header className={`${styles.header} ${hide ? styles["hide-header"] : ""}`}>
+			<nav className={styles.nav}>
 				<div className={styles.navigationBar}>
 					<div className={styles["left-section"]}>
 						<a href='/' className={styles["nav-logo"]}>
@@ -200,12 +200,12 @@ const PopoverContent = ({
 		>
 			<ul className={styles["popover-list"]}>
 				{listContent?.map((item, index) => (
-					<li key={index} className={styles["popover-list-item"]} onClick={() => navigate(item.url)}>
-						<p
-							className={styles["popover-list-link"]}
-						>
-							{item.name}
-						</p>
+					<li
+						key={index}
+						className={styles["popover-list-item"]}
+						onClick={() => navigate(item.url)}
+					>
+						<p className={styles["popover-list-link"]}>{item.name}</p>
 					</li>
 				))}
 			</ul>

@@ -7,38 +7,56 @@ export const FILTER_CONSTANTS = {
 	YEARS: "Years",
 };
 
+ 
+export const SORTING_PAYLOAD_KEYS = {
+    POPULARITY_DESC: "popularity.desc",
+    POPULARITY_ASC: "popularity.asc",
+    RATING_DESC: "vote_average.desc",
+    RATING_ASC: "vote_average.asc",
+    RELEASE_DATE_DESC: "primary_release_date.desc",
+    RELEASE_DATE_ASC: "primary_release_date.asc",
+    TITLE_ASC: "title.asc",
+    TITLE_DESC: "title.desc",
+    ORIGINAL_TITLE_DESC: "original_title.desc",
+    ORIGINAL_TITLE_ASC: "original_title.asc",
+    REVENUE_DESC: "revenue.desc",
+    REVENUE_ASC: "revenue.asc",
+    VOTE_COUNT_DESC: "vote_count.desc",
+    VOTE_COUNT_ASC: "vote_count.asc",
+} as const;
+
 export const SORT_BY_OPTIONS = [
 	{
 		label: "Popularity Descending",
-		value: "popularity.desc",
+		value: SORTING_PAYLOAD_KEYS.POPULARITY_DESC,
 	},
 	{
 		label: "Popularity Ascending",
-		value: "popularity.asc",
+		value: SORTING_PAYLOAD_KEYS.POPULARITY_ASC,
 	},
 	{
 		label: "Rating Descending",
-		value: "vote_average.desc",
+		value: SORTING_PAYLOAD_KEYS.RATING_DESC,
 	},
 	{
 		label: "Rating Ascending",
-		value: "vote_average.asc",
+		value: SORTING_PAYLOAD_KEYS.RATING_ASC,
 	},	
 	{
 		label: "Release Date Descending",
-		value: "primary_release_date.desc",
+		value: SORTING_PAYLOAD_KEYS.RELEASE_DATE_DESC,
 	},
 	{
 		label: "Release Date Ascending",
-		value: "primary_release_date.asc",
+		value: SORTING_PAYLOAD_KEYS.RELEASE_DATE_ASC,
 	},
 	{
 		label: "Title (A-Z)",
-		value: "title.asc",
+		value: SORTING_PAYLOAD_KEYS.TITLE_ASC,
 	},
 	{
 		label: "Title (Z-A)",
-		value: "title.desc",
+		value: SORTING_PAYLOAD_KEYS.TITLE_DESC,
 	},
 ];
 
