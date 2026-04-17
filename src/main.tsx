@@ -4,25 +4,34 @@ import "./index.css";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Provider } from "react-redux";
-import store from "./store/store.ts";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from "@mui/material/styles";
+import { FilterProvider } from "./store/store.tsx";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			refetchOnWindowFocus: false,
 		},
-	}
+	},
+});
+
+const theme = createTheme({
+	typography: {
+		fontFamily: '"Source Sans Pro", Arial, sans-serif',
+	},
 });
 
 createRoot(document.getElementById("root") ?? document.body).render(
 	<StrictMode>
 		<BrowserRouter>
-			<Provider store={store}>
+			<FilterProvider>
 				<QueryClientProvider client={queryClient}>
-					<App />
+					<ThemeProvider theme={theme}>
+						<App />
+					</ThemeProvider>
 				</QueryClientProvider>
-			</Provider>
+			</FilterProvider>
 		</BrowserRouter>
 	</StrictMode>,
 );

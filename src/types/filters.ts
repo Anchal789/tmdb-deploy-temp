@@ -1,4 +1,4 @@
-import { SORTING_PAYLOAD_KEYS } from "./../appConstants/filterConstants";
+import { SORTING_PAYLOAD_KEYS } from "../constants/filterConstants";
 export interface DiscoverFiltersType {
 	"air_date.gte"?: string | null;
 	"air_date.lte"?: string | null;
@@ -33,4 +33,10 @@ export interface DiscoverFiltersType {
 	with_release_type?: number | string | null;
 	"with_runtime.gte"?: number | null;
 	"with_runtime.lte"?: number | null;
+}
+
+export interface CountriesType {
+	english_name: string;
+	iso_3166_1: string;
+	native_name: string;
 }

@@ -2,7 +2,7 @@ import { LinearProgress, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const TopLoader = () => {
-	const [progress, setProgress] = useState(0);
+	const [progress, setProgress] = useState<number>(0);
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -24,10 +24,11 @@ const TopLoader = () => {
 				variant='determinate'
 				value={progress}
 				sx={{
-					height: "3px",
+					height: "4px",
 					"& .MuiLinearProgress-bar": {
 						backgroundColor: "#02B4E4",
-					},
+                    },
+                    backgroundColor: "#fff"
 				}}
 			/>
 		</Box>

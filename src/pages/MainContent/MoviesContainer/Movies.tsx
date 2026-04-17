@@ -2,12 +2,22 @@ import type { FunctionComponent } from "react";
 import styles from "./Movies.module.scss";
 import type { MovieType } from "../../../types/movies";
 import MovieCard from "../../../UI/MovieCard/MovieCard";
+import Skeleton from "@mui/material/Skeleton";
 
-const MoviesContainer: FunctionComponent<{ movies: Array<MovieType> }> = ({
-	movies,
-}) => {
+const MoviesContainer: FunctionComponent<{
+	movies: Array<MovieType>;
+	isLoading?: boolean;
+}> = ({ movies, isLoading }) => {
 	return (
 		<div className={styles.movies}>
+			{isLoading &&
+				Array.from(new Array(10)).map((index) => (
+					<div key={index}>
+						<Skeleton variant='rounded' height={280} />
+						<Skeleton variant='text' height={40} />
+						<Skeleton variant='text' />
+					</div>
+				))}
 			{movies.map((movie) => (
 				<MovieCard
 					key={movie.id}
@@ -15,9 +25,6 @@ const MoviesContainer: FunctionComponent<{ movies: Array<MovieType> }> = ({
 					title={movie.title}
 					date={movie.release_date}
 				/>
-				// <div key={movie.id}>
-				//     <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className={styles.poster}/>
-				// </div>
 			))}
 		</div>
 	);

@@ -1,8 +1,8 @@
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { fetchData, postData } from "./axios";
+import { fetchData, postData } from "./apiFn";
 import type {
 	ApiResponse,
+	APIResponseError,
 	MutationVariables,
 	UseAppInfiniteQueryProps,
 	UseAppMutationProps,
@@ -15,11 +15,11 @@ export const useData = <T>({
 	params,
 	options,
 }: UseAppQueryProps<ApiResponse<T>>) => {
-	return useQuery<ApiResponse<T>, AxiosError>({
+	return useQuery<ApiResponse<T>, APIResponseError>({
 		queryKey,
 		queryFn: async () => {
 			const response = await fetchData<ApiResponse<T>>({ url, params });
-			return response.data;
+			return response;
 		},
 		...options,
 	});
@@ -28,10 +28,10 @@ export const useData = <T>({
 export const useMutateData = <TData>({
 	options,
 }: UseAppMutationProps<TData> = {}) => {
-	return useMutation<TData, AxiosError, MutationVariables>({
+	return useMutation<TData, APIResponseError, MutationVariables>({
 		mutationFn: async ({ url, payload, params, baseUrl }) => {
 			const response = await postData<TData>({ url, payload, params, baseUrl });
-			return response.data;
+			return response;
 		},
 		...options,
 	});
@@ -43,7 +43,7 @@ export const useInfiniteData = <T>({
 	params,
 	options,
 }: UseAppInfiniteQueryProps<T>) => {
-	return useInfiniteQuery<ApiResponse<T>, AxiosError>({
+	return useInfiniteQuery<ApiResponse<T>, APIResponseError>({
 		queryKey,
 		initialPageParam: 1,
 
@@ -55,7 +55,7 @@ export const useInfiniteData = <T>({
 					...params,
 				},
 			});
-			return response.data;
+			return response;
 		},
 
 		getNextPageParam: (lastPage) => {

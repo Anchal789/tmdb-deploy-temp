@@ -1,4 +1,4 @@
-export const PageURLTitleMap: Record<string, string> = {
+export const PAGE_URL_TITLE_MAP: Record<string, string> = {
     "/movie": "Popular Movies",
     "/movie/now-playing": "Now Playing Movies",
     "/movie/top-rated": "Top Rated Movies",

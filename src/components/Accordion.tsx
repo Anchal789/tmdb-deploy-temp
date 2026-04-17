@@ -92,7 +92,7 @@ const Accordion = ({
 						color='text.primary'
                         {...titleProps}
                         sx={{
-                            fontSize: "1rem",
+                            fontSize: "18px",
                             lineHeight: "1",
                         }}
 					>

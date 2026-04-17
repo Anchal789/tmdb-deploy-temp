@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "../../components/Typography";
-import type { FunctionComponent } from "react";
+import { type FunctionComponent } from "react";
 import dayjs from "dayjs";
 
 const MovieCard: FunctionComponent<{
@@ -20,18 +20,26 @@ const MovieCard: FunctionComponent<{
 			}}
 		>
 			<CardMedia
-				image={`https://media.themoviedb.org/t/p/w220_and_h330_face${imgUrl}`}
+				image={
+					imgUrl
+						? `https://media.themoviedb.org/t/p/w220_and_h330_face${imgUrl}`
+						: "https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg"
+				}
 				title={title}
 				component='img'
-				loading="lazy"
+				loading='lazy'
+				sx={{
+					backgroundSize: "50%",
+				}}
 			/>
-			<CardContent>
+			<CardContent sx={{ padding: ".75rem .75rem .5rem .75rem", "&:last-child": { paddingBottom: ".75rem" } }}>
 				<Typography
 					gutterBottom
 					variant='h5'
 					sx={{
 						fontSize: "1rem",
 						lineHeight: "1.5rem",
+						marginBottom: "0.35em",
 					}}
 					fontWeight={600}
 					component='div'
