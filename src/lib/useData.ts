@@ -14,11 +14,11 @@ export const useData = <T>({
 	url,
 	params,
 	options,
-}: UseAppQueryProps<ApiResponse<T>>) => {
-	return useQuery<ApiResponse<T>, APIResponseError>({
+}: UseAppQueryProps<T>) => {
+	return useQuery<T, APIResponseError>({
 		queryKey,
 		queryFn: async () => {
-			const response = await fetchData<ApiResponse<T>>({ url, params });
+			const response = await fetchData<T>({ url, params });
 			return response;
 		},
 		...options,
@@ -57,13 +57,12 @@ export const useInfiniteData = <T>({
 			});
 			return response;
 		},
+		...options,
 
 		getNextPageParam: (lastPage) => {
 			return lastPage.page < lastPage.total_pages
 				? lastPage.page + 1
 				: undefined;
 		},
-
-		...options,
 	});
 };

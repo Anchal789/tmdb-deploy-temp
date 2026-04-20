@@ -31,12 +31,15 @@ const request = async <T>({
 				).toString()}`
 			: "";
 
-		const response = await fetch(`${baseUrl || import.meta.env.VITE_BASE_API_URL}${url}${queryString}`, {
-			method,
-			headers: getHeaders(),
-			body: body ? JSON.stringify(body) : undefined,
-		});
-
+		const response = await fetch(
+			`${baseUrl || import.meta.env.VITE_BASE_API_URL}${url}${queryString}`,
+			{
+				method,
+				headers: getHeaders(),
+				body: body ? JSON.stringify(body) : undefined,
+				cache: "no-cache"
+			},
+		);
 		if (!response.ok) {
 			const errorData = await response.json().catch(() => ({}));
 
@@ -54,6 +57,6 @@ const request = async <T>({
 			status: error.status || 500,
 		};
 	}
-}
+};
 
-export default request
+export default request;

@@ -53,10 +53,3 @@ export interface APIResponseError {
 	status_message: string;
 	success: boolean;
 }
-
-export interface OTTProviderType {
-	name: string;
-	id: number;
-	imgUrl: string;
-	type: "both" | "movie_only" | "tv_only";
-}

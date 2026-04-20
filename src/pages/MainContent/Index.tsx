@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./MoviesContent.module.scss";
 import MoviesContainer from "./MoviesContainer/Movies";
 import Filters from "./Filters/Filters";
@@ -12,7 +12,7 @@ import { useFilters } from "../../store/store";
 import type { CountriesType } from "../../types/filters";
 
 const MoviesContent = () => {
-	const { state } = useFilters();
+	const { state, dispatch } = useFilters();
 	const { filters } = state;
 
 	const [hideButton, setHideButton] = useState<boolean>(false);
@@ -25,13 +25,15 @@ const MoviesContent = () => {
 
 	const params = isFilterApplied ? { ...filters } : {};
 
+	delete (params as any).page;
+
 	const { data, fetchNextPage, isLoading, isFetchingNextPage } =
 		useInfiniteData<MovieType>({
 			queryKey: ["movies", endpoint, params],
 			url: endpoint,
 			params,
 		});
-	
+
 	const { data: countriesData } = useData<Array<CountriesType>>({
 		queryKey: ["countries"],
 		url: "/configuration/countries",
@@ -43,13 +45,21 @@ const MoviesContent = () => {
 		return PAGE_URL_TITLE_MAP[pageUrl] || "Movies";
 	}, [pageUrl]);
 
-	window.onscroll = function (ev) {
-		if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-			console.log("Bottom of page");
-			setHideButton(true);
-			fetchNextPage();
-		}
-	};
+	useEffect(() => {
+		const handleScroll = async () => {
+			if (
+				window.innerHeight + window.scrollY >=
+				document.body.offsetHeight - 100
+			) {
+				setHideButton(true);
+				await fetchNextPage();
+			}
+		};
+
+		if (data?.pageParams.length === 1) return;
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, [fetchNextPage, data?.pageParams.length]);
 
 	return (
 		<>
@@ -58,11 +68,26 @@ const MoviesContent = () => {
 				<div className={styles.container}>
 					<h3 className={styles.heading}>{headerTitle()}</h3>
 					<div className={styles.mainContent}>
-						<Filters countriesData={countriesData} />
-						<MoviesContainer
-							movies={data?.pages?.flatMap((page) => page.results) || []}
-							isLoading={isLoading || isFetchingNextPage}
-						/>
+						<Filters countriesData={countriesData || []} />
+						<div>
+							<MoviesContainer
+								movies={data?.pages?.flatMap((page) => page.results) || []}
+								isLoading={isLoading || isFetchingNextPage}
+							/>
+							<Button
+								sx={{
+									backgroundColor: "#02B4E4",
+									fontSize: "1.5rem",
+									fontWeight: 700,
+									lineHeight: "2.25rem",
+									height: "50px",
+									marginTop: "50px",
+								}}
+								onClick={() => fetchNextPage()}
+							>
+								Load More
+							</Button>
+						</div>
 					</div>
 				</div>
 			</main>

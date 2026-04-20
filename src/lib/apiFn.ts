@@ -1,4 +1,4 @@
-import request from "../helpers/fetchData";
+import request from "../helpers/api-requests";
 
 export const fetchData = <T>({
 	url,

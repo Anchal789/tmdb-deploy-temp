@@ -3,8 +3,6 @@ import {
 	type AccordionProps,
 	AccordionSummary,
 	type AccordionSummaryProps,
-	AccordionDetails,
-	type AccordionDetailsProps,
 	type TypographyProps,
 } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
@@ -17,7 +15,6 @@ type AppAccordionProps = Omit<AccordionProps, "children"> & {
 	title: ReactNode;
 	children: ReactNode;
 	summaryProps?: Omit<AccordionSummaryProps, "expandIcon" | "children">;
-	detailsProps?: AccordionDetailsProps;
 	titleProps?: TypographyProps;
 	expandIcon?: ReactNode;
 	onToggle?: (event: SyntheticEvent, isExpanded: boolean) => void;
@@ -28,7 +25,6 @@ const Accordion = ({
 	title,
 	children,
 	summaryProps,
-	detailsProps,
 	titleProps,
 	expandIcon,
 	onToggle,
@@ -41,15 +37,15 @@ const Accordion = ({
 			disableGutters
 			elevation={0}
 			className={className}
-            onChange={onToggle}
+			onChange={onToggle}
 			{...props}
 			sx={{
 				border: "1px solid #e5e7eb",
 				borderRadius: "8px !important",
 				overflow: "hidden",
 				"&:before": { display: "none" },
-                boxShadow: "0 2px 8px rgba(0,0,0,.1)",
-                "&:hover": { backgroundColor: "#fff" },
+				boxShadow: "0 2px 8px rgba(0,0,0,.1)",
+				"&:hover": { backgroundColor: "#fff" },
 				"& + &": {
 					marginTop: "8px",
 				},
@@ -90,11 +86,11 @@ const Accordion = ({
 					<Typography
 						fontWeight={600}
 						color='text.primary'
-                        {...titleProps}
-                        sx={{
-                            fontSize: "18px",
-                            lineHeight: "1",
-                        }}
+						{...titleProps}
+						sx={{
+							fontSize: "18px",
+							lineHeight: "1",
+						}}
 					>
 						{title}
 					</Typography>
@@ -102,19 +98,7 @@ const Accordion = ({
 					title
 				)}
 			</AccordionSummary>
-
-			<AccordionDetails
-				{...detailsProps}
-				sx={{
-					px: 2,
-					py: 2,
-					fontSize: "14px",
-					color: "text.secondary",
-					...detailsProps?.sx,
-				}}
-			>
-				{children}
-			</AccordionDetails>
+			{children}
 		</MuiAccordion>
 	);
 };

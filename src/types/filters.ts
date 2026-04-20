@@ -38,5 +38,16 @@ export interface DiscoverFiltersType {
 export interface CountriesType {
 	english_name: string;
 	iso_3166_1: string;
-	native_name: string;
+	native_name?: string;
+	flagUrl?: string;
+}
+
+export interface OTTProviderType {
+	results: Array<{
+		display_priorities: Record<string, number>;
+		display_priority: number;
+		logo_path: string;
+		provider_id: number;
+		provider_name: string;
+	}>;
 }
