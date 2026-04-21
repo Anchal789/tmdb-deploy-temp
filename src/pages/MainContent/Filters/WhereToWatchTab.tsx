@@ -1,41 +1,45 @@
-import { useState, type FunctionComponent } from "react";
+import {
+	useState,
+	type Dispatch,
+	type FunctionComponent,
+	type SetStateAction,
+} from "react";
 import Autocomplete from "../../../components/AutoComplete";
 import TextField from "../../../components/TextFielld";
 import type { CountriesType, OTTProviderType } from "../../../types/filters";
 import { useFilters } from "../../../store/store";
 import { COUNTRY_OPTIONS } from "../../../constants/filterConstants";
-import { Box, Select } from "@mui/material";
 import Typography from "../../../components/Typography";
+import { Box, Select } from "@mui/material";
 import { useData } from "../../../lib/useData";
-import styles from "./Filters.module.scss";
+import styles from "./AllFiltersComponent.module.scss";
+import Tooltip from "../../../components/Tooltip";
+import { useLocation } from "react-router";
 
 const WhereToWatchFilter: FunctionComponent<{
 	countriesData: Array<CountriesType>;
-}> = ({ countriesData }) => {
+	setCountriesCount: Dispatch<SetStateAction<number>>;
+}> = ({ countriesData, setCountriesCount }) => {
 	const [open, setOpen] = useState<boolean>(false);
 	const { state, dispatch } = useFilters();
 	const { filters } = state;
 
-	// const filteredCountries = useMemo(() => {
-	// 	return countriesData.filter((country) =>
-	// 		country.native_name.toLowerCase().includes(search.toLowerCase()),
-	// 	);
-	// }, [search, countriesData]);
-
-	// const selectedCountry = countriesData.find(
-	// 	(c) => c.iso_3166_1 === filters.watch_region,
-	// );
 	const selectedCountry = COUNTRY_OPTIONS.find(
 		(item) => item.iso_3166_1 === filters.watch_region,
 	);
 
+	const pageUrl = useLocation().pathname;
+
 	const { data } = useData<OTTProviderType>({
-		queryKey: ["ott_providers"],
-		url: "/watch/providers/movie",
+		queryKey: ["ott_providers", pageUrl],
+		url: `/watch/providers/${pageUrl.includes("movie") ? "movie" : "tv"}`,
 		params: { language: "en-US", watch_region: selectedCountry?.iso_3166_1 },
 	});
 
 	const ottProviders = data?.results || [];
+
+	setCountriesCount(ottProviders.length);
+	
 	return (
 		<>
 			<Typography fontWeight={300}>Country</Typography>
@@ -77,7 +81,6 @@ const WhereToWatchFilter: FunctionComponent<{
 								gap: 1,
 							}}
 						>
-							{/* Flag */}
 							<img
 								src={`https://www.themoviedb.org${selectedCountry.flagUrl}`}
 								alt={selectedCountry.native_name}
@@ -95,7 +98,7 @@ const WhereToWatchFilter: FunctionComponent<{
 				<Autocomplete
 					options={countriesData.map((option) => option.native_name)}
 					renderInput={() => <TextField />}
-					onChange={(_event, value) =>
+					onChange={(_event, value) => {
 						dispatch({
 							type: "SET_FILTERS",
 							payload: {
@@ -104,8 +107,8 @@ const WhereToWatchFilter: FunctionComponent<{
 									countriesData.find((option) => option.native_name === value)
 										?.iso_3166_1 || "",
 							},
-						})
-					}
+						});
+					}}
 					fullWidth
 					sx={{
 						".MuiAutocomplete-listbox": {
@@ -145,18 +148,30 @@ const WhereToWatchFilter: FunctionComponent<{
 				my={"14px"}
 				gridTemplateColumns={"repeat(4, 1fr)"}
 				gap={"6px"}
-            >
-                {ottProviders.map((provider) => (
-                    <Box key={provider.provider_id}>
-                        <img
-                            src={`https://media.themoviedb.org/t/p/original${provider.logo_path}`}
-                            alt={provider.provider_name}
-                            className={styles.providerLogo}
-                            loading="lazy"
-                        />
-                    </Box>
-                ))}
-            </Box>
+			>
+				{ottProviders.map((provider) => (
+					<Tooltip key={provider.provider_id} title={provider.provider_name}>
+						<img
+							src={`https://media.themoviedb.org/t/p/original${provider.logo_path}`}
+							alt={provider.provider_name}
+							className={styles.providerLogo}
+							loading='lazy'
+							onClick={() => {
+								dispatch({
+									type: "SET_FILTERS",
+									payload: {
+										...filters,
+										with_watch_providers: filters?.with_watch_providers
+											? filters?.with_watch_providers +
+												`|${provider.provider_id}`
+											: String(provider.provider_id),
+									},
+								});
+							}}
+						/>
+					</Tooltip>
+				))}
+			</Box>
 		</>
 	);
 };

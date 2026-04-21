@@ -1,4 +1,5 @@
-import { SORTING_PAYLOAD_KEYS } from "../constants/filterConstants";
+import { SORTING_PAYLOAD_KEYS } from './../constants/filterConstants';
+
 export interface DiscoverFiltersType {
 	"air_date.gte"?: string | null;
 	"air_date.lte"?: string | null;

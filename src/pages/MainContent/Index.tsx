@@ -1,37 +1,38 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import styles from "./MoviesContent.module.scss";
 import MoviesContainer from "./MoviesContainer/Movies";
-import Filters from "./Filters/Filters";
 import type { MovieType } from "../../types/movies";
-import { PAGE_URL_TITLE_MAP } from "../../constants/constants";
+import {
+	API_URL_FOR_PAGE,
+	PAGE_URL_TITLE_MAP,
+} from "../../constants/constants";
 import { useLocation } from "react-router";
 import { useData, useInfiniteData } from "../../lib/useData";
 import Button from "../../components/Button";
 import TopLoader from "../../UI/TopLoader";
 import { useFilters } from "../../store/store";
 import type { CountriesType } from "../../types/filters";
+import AllFiltersComponent from "./Filters/AllFiltersComponent";
 
 const MoviesContent = () => {
-	const { state, dispatch } = useFilters();
-	const { filters } = state;
+	const { state } = useFilters();
+	const { filters, isDirty } = state;
 
-	const [hideButton, setHideButton] = useState<boolean>(false);
+	const pageUrl = useLocation().pathname;
 
-	const isFilterApplied = Object.values(filters).some(
-		(value) => value !== null && value !== "",
-	);
+	const endpoint = isDirty
+		? `/discover/${API_URL_FOR_PAGE[pageUrl] === "movie/popular" ? "movie" : API_URL_FOR_PAGE[pageUrl] === "tv/popular" ? "tv" : API_URL_FOR_PAGE[pageUrl] === "movie/popular"}`
+		: `/${API_URL_FOR_PAGE[pageUrl]}`;
 
-	const endpoint = isFilterApplied ? "/discover/movie" : "/movie/popular";
-
-	const params = isFilterApplied ? { ...filters } : {};
+	const params = isDirty ? { ...filters } : {};
 
 	delete (params as any).page;
 
 	const { data, fetchNextPage, isLoading, isFetchingNextPage } =
 		useInfiniteData<MovieType>({
-			queryKey: ["movies", endpoint, params],
+			queryKey: ["movies&tv", endpoint, params],
 			url: endpoint,
-			params,
+			params: { ...params, language: "en-US" },
 		});
 
 	const { data: countriesData } = useData<Array<CountriesType>>({
@@ -40,7 +41,6 @@ const MoviesContent = () => {
 		params: { language: "en-US" },
 	});
 
-	const pageUrl = useLocation().pathname;
 	const headerTitle = useCallback(() => {
 		return PAGE_URL_TITLE_MAP[pageUrl] || "Movies";
 	}, [pageUrl]);
@@ -51,7 +51,6 @@ const MoviesContent = () => {
 				window.innerHeight + window.scrollY >=
 				document.body.offsetHeight - 100
 			) {
-				setHideButton(true);
 				await fetchNextPage();
 			}
 		};
@@ -68,7 +67,7 @@ const MoviesContent = () => {
 				<div className={styles.container}>
 					<h3 className={styles.heading}>{headerTitle()}</h3>
 					<div className={styles.mainContent}>
-						<Filters countriesData={countriesData || []} />
+						<AllFiltersComponent countriesData={countriesData || []} />
 						<div>
 							<MoviesContainer
 								movies={data?.pages?.flatMap((page) => page.results) || []}
@@ -91,7 +90,7 @@ const MoviesContent = () => {
 					</div>
 				</div>
 			</main>
-			{!hideButton && data?.pageParams && data?.pageParams.length > 1 && (
+			{isDirty && (
 				<Button
 					sx={{
 						position: "sticky",

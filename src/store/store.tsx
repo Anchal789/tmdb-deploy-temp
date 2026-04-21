@@ -6,16 +6,8 @@ import {
 	type Dispatch,
 	type ReactNode,
 } from "react";
-import type { DiscoverFiltersType } from "../types/filters";
 import { FILTERS_INITIAL_STATE } from "../constants/filterConstants";
-
-type State = {
-	filters: DiscoverFiltersType;
-};
-
-type Action =
-	| { type: "SET_FILTERS"; payload: DiscoverFiltersType }
-	| { type: "RESET_FILTERS" };
+import type { Action, State } from "../types/common";
 
 const FilterContext = createContext<{
 	state: State;
@@ -25,7 +17,9 @@ const FilterContext = createContext<{
 const reducer = (state: State, action: Action): State => {
 	switch (action.type) {
 		case "SET_FILTERS":
-			return { ...state, filters: action.payload };
+			return { ...state, filters: action.payload, isDirty: true };
+		case "RESET_FILTERS":
+			return { ...state, isDirty: false };
 		default:
 			return state;
 	}
@@ -34,6 +28,7 @@ const reducer = (state: State, action: Action): State => {
 export const FilterProvider = ({ children }: { children: ReactNode }) => {
 	const [state, dispatch] = useReducer(reducer, {
 		filters: FILTERS_INITIAL_STATE,
+		isDirty: false,
 	});
 
 	return (

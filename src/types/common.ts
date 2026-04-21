@@ -4,6 +4,7 @@ import type {
 	UseMutationOptions,
 	UseQueryOptions,
 } from "@tanstack/react-query";
+import type { DiscoverFiltersType } from "./filters";
 
 export interface UseAppQueryProps<TData> {
 	queryKey: any[];
@@ -53,3 +54,12 @@ export interface APIResponseError {
 	status_message: string;
 	success: boolean;
 }
+
+export interface State {
+	filters: DiscoverFiltersType;
+	isDirty: boolean;
+}
+
+export type Action =
+	| { type: "SET_FILTERS"; payload: DiscoverFiltersType }
+	| { type: "RESET_FILTERS" };
