@@ -1,4 +1,7 @@
-import { SORT_BY_OPTIONS } from "../../../constants/filterConstants";
+import {
+	COUNTRY_OPTIONS,
+	SORT_BY_OPTIONS,
+} from "../../../constants/filterConstants";
 import Accordion from "../../../components/Accordion";
 import Autocomplete from "../../../components/AutoComplete";
 import TextField from "../../../components/TextFielld";
@@ -9,12 +12,15 @@ import { useState, type FunctionComponent } from "react";
 import type {
 	CountriesType,
 	DiscoverFiltersType,
+	OTTProviderType,
 } from "../../../types/filters";
 import AccordionDetails from "../../../components/AccordionDetails";
 import { Box } from "@mui/material";
 import Checkbox from "../../../components/Checkbox";
 import WhereToWatchFilter from "./WhereToWatchTab";
 import FilterTab from "./FiltersTab";
+import { useLocation } from "react-router";
+import { useData } from "../../../lib/useData";
 
 const AllFiltersComponent: FunctionComponent<{
 	countriesData: Array<CountriesType>;
@@ -22,6 +28,20 @@ const AllFiltersComponent: FunctionComponent<{
 	const [countriesCount, setCountriesCount] = useState<number>(0);
 	const { state, dispatch } = useFilters();
 	const { filters } = state;
+
+	const pageUrl = useLocation().pathname;
+
+	const selectedCountry = COUNTRY_OPTIONS.find(
+		(item) => item.iso_3166_1 === filters.watch_region,
+	);
+
+	const { data } = useData<OTTProviderType>({
+		queryKey: ["ott_providers", filters.watch_region, pageUrl],
+		url: `/watch/providers/${pageUrl.includes("movie") ? "movie" : "tv"}`,
+		params: { language: "en-US", watch_region: selectedCountry?.iso_3166_1 },
+	});
+
+	const ottProviders = data?.results || [];
 
 	return (
 		<div className={styles.filtersContainer}>
@@ -36,6 +56,7 @@ const AllFiltersComponent: FunctionComponent<{
 									(option.value as DiscoverFiltersType) === filters.sort_by,
 							)?.label
 						}
+						defaultValue={"Popularity Descending"}
 						renderInput={() => <TextField />}
 						onChange={(_event, value) =>
 							dispatch({
@@ -83,11 +104,16 @@ const AllFiltersComponent: FunctionComponent<{
 					<WhereToWatchFilter
 						countriesData={countriesData}
 						setCountriesCount={setCountriesCount}
+						ottProviders={ottProviders}
+						selectedCountry={selectedCountry}
 					/>
 				</AccordionDetails>
 			</Accordion>
 			<Accordion title={"Filters"}>
-				<FilterTab />
+				<FilterTab
+					countriesData={countriesData}
+					selectedCountry={selectedCountry}
+				/>
 			</Accordion>
 		</div>
 	);

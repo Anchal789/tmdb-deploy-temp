@@ -15,24 +15,24 @@ import type { CountriesType } from "../../types/filters";
 import AllFiltersComponent from "./Filters/AllFiltersComponent";
 
 const MoviesContent = () => {
-	const { state } = useFilters();
-	const { filters, isDirty } = state;
+	const { state, dispatch } = useFilters();
+	const { appliedFilters, isDirty, isFiltered } = state;
 
 	const pageUrl = useLocation().pathname;
 
-	const endpoint = isDirty
-		? `/discover/${API_URL_FOR_PAGE[pageUrl] === "movie/popular" ? "movie" : API_URL_FOR_PAGE[pageUrl] === "tv/popular" ? "tv" : API_URL_FOR_PAGE[pageUrl] === "movie/popular"}`
+	const endpoint = isFiltered
+		? `/discover/${API_URL_FOR_PAGE[pageUrl] === "movie/popular" ? "movie" : API_URL_FOR_PAGE[pageUrl] === "tv/popular" ? "tv" : API_URL_FOR_PAGE[pageUrl]}`
 		: `/${API_URL_FOR_PAGE[pageUrl]}`;
 
-	const params = isDirty ? { ...filters } : {};
-
-	delete (params as any).page;
+	const params = { ...appliedFilters };
 
 	const { data, fetchNextPage, isLoading, isFetchingNextPage } =
 		useInfiniteData<MovieType>({
-			queryKey: ["movies&tv", endpoint, params],
+			queryKey: ["movies&tv", endpoint, appliedFilters, pageUrl],
 			url: endpoint,
-			params: { ...params, language: "en-US" },
+			params: isFiltered
+				? { ...params, language: "en-US" }
+				: { language: "en-US" },
 		});
 
 	const { data: countriesData } = useData<Array<CountriesType>>({
@@ -101,7 +101,7 @@ const MoviesContent = () => {
 						height: "50px",
 						borderRadius: "0px",
 					}}
-					onClick={() => fetchNextPage()}
+					onClick={() => dispatch({ type: "APPLY_FILTERS" })}
 				>
 					Search
 				</Button>

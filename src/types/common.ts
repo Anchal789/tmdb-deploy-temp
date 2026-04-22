@@ -5,6 +5,9 @@ import type {
 	UseQueryOptions,
 } from "@tanstack/react-query";
 import type { DiscoverFiltersType } from "./filters";
+import type { DatePickerProps } from "@mui/x-date-pickers/DatePicker";
+import type { ReactNode } from "react";
+import type { TextFieldProps } from "@mui/material";
 
 export interface UseAppQueryProps<TData> {
 	queryKey: any[];
@@ -57,9 +60,19 @@ export interface APIResponseError {
 
 export interface State {
 	filters: DiscoverFiltersType;
+	appliedFilters: DiscoverFiltersType;
 	isDirty: boolean;
+	isFiltered: boolean;
 }
 
 export type Action =
 	| { type: "SET_FILTERS"; payload: DiscoverFiltersType }
-	| { type: "RESET_FILTERS" };
+	| { type: "APPLY_FILTERS" }
+	| { type: "INIT_PAGE_FILTERS"; payload: DiscoverFiltersType };
+
+export interface CustomDatePickerProps extends DatePickerProps {
+	error?: boolean;
+	helperText?: ReactNode;
+	placeholder?: string;
+	textFieldProps?: TextFieldProps;
+}

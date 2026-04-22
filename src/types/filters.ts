@@ -1,4 +1,4 @@
-import { SORTING_PAYLOAD_KEYS } from './../constants/filterConstants';
+import { SORTING_PAYLOAD_KEYS } from "./../constants/filterConstants";
 
 export interface DiscoverFiltersType {
 	"air_date.gte"?: string | null;
@@ -43,12 +43,45 @@ export interface CountriesType {
 	flagUrl?: string;
 }
 
+export interface LanguagesOptionsType {
+	folded_name: string;
+	english_name: string;
+	iso_639_1: string;
+	native_name?: string;
+	count: number;
+}
+
 export interface OTTProviderType {
-	results: Array<{
-		display_priorities: Record<string, number>;
-		display_priority: number;
-		logo_path: string;
-		provider_id: number;
-		provider_name: string;
-	}>;
+	results: Array<OTTProviderResponseType>;
+}
+
+export interface OTTProviderResponseType {
+	display_priorities: Record<string, number>;
+	display_priority: number;
+	logo_path: string;
+	provider_id: number;
+	provider_name: string;
+}
+
+export interface GenreType {
+	id: number;
+	name: string;
+}
+
+export interface CertificationType {
+	certification: string;
+	meaning: string;
+	order: number;
+}
+
+export interface TVNetworksResponseType {
+	total_results: number;
+	results: Array<TVNetworksType>;
+}
+
+export interface TVNetworksType {
+	logo_path: string;
+	name: string;
+	id: number;
+	origin_country: string;
 }

@@ -6,40 +6,26 @@ import {
 } from "react";
 import Autocomplete from "../../../components/AutoComplete";
 import TextField from "../../../components/TextFielld";
-import type { CountriesType, OTTProviderType } from "../../../types/filters";
+import type { CountriesType, OTTProviderResponseType } from "../../../types/filters";
 import { useFilters } from "../../../store/store";
 import { COUNTRY_OPTIONS } from "../../../constants/filterConstants";
 import Typography from "../../../components/Typography";
 import { Box, Select } from "@mui/material";
-import { useData } from "../../../lib/useData";
 import styles from "./AllFiltersComponent.module.scss";
 import Tooltip from "../../../components/Tooltip";
-import { useLocation } from "react-router";
 
 const WhereToWatchFilter: FunctionComponent<{
 	countriesData: Array<CountriesType>;
 	setCountriesCount: Dispatch<SetStateAction<number>>;
-}> = ({ countriesData, setCountriesCount }) => {
+	ottProviders: Array<OTTProviderResponseType>;
+	selectedCountry?: CountriesType
+}> = ({ countriesData, setCountriesCount, ottProviders,selectedCountry }) => {
 	const [open, setOpen] = useState<boolean>(false);
 	const { state, dispatch } = useFilters();
 	const { filters } = state;
 
-	const selectedCountry = COUNTRY_OPTIONS.find(
-		(item) => item.iso_3166_1 === filters.watch_region,
-	);
-
-	const pageUrl = useLocation().pathname;
-
-	const { data } = useData<OTTProviderType>({
-		queryKey: ["ott_providers", pageUrl],
-		url: `/watch/providers/${pageUrl.includes("movie") ? "movie" : "tv"}`,
-		params: { language: "en-US", watch_region: selectedCountry?.iso_3166_1 },
-	});
-
-	const ottProviders = data?.results || [];
-
 	setCountriesCount(ottProviders.length);
-	
+
 	return (
 		<>
 			<Typography fontWeight={300}>Country</Typography>

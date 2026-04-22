@@ -18,8 +18,21 @@ const reducer = (state: State, action: Action): State => {
 	switch (action.type) {
 		case "SET_FILTERS":
 			return { ...state, filters: action.payload, isDirty: true };
-		case "RESET_FILTERS":
-			return { ...state, isDirty: false };
+		case "APPLY_FILTERS":
+			return {
+				...state,
+				appliedFilters: state.filters,
+				isDirty: false,
+				isFiltered: true
+			};
+		case "INIT_PAGE_FILTERS":
+			return {
+				...state,
+				filters: action.payload,
+				appliedFilters: action.payload,
+				isDirty: false,
+				isFiltered: false,
+			};
 		default:
 			return state;
 	}
@@ -28,7 +41,9 @@ const reducer = (state: State, action: Action): State => {
 export const FilterProvider = ({ children }: { children: ReactNode }) => {
 	const [state, dispatch] = useReducer(reducer, {
 		filters: FILTERS_INITIAL_STATE,
+		appliedFilters: FILTERS_INITIAL_STATE,
 		isDirty: false,
+		isFiltered: false,
 	});
 
 	return (
