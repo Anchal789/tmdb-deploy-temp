@@ -3,11 +3,13 @@ import request from "../helpers/api-requests";
 export const fetchData = <T>({
 	url,
 	params,
+	baseUrl
 }: {
 	url: string;
 	params?: Record<string, any>;
+	baseUrl?: string;
 }) => {
-	return request<T>({ url, params });
+	return request<T>({ url, params, baseUrl });
 };
 
 export const postData = <T>({

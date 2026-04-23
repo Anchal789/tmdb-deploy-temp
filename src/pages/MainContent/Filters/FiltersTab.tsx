@@ -1,5 +1,6 @@
 import {
 	useEffect,
+	useRef,
 	useState,
 	type ChangeEvent,
 	type FunctionComponent,
@@ -21,24 +22,41 @@ import { useLocation } from "react-router";
 import {
 	COUNTRY_OPTIONS,
 	FILTERS_INITIAL_STATE,
+	LANGUAGES_OPTIONS,
 } from "../../../constants/filterConstants";
 import Autocomplete from "../../../components/AutoComplete";
 import type {
 	CountriesType,
 	GenreType,
-	TVNetworksResponseType,
+	TvNetworksType,
 } from "../../../types/filters";
 import TextField from "../../../components/TextFielld";
 import DatePicker from "../../../components/Datepicker";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useData } from "../../../lib/useData";
+import Slider from "../../../components/Slider";
 
 const FilterTab: FunctionComponent<{
 	countriesData: Array<CountriesType>;
 	selectedCountry?: CountriesType;
 }> = ({ countriesData, selectedCountry }) => {
 	const [open, setOpen] = useState<boolean>(false);
+	const [languageOpen, setLanguageOpen] = useState<boolean>(false);
+	const [tvNetworksSearchValue, setTvNetworkSearchValue] = useState<string>("");
+	const [tvNetworksDebouncedSearchValue, setTvNetworksDebouncedSearchValue] =
+		useState<string>("");
+	const [selectedNetworks, setSelectedNetworks] = useState<
+		Array<TvNetworksType>
+	>([]);
+	const hasCrossedThreshold = useRef<boolean>(false);
+	const [keyWordsSearchValue, setKeyWordsSearchValue] = useState<string>("");
+	const [keyWordsDebouncedSearchValue, setKeyWordsDebouncedSearchValue] =
+		useState<string>("");
+	const [selectedKeyWords, setSelectedKeyWords] = useState<
+		Array<{ id: number; name: string }>
+	>([]);
+	const hasCrossedThresholdForKeyWords = useRef<boolean>(false);
 
 	const { state, dispatch } = useFilters();
 	const { filters } = state;
@@ -51,23 +69,36 @@ const FilterTab: FunctionComponent<{
 		params: { language: "en-US" },
 	});
 
-	// const { data: tvNetworks } = useData<TVNetworksResponseType>({
-	// 	queryKey: ["tvNetworks", pageURl],
-	// 	url: `https://www.themoviedb.org/search/remote/tv_network`,
-	// 	params: {
-	// 		take: 50,
-	// 		skip: 0,
-	// 		page: 1,
-	// 		pageSize: 50,
-	// 		"filter[filters][0][value]": "ss",
-	// 		"filter[filters][0][field]": "name",
-	// 		"filter[filters][0][operator]": "startswith",
-	// 		"filter[filters][0][ignoreCase]": true,
-	// 		"filter[logic]": "and",
-	// 	},
-    // });
-    
-    // console.log(tvNetworks)
+	const { data: tvNetworks } = useData<{
+		page: number;
+		results: Array<TvNetworksType>;
+	}>({
+		queryKey: ["tvNetworks", tvNetworksDebouncedSearchValue],
+		url: `/search/tv`,
+		params: {
+			query: tvNetworksDebouncedSearchValue,
+			skip: 0,
+			page: 1,
+			pageSize: 50,
+			language: "en-US",
+		},
+		options: {
+			enabled: tvNetworksDebouncedSearchValue.length > 0,
+			placeholderData: (prev) => prev,
+		},
+	});
+
+	const { data: keywordsData } = useData<{
+		page: number;
+		results: Array<{
+			id: number;
+			name: string;
+		}>;
+	}>({
+		queryKey: ["keywords", keyWordsDebouncedSearchValue],
+		url: `/search/keyword`,
+		params: { language: "en-US", query: keyWordsDebouncedSearchValue },
+	});
 
 	const handleCheckboxesChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = event.target;
@@ -129,6 +160,138 @@ const FilterTab: FunctionComponent<{
 			});
 		}
 	}, [pageURl, dispatch]);
+
+	useEffect(() => {
+		const timerId = setTimeout(() => {
+			const currentLength = tvNetworksSearchValue.trim().length;
+			if (currentLength === 0) {
+				hasCrossedThreshold.current = false;
+				setTvNetworksDebouncedSearchValue("");
+				return;
+			}
+
+			if (currentLength >= 3) {
+				hasCrossedThreshold.current = true;
+			}
+			if (hasCrossedThreshold.current) {
+				setTvNetworksDebouncedSearchValue(tvNetworksSearchValue.trim());
+			}
+		}, 500);
+
+		return () => clearTimeout(timerId);
+	}, [tvNetworksSearchValue]);
+	
+	useEffect(() => {
+		const timerId = setTimeout(() => {
+			const currentLength = keyWordsSearchValue.trim().length;
+			if (currentLength === 0) {
+				hasCrossedThresholdForKeyWords.current = false;
+				setKeyWordsDebouncedSearchValue("");
+				return;
+			}
+
+			if (currentLength >= 3) {
+				hasCrossedThresholdForKeyWords.current = true;
+			}
+			if (hasCrossedThresholdForKeyWords.current) {
+				setKeyWordsDebouncedSearchValue(keyWordsSearchValue.trim());
+			}
+		}, 500);
+
+		return () => clearTimeout(timerId);
+	}, [keyWordsSearchValue]);
+
+	const selectedOriginalLanguage = LANGUAGES_OPTIONS.find(
+		(item) => item.iso_639_1 === filters.with_original_language,
+	);
+
+	const handleUserScoreChange = (
+		_event: Event,
+		newValue: number[],
+		activeThumb: number,
+	) => {
+		if (activeThumb === 0) {
+			dispatch({
+				type: "SET_FILTERS",
+				payload: {
+					...filters,
+					"vote_average.gte": newValue[0],
+				},
+			});
+		} else {
+			dispatch({
+				type: "SET_FILTERS",
+				payload: {
+					...filters,
+					"vote_average.lte": newValue[1],
+				},
+			});
+		}
+	};
+
+	const handleMinimumUserScoreChange = (
+		_event: Event,
+		newValue: number,
+		activeThumb: number,
+	) => {
+		if (activeThumb === 0) {
+			dispatch({
+				type: "SET_FILTERS",
+				payload: {
+					...filters,
+					"vote_count.gte": newValue,
+				},
+			});
+		}
+	};
+
+	const handleRuntimeChange = (
+		_event: Event,
+		newValue: number[],
+		activeThumb: number,
+	) => {
+		if (activeThumb === 0) {
+			dispatch({
+				type: "SET_FILTERS",
+				payload: {
+					...filters,
+					"with_runtime.gte": newValue[0],
+				},
+			});
+		} else {
+			dispatch({
+				type: "SET_FILTERS",
+				payload: {
+					...filters,
+					"with_runtime.lte": newValue[1],
+				},
+			});
+		}
+	};
+
+	const generateMarks = (
+		min: number,
+		max: number,
+		step: number,
+		labeledValues: number[],
+	) => {
+		const marks = [];
+		for (let i = min; i <= max; i += step) {
+			marks.push({
+				value: i,
+				label: labeledValues.includes(i) ? i.toString() : "",
+			});
+		}
+
+		if (marks[marks.length - 1].value !== max) {
+			marks.push({
+				value: max,
+				label: labeledValues.includes(max) ? max.toString() : "",
+			});
+		}
+
+		return marks;
+	};
 
 	return (
 		<>
@@ -662,16 +825,111 @@ const FilterTab: FunctionComponent<{
 				>
 					<Typography fontWeight={300}>Network</Typography>
 					<Autocomplete
-						options={countriesData.map((option) => option.native_name)}
+						multiple
+						filterSelectedOptions
+						inputValue={tvNetworksSearchValue}
+						options={tvNetworks?.results || []}
+						getOptionLabel={(option) => option.name || option.original_name}
+						isOptionEqualToValue={(option, value) => option.id === value.id}
+						value={selectedNetworks}
+						onChange={(_event, newValue) => {
+							setSelectedNetworks(newValue);
+							const newIdsString =
+								newValue.length > 0
+									? newValue.map((network) => network.id).join("|")
+									: null;
+							dispatch({
+								type: "SET_FILTERS",
+								payload: {
+									...filters,
+									with_networks: newIdsString,
+								},
+							});
+						}}
+						renderInput={(params) => (
+							<TextField {...params} placeholder='Filter by TV networks...' />
+						)}
+						onInputChange={(_event, value, reason) => {
+							if (reason === "input" || reason === "clear") {
+								setTvNetworkSearchValue(value);
+							} else if (reason === "reset") {
+								setTvNetworkSearchValue("");
+							}
+						}}
+						fullWidth
+					/>
+				</AccordionDetails>
+			)}
+			<AccordionDetails
+				sx={{
+					borderBottom: "1px solid #e5e7eb",
+					borderRadius: "8px 8px 0 0",
+				}}
+			>
+				<Typography fontWeight={300}>Language</Typography>
+				<Select
+					open={languageOpen}
+					onClose={() => setLanguageOpen(false)}
+					onOpen={() => setLanguageOpen(true)}
+					fullWidth
+					MenuProps={{
+						autoFocus: false,
+						PaperProps: {
+							sx: { maxHeight: 300 },
+						},
+					}}
+					value={selectedOriginalLanguage?.native_name}
+					sx={{
+						padding: ".375rem .75rem",
+						cursor: "pointer",
+						"& .MuiSelect-outlined": {
+							padding: 0,
+						},
+						"&:hover": {
+							background: "#f8f9fa",
+							outlineColor: "#01b3e460",
+							transition: "all 0.2s ease-in-out",
+						},
+						"&:focus-visible .MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline":
+							{
+								borderColor: "#f8f9fa",
+								zIndex: 1,
+							},
+					}}
+					renderValue={() =>
+						selectedOriginalLanguage ? (
+							<Box
+								sx={{
+									display: "flex",
+									alignItems: "center",
+									gap: 1,
+								}}
+							>
+								<Typography sx={{ fontSize: "0.9rem" }}>
+									<Typography>
+										{selectedOriginalLanguage?.native_name}{" "}
+										{selectedOriginalLanguage.count &&
+											`(${selectedOriginalLanguage.count})`}
+									</Typography>
+								</Typography>
+							</Box>
+						) : (
+							<span style={{ color: "#aaa" }}>None Selected</span>
+						)
+					}
+				>
+					<Autocomplete
+						options={LANGUAGES_OPTIONS.map((option) => option.native_name)}
 						renderInput={() => <TextField />}
 						onChange={(_event, value) => {
 							dispatch({
 								type: "SET_FILTERS",
 								payload: {
 									...filters,
-									watch_region:
-										countriesData.find((option) => option.native_name === value)
-											?.iso_3166_1 || "",
+									with_original_language:
+										LANGUAGES_OPTIONS.find(
+											(option) => option.native_name === value,
+										)?.iso_639_1 || null,
 								},
 							});
 						}}
@@ -683,12 +941,13 @@ const FilterTab: FunctionComponent<{
 						}}
 						renderOption={(props, option) => {
 							const { key, ...optionProps } = props;
-							const country = countriesData.find(
+							const language = LANGUAGES_OPTIONS.find(
 								(country) => country.native_name === option,
 							);
-							const flagUrl = COUNTRY_OPTIONS.find(
-								(item) => item.iso_3166_1 === country?.iso_3166_1,
-							)?.flagUrl;
+							const languageCount =
+								LANGUAGES_OPTIONS.find(
+									(item) => item.iso_639_1 === language?.iso_639_1,
+								)?.count || null;
 							return (
 								<Box
 									key={key}
@@ -696,20 +955,132 @@ const FilterTab: FunctionComponent<{
 									sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
 									{...optionProps}
 								>
-									<img
-										loading='lazy'
-										width='20'
-										srcSet={`https://www.themoviedb.org${flagUrl}`}
-										src={`https://www.themoviedb.org${flagUrl}`}
-										alt=''
-									/>
-									<Typography>{option}</Typography>
+									<Typography>
+										{option} {languageCount && `(${languageCount})`}
+									</Typography>
 								</Box>
 							);
 						}}
 					/>
-				</AccordionDetails>
-			)}
+				</Select>
+			</AccordionDetails>
+			<AccordionDetails
+				sx={{
+					borderBottom: "1px solid #e5e7eb",
+					borderRadius: "8px 8px 0 0",
+				}}
+			>
+				<Typography fontWeight={300}>User Score</Typography>
+				<Slider
+					getAriaLabel={() => "User Score"}
+					value={[
+						filters["vote_average.gte"] !== null
+							? Number(filters["vote_average.gte"])
+							: 0,
+						filters["vote_average.lte"] !== null
+							? Number(filters["vote_average.lte"])
+							: 10,
+					]}
+					max={10}
+					onChange={handleUserScoreChange}
+					tallMarks={[0, 5, 10]}
+					marks={Array.from({ length: 11 }, (_, index) => ({
+						value: index,
+						label: index % 5 === 0 ? index.toString() : "",
+					}))}
+				/>
+			</AccordionDetails>
+			<AccordionDetails
+				sx={{
+					borderBottom: "1px solid #e5e7eb",
+					borderRadius: "8px 8px 0 0",
+				}}
+			>
+				<Typography fontWeight={300}>Minimum User Votes</Typography>
+				<Slider
+					getAriaLabel={() => "Minimum User Votes"}
+					value={
+						filters["vote_count.gte"] !== null
+							? Number(filters["vote_count.gte"])
+							: 0
+					}
+					max={500}
+					onChange={handleMinimumUserScoreChange}
+					tallMarks={[0, 100, 200, 300, 400, 500]}
+					marks={generateMarks(0, 500, 50, [0, 100, 200, 300, 400, 500])}
+					step={50}
+				/>
+			</AccordionDetails>
+			<AccordionDetails
+				sx={{
+					borderBottom: "1px solid #e5e7eb",
+					borderRadius: "8px 8px 0 0",
+				}}
+			>
+				<Typography fontWeight={300}>Runtime</Typography>
+				<Slider
+					getAriaLabel={() => "Runtime"}
+					value={[
+						filters["with_runtime.gte"] !== null
+							? Number(filters["with_runtime.gte"])
+							: 0,
+						filters["with_runtime.lte"] !== null
+							? Number(filters["with_runtime.lte"])
+							: 400,
+					]}
+					max={400}
+					onChange={handleRuntimeChange}
+					tallMarks={[0, 120, 240, 360]}
+					marks={generateMarks(0, 400, 15, [0, 120, 240, 360])}
+					step={15}
+					valueLabelFormat={() =>
+						`${filters["with_runtime.gte"]} minutes - ${filters["with_runtime.lte"]} minutes`
+					}
+				/>
+			</AccordionDetails>
+			<AccordionDetails
+				sx={{
+					borderBottom: "1px solid #e5e7eb",
+					borderRadius: "8px 8px 0 0",
+				}}
+			>
+				<Typography fontWeight={300}>Keywords</Typography>
+				<Autocomplete
+					multiple
+					filterSelectedOptions
+					inputValue={keyWordsSearchValue}
+					options={keywordsData?.results || []}
+					getOptionLabel={(option) => option.name || option.name}
+					isOptionEqualToValue={(option, value) => option.id === value.id}
+					value={selectedKeyWords}
+					onChange={(_event, newValue) => {
+						setSelectedKeyWords(newValue);
+						const newIdsString =
+							newValue.length > 0
+								? newValue.map((network) => network.id).join("|")
+								: null;
+						dispatch({
+							type: "SET_FILTERS",
+							payload: {
+								...filters,
+								with_keywords: newIdsString,
+							},
+						});
+					}}
+					renderInput={(params) => (
+						<TextField {...params} placeholder='Filter by TV networks...' />
+					)}
+					onInputChange={(_event, value, reason) => {
+						if (reason === "input" || reason === "clear") {
+							setKeyWordsSearchValue(value);
+						} else if (reason === "reset") {
+							setKeyWordsSearchValue("");
+						}
+					}}
+					fullWidth
+					placeholder='Filter by keywords...'
+				/>
+			</AccordionDetails>
 		</>
 	);
 };

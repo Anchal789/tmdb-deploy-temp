@@ -46,9 +46,9 @@ export interface CountriesType {
 export interface LanguagesOptionsType {
 	folded_name: string;
 	english_name: string;
-	iso_639_1: string;
+	iso_639_1: string | null;
 	native_name?: string;
-	count: number;
+	count: number | null;
 }
 
 export interface OTTProviderType {
@@ -84,4 +84,22 @@ export interface TVNetworksType {
 	name: string;
 	id: number;
 	origin_country: string;
+}
+
+export interface TvNetworksType {
+	adult: boolean;
+	backdrop_path: string;
+	genre_ids: Array<number>;
+	id: number;
+	origin_country: Array<string>;
+	original_language: string;
+	original_name: string;
+	overview: string;
+	popularity: number;
+	poster_path: string;
+	first_air_date: string;
+	softcore: boolean;
+	name: string;
+	vote_average: number;
+	vote_count: number;
 }

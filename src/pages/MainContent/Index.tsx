@@ -21,7 +21,8 @@ const MoviesContent = () => {
 	const pageUrl = useLocation().pathname;
 
 	const endpoint = isFiltered
-		? `/discover/${API_URL_FOR_PAGE[pageUrl] === "movie/popular" ? "movie" : API_URL_FOR_PAGE[pageUrl] === "tv/popular" ? "tv" : API_URL_FOR_PAGE[pageUrl]}`
+		// ? `/discover/${API_URL_FOR_PAGE[pageUrl] === "movie/popular" ? "movie" : API_URL_FOR_PAGE[pageUrl] === "tv/popular" ? "tv" : API_URL_FOR_PAGE[pageUrl]}`
+		? `/discover/${API_URL_FOR_PAGE[pageUrl].includes("movie") ? "movie" : "tv"}`
 		: `/${API_URL_FOR_PAGE[pageUrl]}`;
 
 	const params = { ...appliedFilters };
@@ -31,14 +32,14 @@ const MoviesContent = () => {
 			queryKey: ["movies&tv", endpoint, appliedFilters, pageUrl],
 			url: endpoint,
 			params: isFiltered
-				? { ...params, language: "en-US" }
-				: { language: "en-US" },
+				? { ...params, }
+				: { },
 		});
 
 	const { data: countriesData } = useData<Array<CountriesType>>({
 		queryKey: ["countries"],
 		url: "/configuration/countries",
-		params: { language: "en-US" },
+		params: { },
 	});
 
 	const headerTitle = useCallback(() => {
@@ -73,19 +74,21 @@ const MoviesContent = () => {
 								movies={data?.pages?.flatMap((page) => page.results) || []}
 								isLoading={isLoading || isFetchingNextPage}
 							/>
-							<Button
-								sx={{
-									backgroundColor: "#02B4E4",
-									fontSize: "1.5rem",
-									fontWeight: 700,
-									lineHeight: "2.25rem",
-									height: "50px",
-									marginTop: "50px",
-								}}
-								onClick={() => fetchNextPage()}
-							>
-								Load More
-							</Button>
+							{data?.pages?.flatMap((page) => page.results).length === 0 ? null : (
+								<Button
+									sx={{
+										backgroundColor: "#02B4E4",
+										fontSize: "1.5rem",
+										fontWeight: 700,
+										lineHeight: "2.25rem",
+										height: "50px",
+										marginTop: "50px",
+									}}
+									onClick={() => fetchNextPage()}
+								>
+									Load More
+								</Button>
+							)}
 						</div>
 					</div>
 				</div>

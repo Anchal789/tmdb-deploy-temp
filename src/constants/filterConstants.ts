@@ -83,9 +83,9 @@ export const FILTERS_INITIAL_STATE: DiscoverFiltersType = {
 	"release_date.lte": null,
 	show_me: "everything",
 	sort_by: null,
-	"vote_average.gte": null,
-	"vote_average.lte": null,
-	"vote_count.gte": null,
+	"vote_average.gte": 0,
+	"vote_average.lte": 10,
+	"vote_count.gte": 0,
 	watch_region: "IN",
 	with_genres: null,
 	with_keywords: null,
@@ -95,8 +95,8 @@ export const FILTERS_INITIAL_STATE: DiscoverFiltersType = {
 	with_watch_monetization_types: null,
 	with_watch_providers: null,
 	with_release_type: null,
-	"with_runtime.gte": null,
-	"with_runtime.lte": null,
+	"with_runtime.gte": 0,
+	"with_runtime.lte": 400,
 };
 
 export const COUNTRY_OPTIONS: Array<CountriesType> = [
@@ -1880,6 +1880,13 @@ export const COUNTRY_OPTIONS: Array<CountriesType> = [
 ];
 
 export const LANGUAGES_OPTIONS: Array<LanguagesOptionsType> = [
+	{
+		folded_name: "None Selected",
+		english_name: "None Selected",
+		iso_639_1: null,
+		native_name: "None Selected",
+		count: null,
+	},
 	{
 		folded_name: "English",
 		english_name: "English",
