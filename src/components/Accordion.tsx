@@ -5,9 +5,9 @@ import {
 	type AccordionSummaryProps,
 	type TypographyProps,
 } from "@mui/material";
-import { ChevronRight } from "@mui/icons-material";
 import { type ReactNode, type SyntheticEvent } from "react";
 import Typography from "./Typography";
+import styles from "./Components.module.scss";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -47,7 +47,7 @@ const Accordion = ({
 				boxShadow: "0 2px 8px rgba(0,0,0,.1)",
 				"&:hover": { backgroundColor: "#fff" },
 				"& + &": {
-					marginTop: "8px",
+					marginTop: "12px",
 				},
 				...sx,
 			}}
@@ -56,7 +56,13 @@ const Accordion = ({
 				{...summaryProps}
 				expandIcon={
 					expandIcon ?? (
-						<ChevronRight fontSize='small' sx={{ color: "#6b7280" }} />
+						<img
+							src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-224-chevron-right-d1f88a6c15e68190c3b47e1ee4f39fe47f4b69f4966ca7c250c2e14cfa689a04.svg'
+							alt='expand'
+							className={styles["accordion-expand-icon"]}
+							width={"1rem"}
+							height={"1rem"}
+						/>
 					)
 				}
 				sx={{

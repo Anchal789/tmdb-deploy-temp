@@ -5,7 +5,7 @@ import {
 	type SetStateAction,
 } from "react";
 import Autocomplete from "../../../components/AutoComplete";
-import TextField from "../../../components/TextFielld";
+import TextField from "../../../components/TextField";
 import type { CountriesType, OTTProviderResponseType } from "../../../types/filters";
 import { useFilters } from "../../../store/store";
 import { COUNTRY_OPTIONS } from "../../../constants/filterConstants";

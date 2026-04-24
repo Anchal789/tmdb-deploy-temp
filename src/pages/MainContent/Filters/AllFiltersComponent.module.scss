@@ -9,6 +9,14 @@
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
+		padding-right: 10px;
+
+		.whereToWatchTitle {
+			font-size: 1.6rem;
+			line-height: $line-height-26;
+			margin-bottom: 20px;
+			font-weight: 600;
+		}
 
 		.countryCount {
 			background-color: #00000014;

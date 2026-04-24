@@ -60,6 +60,34 @@ const MoviesContent = () => {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [fetchNextPage, data?.pageParams.length]);
 
+	// useEffect(() => {
+	// 	// 1. Define the function you want to run on scroll
+	// 	const handleScroll = () => {
+	// 		console.log(
+	// 			"Container Height:",
+	// 			filterContainerRef.current?.offsetHeight,
+	// 			"Scroll Y:",
+	// 			window.scrollY,
+	// 			"Window Height:",
+	// 			window.innerHeight,
+	// 			"Body Height:",
+	// 			document.body.offsetHeight,
+	// 			window.scrollY + window.innerHeight - 147,
+	// 		);
+
+	// 		// This is where you will put your logic to check if you
+	// 		// have reached the bottom of the AllFiltersComponent!
+	// 	};
+
+	// 	// 2. Attach the listener to the window
+	// 	window.addEventListener("scroll", handleScroll);
+
+	// 	// 3. CRITICAL: Clean up the listener when the component unmounts
+	// 	return () => {
+	// 		window.removeEventListener("scroll", handleScroll);
+	// 	};
+	// }, []); // Empty array means: "Set this listener up exactly once."
+
 	return (
 		<>
 			{(isLoading || isFetchingNextPage) && <TopLoader />}

@@ -5,7 +5,7 @@ import {
 	type ChipTypeMap,
 } from "@mui/material";
 import type { ElementType } from "react";
-import TextField from "./TextFielld";
+import TextField from "./TextField";
 
 type AppAutocompleteProps<
 	T,
@@ -56,6 +56,9 @@ const Autocomplete = <
 				},
 				...sx,
 			}}
+			popupIcon={
+				<svg viewBox="0 0 512 512" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="#212529" width={"1rem"} height={"1rem"}><path d="M256 352 128 160h256z"></path></svg>
+			}
 			renderInput={(params) => (
 				<TextField
 					{...params}
