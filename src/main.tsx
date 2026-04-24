@@ -37,5 +37,5 @@ createRoot(document.getElementById("root") ?? document.body).render(
 				</QueryClientProvider>
 			</FilterProvider>
 		</BrowserRouter>
-	</StrictMode>,
+	</StrictMode>
 );

@@ -97,56 +97,56 @@ const Header = () => {
 								/>
 							</li>
 							<li>
-								<a href='/' className={styles["list-content"]}>
+								<p className={styles["list-content"]}>
 									People
-								</a>
+								</p>
 							</li>
 							<li>
-								<a href='/' className={styles["list-content"]}>
+								<p className={styles["list-content"]}>
 									Awards
-								</a>
+								</p>
 							</li>
 							<li>
-								<a href='/' className={styles["list-content"]}>
+								<p className={styles["list-content"]}>
 									More
-								</a>
+								</p>
 							</li>
 						</ul>
 					</div>
 					<div className={styles["right-section"]}>
 						<ul className={styles["nav-list"]}>
 							<li className={styles["list-items"]}>
-								<a href='/' className={styles["add-icon"]}>
+								<p className={styles["add-icon"]}>
 									<img
 										src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-371-plus-white-0bac34f16124808a12ea863b4d9cc6e599dee7c0a80658cfe9ead26939e64517.svg'
 										alt='Add icon'
 										className={styles["add-icon-img"]}
 									/>
-								</a>
+								</p>
 							</li>
 							<li className={styles["list-items"]}>
-								<a href='/' className={styles["list-content"]}>
+								<p className={styles["list-content"]}>
 									<div className={styles["box-visible"]}>EN</div>
-								</a>
+								</p>
 							</li>
 							<li className={styles["list-items"]}>
-								<a href='/' className={styles["list-content"]}>
+								<p className={styles["list-content"]}>
 									Login
-								</a>
+								</p>
 							</li>
 							<li className={styles["list-items"]}>
-								<a href='/' className={`${styles["list-content"]}`}>
+								<p className={`${styles["list-content"]}`}>
 									Join TMDB
-								</a>
+								</p>
 							</li>
 							<li className={styles["list-items"]}>
-								<a href='/' className={`${styles["search-icon"]}`}>
+								<p className={`${styles["search-icon"]}`}>
 									<img
 										src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-28-search-blue-177462d06db81ff2a02aa022c1c0be5ba4200d7bd3f51091ed9298980e3a26a1.svg'
 										alt='Search'
 										className={styles["search-icon-img"]}
 									/>
-								</a>
+								</p>
 							</li>
 						</ul>
 					</div>

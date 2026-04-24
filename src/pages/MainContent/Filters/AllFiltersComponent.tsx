@@ -109,7 +109,7 @@ const AllFiltersComponent: FunctionComponent<{
 					/>
 				</AccordionDetails>
 			</Accordion>
-			<Accordion title={"Filters"}>
+			<Accordion title={"Filters"} defaultExpanded>
 				<FilterTab
 					countriesData={countriesData}
 					selectedCountry={selectedCountry}
