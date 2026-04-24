@@ -1,0 +1,21 @@
+.App {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	background-color: #032541;
+	z-index: 1;
+	position: relative;
+}
+
+.App::after {
+	content: "";
+	background-image: url("https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1_white-ff84c271cc8c93e00aa0264a425434c329089bdfc6a392987332b5f32903f75c.svg");
+	opacity: 0.3;
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	background-repeat: no-repeat;
+	background-position: 50% calc(50% - 200px);
+	background-size: 20%;
+	z-index: -1;
+}

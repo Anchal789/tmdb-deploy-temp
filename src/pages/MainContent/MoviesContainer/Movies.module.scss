@@ -1,0 +1,16 @@
+@use "../../../styles/variables.scss" as *;
+
+.movies {
+    width: calc(100vw - 80px - 268px);
+    max-width: calc($maxScreenWidth - 80px - 268px);
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+    gap: 1.5rem;
+    height: fit-content;
+}
+
+.poster {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+}

@@ -10,17 +10,28 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.11.2",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.9",
+    "@mui/styled-engine": "^7.3.9",
+    "@mui/styles": "^6.5.0",
+    "@mui/x-date-pickers": "^9.0.0",
+    "dayjs": "^1.11.20",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router": "^7.14.0",
-    "redux": "^5.0.1"
+    "react-router-dom": "^7.14.1",
+    "sass": "^1.99.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@tanstack/eslint-plugin-query": "^5.99.0",
+    "@tanstack/react-query-devtools": "^5.99.0",
     "@types/node": "^24.12.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.58.2",
+    "@typescript-eslint/parser": "^8.58.2",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.4",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -28,9 +39,9 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
-    "globals": "^17.4.0",
+    "globals": "^17.5.0",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.58.0",
+    "typescript-eslint": "^8.58.2",
     "vite": "^8.0.1"
   }
 }

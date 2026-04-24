@@ -1,0 +1,24 @@
+@use "../../styles/variables" as *;
+
+.moviesContent {
+	background-color: $color-white;
+    margin-top: 64px;
+}
+
+.container {
+	margin: 0 auto;
+	max-width: $maxScreenWidth;
+    padding: 30px 40px;
+}
+
+.heading{
+	font-size: 1.6rem;
+	line-height: $line-height-26;
+	margin-bottom: 20px;
+	font-weight: 600;
+}
+
+.mainContent{
+	display: flex;
+	gap: 30px;
+}
