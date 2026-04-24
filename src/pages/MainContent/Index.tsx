@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import styles from "./MoviesContent.module.scss";
 import MoviesContainer from "./MoviesContainer/Movies";
 import type { MovieType } from "../../types/movies";
@@ -18,10 +18,11 @@ const MoviesContent = () => {
 	const { state, dispatch } = useFilters();
 	const { appliedFilters, isDirty, isFiltered } = state;
 
+	const filterContainerRef = useRef<HTMLDivElement>(null);
+
 	const pageUrl = useLocation().pathname;
 
 	const endpoint = isFiltered
-		// ? `/discover/${API_URL_FOR_PAGE[pageUrl] === "movie/popular" ? "movie" : API_URL_FOR_PAGE[pageUrl] === "tv/popular" ? "tv" : API_URL_FOR_PAGE[pageUrl]}`
 		? `/discover/${API_URL_FOR_PAGE[pageUrl].includes("movie") ? "movie" : "tv"}`
 		: `/${API_URL_FOR_PAGE[pageUrl]}`;
 
@@ -31,15 +32,13 @@ const MoviesContent = () => {
 		useInfiniteData<MovieType>({
 			queryKey: ["movies&tv", endpoint, appliedFilters, pageUrl],
 			url: endpoint,
-			params: isFiltered
-				? { ...params, }
-				: { },
+			params: isFiltered ? { ...params } : {},
 		});
 
 	const { data: countriesData } = useData<Array<CountriesType>>({
 		queryKey: ["countries"],
 		url: "/configuration/countries",
-		params: { },
+		params: {},
 	});
 
 	const headerTitle = useCallback(() => {
@@ -61,6 +60,34 @@ const MoviesContent = () => {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [fetchNextPage, data?.pageParams.length]);
 
+	// useEffect(() => {
+	// 	// 1. Define the function you want to run on scroll
+	// 	const handleScroll = () => {
+	// 		console.log(
+	// 			"Container Height:",
+	// 			filterContainerRef.current?.offsetHeight,
+	// 			"Scroll Y:",
+	// 			window.scrollY,
+	// 			"Window Height:",
+	// 			window.innerHeight,
+	// 			"Body Height:",
+	// 			document.body.offsetHeight,
+	// 			window.scrollY + window.innerHeight - 147,
+	// 		);
+
+	// 		// This is where you will put your logic to check if you
+	// 		// have reached the bottom of the AllFiltersComponent!
+	// 	};
+
+	// 	// 2. Attach the listener to the window
+	// 	window.addEventListener("scroll", handleScroll);
+
+	// 	// 3. CRITICAL: Clean up the listener when the component unmounts
+	// 	return () => {
+	// 		window.removeEventListener("scroll", handleScroll);
+	// 	};
+	// }, []); // Empty array means: "Set this listener up exactly once."
+
 	return (
 		<>
 			{(isLoading || isFetchingNextPage) && <TopLoader />}
@@ -68,13 +95,38 @@ const MoviesContent = () => {
 				<div className={styles.container}>
 					<h3 className={styles.heading}>{headerTitle()}</h3>
 					<div className={styles.mainContent}>
-						<AllFiltersComponent countriesData={countriesData || []} />
+						<div>
+							<div className={styles.filtersContainer} ref={filterContainerRef}>
+								<AllFiltersComponent countriesData={countriesData || []} />
+							</div>
+							<Button
+								sx={{
+									backgroundColor: "#02B4E4",
+									fontSize: "1.2rem",
+									lineHeight: "1rem",
+									fontWeight: 600,
+									height: "44px",
+									marginTop: "20px",
+									borderRadius: "20px",
+									color: "#fff",
+									"&:hover": {
+										backgroundColor: "#032541",
+										color: "#ADB6BF",
+									},
+								}}
+								onClick={() => dispatch({ type: "APPLY_FILTERS" })}
+								disabled={!isDirty}
+							>
+								Search
+							</Button>
+						</div>
 						<div>
 							<MoviesContainer
 								movies={data?.pages?.flatMap((page) => page.results) || []}
 								isLoading={isLoading || isFetchingNextPage}
 							/>
-							{data?.pages?.flatMap((page) => page.results).length === 0 ? null : (
+							{data?.pages?.flatMap((page) => page.results).length ===
+							0 ? null : (
 								<Button
 									sx={{
 										backgroundColor: "#02B4E4",
@@ -101,10 +153,16 @@ const MoviesContent = () => {
 						backgroundColor: "#02B4E4",
 						fontSize: "1.2rem",
 						lineHeight: "1rem",
+						fontWeight: 600,
 						height: "50px",
 						borderRadius: "0px",
+						"&:hover": {
+							backgroundColor: "#032541",
+							color: "#ADB6BF",
+						},
 					}}
 					onClick={() => dispatch({ type: "APPLY_FILTERS" })}
+					disabled={!isDirty}
 				>
 					Search
 				</Button>

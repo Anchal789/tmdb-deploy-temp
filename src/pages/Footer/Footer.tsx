@@ -15,7 +15,7 @@ const Footer = () => {
                         <Typography className={styles.joinTheCommunityText}>JOIN THE COMMUNITY</Typography>
                     </section>
                     <div className={styles.footerLinksContainer}>
-                        <Typography className={styles.footerLinksTitle}>THE BASICS</Typography>
+                        <p className={styles.footerLinksTitle}>THE BASICS</p>
                         <ul className={styles.footerLinksList}>
                             <li>About TMDB</li>
                             <li>Contact Us</li>
@@ -25,7 +25,7 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div className={styles.footerLinksContainer}>
-                        <Typography className={styles.footerLinksTitle}>GET INVOLVED</Typography>
+                        <p className={styles.footerLinksTitle}>GET INVOLVED</p>
                         <ul className={styles.footerLinksList}>
                             <li>Contribution Bible</li>
                             <li>Add New Movie</li>
@@ -33,7 +33,7 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div className={styles.footerLinksContainer}>
-                        <Typography className={styles.footerLinksTitle}>COMMUNITY</Typography>
+                        <p className={styles.footerLinksTitle}>COMMUNITY</p>
                         <ul className={styles.footerLinksList}>
                             <li>Guidelines</li>
                             <li>Discussions</li>
@@ -42,7 +42,7 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div className={styles.footerLinksContainer}>
-                        <Typography className={styles.footerLinksTitle}>LEGAL</Typography>
+                        <p className={styles.footerLinksTitle}>LEGAL</p>
                         <ul className={styles.footerLinksList}>
                             <li>Terms of Use</li>
                             <li>API Terms of Use</li>

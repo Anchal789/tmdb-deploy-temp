@@ -4,7 +4,7 @@ import {
 } from "../../../constants/filterConstants";
 import Accordion from "../../../components/Accordion";
 import Autocomplete from "../../../components/AutoComplete";
-import TextField from "../../../components/TextFielld";
+import TextField from "../../../components/TextField";
 import styles from "./AllFiltersComponent.module.scss";
 import { useFilters } from "../../../store/store";
 import Typography from "../../../components/Typography";
@@ -47,7 +47,9 @@ const AllFiltersComponent: FunctionComponent<{
 		<div className={styles.filtersContainer}>
 			<Accordion title='Sort'>
 				<AccordionDetails>
-					Sort Result By
+					<Typography fontWeight={300} mb={"10px"} sx={{ lineHeight: "16px", color: "#000" }}>
+						Sort Results By
+					</Typography>
 					<Autocomplete
 						options={SORT_BY_OPTIONS.map((option) => option.label)}
 						value={
@@ -70,15 +72,30 @@ const AllFiltersComponent: FunctionComponent<{
 							})
 						}
 						disableClearable
+						sx={{
+							// "&:focus-visible": {
+								outlineColor: "#ADDFF2"
+							// }
+						}}
 					/>
 				</AccordionDetails>
 			</Accordion>
 			<Accordion
 				title={
 					<div className={styles.whereToWatchTitleContainer}>
-						<Typography fontWeight={600}>Where To Watch</Typography>
 						<Typography
-							sx={{ fontSize: ".875rem" }}
+							fontWeight={600}
+							color='text.primary'
+							sx={{
+								fontSize: "18px",
+								lineHeight: "1",
+							}}
+						>
+							Where To Watch
+						</Typography>
+						<Typography
+							sx={{ fontSize: ".875rem", }}
+							fontWeight={300}
 							className={styles.countryCount}
 						>
 							{countriesCount}
@@ -109,7 +126,7 @@ const AllFiltersComponent: FunctionComponent<{
 					/>
 				</AccordionDetails>
 			</Accordion>
-			<Accordion title={"Filters"}>
+			<Accordion title={"Filters"} defaultExpanded>
 				<FilterTab
 					countriesData={countriesData}
 					selectedCountry={selectedCountry}

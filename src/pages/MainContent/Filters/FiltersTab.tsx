@@ -30,7 +30,7 @@ import type {
 	GenreType,
 	TvNetworksType,
 } from "../../../types/filters";
-import TextField from "../../../components/TextFielld";
+import TextField from "../../../components/TextField";
 import DatePicker from "../../../components/Datepicker";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";

@@ -3,32 +3,40 @@
 .filtersContainer {
 	min-width: 260px;
 	width: 260px;
-}
 
-.providerLogo {
-	width: 50px;
-	height: 50px;
-	object-fit: cover;
-	border-radius: 8px;
-    cursor: pointer;
-}
+	.whereToWatchTitleContainer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding-right: 10px;
 
-.whereToWatchTitleContainer {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
+		.whereToWatchTitle {
+			font-size: 1.6rem;
+			line-height: $line-height-26;
+			margin-bottom: 20px;
+			font-weight: 600;
+		}
 
-.countryCount {
-	background-color: #00000014;
-	padding: 0 10px;
-	border-radius: 8px;
-	display: inline-flex;
-	align-items: center;
-}
+		.countryCount {
+			background-color: #00000014;
+			padding: 0 10px;
+			border-radius: 8px;
+			display: inline-flex;
+			align-items: center;
+		}
+	}
 
-.availabilitiesCheckboxesContainer {
-	display: flex;
-	flex-direction: column;
+	.providerLogo {
+		width: 50px;
+		height: 50px;
+		object-fit: cover;
+		border-radius: 8px;
+		cursor: pointer;
+	}
+
+	.availabilitiesCheckboxesContainer {
+		display: flex;
+		flex-direction: column;
+	}
 }
