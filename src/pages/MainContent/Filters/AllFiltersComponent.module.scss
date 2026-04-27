@@ -10,6 +10,7 @@
 		align-items: center;
 		width: 100%;
 		padding-right: 10px;
+		max-height: 1.1rem;
 
 		.whereToWatchTitle {
 			font-size: 1.6rem;
@@ -19,11 +20,16 @@
 		}
 
 		.countryCount {
+			font-size: 0.975rem;
+			line-height: "1";
+			height: "100%";
 			background-color: #00000014;
 			padding: 0 10px;
 			border-radius: 8px;
 			display: inline-flex;
 			align-items: center;
+			font-family: "Roboto Mono", monospace;
+			font-weight: 300;
 		}
 	}
 

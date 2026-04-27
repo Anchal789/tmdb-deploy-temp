@@ -34,11 +34,13 @@ const Checkbox = ({
 	const checkbox = (
 		<MuiCheckbox
 			{...props}
-			icon={<CheckBoxOutlineBlank fontSize='small' />}
-			checkedIcon={<CheckBoxIcon fontSize='small' />}
+			icon={<input type="checkbox" checked={false}/>}
+			checkedIcon={<input type="checkbox" checked/>}
 			indeterminateIcon={<IndeterminateCheckBox fontSize='small' />}
 			sx={{
-				padding: "6px",
+				width: "16px",
+				height: "16px",
+				padding: "0",
 				color: error ? "#ef4444" : "#9ca3af",
 				"&.Mui-checked": {
 					color: error ? "#ef4444" : "#111827",

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./MoviesContent.module.scss";
 import MoviesContainer from "./MoviesContainer/Movies";
 import type { MovieType } from "../../types/movies";
@@ -17,6 +17,9 @@ import AllFiltersComponent from "./Filters/AllFiltersComponent";
 const MoviesContent = () => {
 	const { state, dispatch } = useFilters();
 	const { appliedFilters, isDirty, isFiltered } = state;
+
+	const [isSearchButtonVisible, setIsSearchButtonVisible] =
+		useState<boolean>(true);
 
 	const filterContainerRef = useRef<HTMLDivElement>(null);
 
@@ -60,33 +63,22 @@ const MoviesContent = () => {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [fetchNextPage, data?.pageParams.length]);
 
-	// useEffect(() => {
-	// 	// 1. Define the function you want to run on scroll
-	// 	const handleScroll = () => {
-	// 		console.log(
-	// 			"Container Height:",
-	// 			filterContainerRef.current?.offsetHeight,
-	// 			"Scroll Y:",
-	// 			window.scrollY,
-	// 			"Window Height:",
-	// 			window.innerHeight,
-	// 			"Body Height:",
-	// 			document.body.offsetHeight,
-	// 			window.scrollY + window.innerHeight - 147,
-	// 		);
-
-	// 		// This is where you will put your logic to check if you
-	// 		// have reached the bottom of the AllFiltersComponent!
-	// 	};
-
-	// 	// 2. Attach the listener to the window
-	// 	window.addEventListener("scroll", handleScroll);
-
-	// 	// 3. CRITICAL: Clean up the listener when the component unmounts
-	// 	return () => {
-	// 		window.removeEventListener("scroll", handleScroll);
-	// 	};
-	// }, []); // Empty array means: "Set this listener up exactly once."
+	useEffect(() => {
+		const handleScroll = () => {
+			if (
+				(filterContainerRef.current?.offsetHeight || 0) <=
+				window.scrollY + window.innerHeight - 147
+			) {
+				setIsSearchButtonVisible(false);
+			} else {
+				setIsSearchButtonVisible(true);
+			}
+		};
+		window.addEventListener("scroll", handleScroll);
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, []);
 
 	return (
 		<>
@@ -145,7 +137,7 @@ const MoviesContent = () => {
 					</div>
 				</div>
 			</main>
-			{isDirty && (
+			{isDirty && isSearchButtonVisible && (
 				<Button
 					sx={{
 						position: "sticky",
@@ -156,6 +148,7 @@ const MoviesContent = () => {
 						fontWeight: 600,
 						height: "50px",
 						borderRadius: "0px",
+						zIndex: 1500,
 						"&:hover": {
 							backgroundColor: "#032541",
 							color: "#ADB6BF",

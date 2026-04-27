@@ -11,7 +11,6 @@ import {
 	Box,
 	Chip,
 	FormControlLabel,
-	Radio,
 	RadioGroup,
 	Select,
 } from "@mui/material";
@@ -36,6 +35,7 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useData } from "../../../lib/useData";
 import Slider from "../../../components/Slider";
+import RadioButton from "../../../components/RadioButton";
 
 const FilterTab: FunctionComponent<{
 	countriesData: Array<CountriesType>;
@@ -309,7 +309,7 @@ const FilterTab: FunctionComponent<{
 				>
 					<FormControlLabel
 						value='everything'
-						control={<Radio />}
+						control={<RadioButton />}
 						label='Everything'
 						sx={{
 							cursor: "pointer",
@@ -317,14 +317,14 @@ const FilterTab: FunctionComponent<{
 					/>
 					<FormControlLabel
 						value='moviesIHaveNotSeen'
-						control={<Radio />}
+						control={<RadioButton />}
 						label="Movies I Haven't Seen"
 						disabled
 						sx={{ cursor: "pointer" }}
 					/>
 					<FormControlLabel
 						value='moviesIHaveSeen'
-						control={<Radio />}
+						control={<RadioButton />}
 						label='Movies I Have Seen'
 						disabled
 						sx={{ cursor: "pointer" }}

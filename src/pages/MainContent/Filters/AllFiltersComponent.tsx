@@ -47,7 +47,11 @@ const AllFiltersComponent: FunctionComponent<{
 		<div className={styles.filtersContainer}>
 			<Accordion title='Sort'>
 				<AccordionDetails>
-					<Typography fontWeight={300} mb={"10px"} sx={{ lineHeight: "16px", color: "#000" }}>
+					<Typography
+						fontWeight={300}
+						mb={"10px"}
+						sx={{ lineHeight: "16px", color: "#000" }}
+					>
 						Sort Results By
 					</Typography>
 					<Autocomplete
@@ -71,12 +75,22 @@ const AllFiltersComponent: FunctionComponent<{
 								},
 							})
 						}
-						disableClearable
 						sx={{
-							// "&:focus-visible": {
-								outlineColor: "#ADDFF2"
-							// }
+							borderColor: "#01b3e460",
+							"&:hover": {
+								backgroundColor: "#f8f9fa",
+							},
+							"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+								borderColor: "#01b3e460",
+							},
+							"& .MuiAutocomplete-input": {
+								cursor: "pointer",
+							},
+							"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
+								minHeight: "38px",
+							},
 						}}
+						disableClearable
 					/>
 				</AccordionDetails>
 			</Accordion>
@@ -87,14 +101,14 @@ const AllFiltersComponent: FunctionComponent<{
 							fontWeight={600}
 							color='text.primary'
 							sx={{
-								fontSize: "18px",
+								fontSize: "1.1rem",
 								lineHeight: "1",
 							}}
 						>
 							Where To Watch
 						</Typography>
 						<Typography
-							sx={{ fontSize: ".875rem", }}
+							sx={{ fontSize: ".875rem", lineHeight: "1", height: "100%" }}
 							fontWeight={300}
 							className={styles.countryCount}
 						>

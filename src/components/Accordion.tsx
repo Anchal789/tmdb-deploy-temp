@@ -60,19 +60,17 @@ const Accordion = ({
 							src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-224-chevron-right-d1f88a6c15e68190c3b47e1ee4f39fe47f4b69f4966ca7c250c2e14cfa689a04.svg'
 							alt='expand'
 							className={styles["accordion-expand-icon"]}
-							width={"1rem"}
-							height={"1rem"}
 						/>
 					)
 				}
 				sx={{
 					flexDirection: "row",
-					minHeight: "48px",
+					minHeight: "0px",
 					px: 2,
 					py: 0,
 					userSelect: "none",
 					borderRadius: "10px",
-
+					
 					"& .MuiAccordionSummary-expandIconWrapper": {
 						transform: "rotate(0deg)",
 						// transition: "transform 0.25s ease",
@@ -80,10 +78,14 @@ const Accordion = ({
 					"& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
 						transform: "rotate(90deg)",
 					},
-
+					
 					"&.Mui-expanded": {
 						borderBottom: "1px solid #e5e7eb",
 						borderRadius: "8px 8px 0 0",
+					},
+					"& .MuiAccordionSummary-content": {
+						margin: 0,
+						padding: "14px 0",
 					},
 					...summaryProps?.sx,
 				}}
@@ -94,7 +96,7 @@ const Accordion = ({
 						color='text.primary'
 						{...titleProps}
 						sx={{
-							fontSize: "18px",
+							fontSize: "1.1rem",
 							lineHeight: "1",
 						}}
 					>
