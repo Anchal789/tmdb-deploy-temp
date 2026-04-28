@@ -32,7 +32,7 @@ const RadioButton = (props: RadioProps) => {
 				"&:hover": {
 					backgroundColor: "transparent",
                 },
-                paddingY: "0px",
+                padding: "0px",
                 lineHeight: "24px",
 				...props.sx,
 			}}

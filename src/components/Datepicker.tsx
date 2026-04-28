@@ -25,9 +25,11 @@ const DatePicker = ({
 					helperText,
 					...textFieldProps,
 					sx: {
+						
 						"& .MuiOutlinedInput-root": {
 							borderRadius: "8px",
 							fontSize: "14px",
+							paddingRight: 0,
 							"&:hover .MuiOutlinedInput-notchedOutline": {
 								borderColor: "#9e9e9e",
 							},
@@ -38,6 +40,19 @@ const DatePicker = ({
 							"&.Mui-error .MuiOutlinedInput-notchedOutline": {
 								borderColor: "#ef4444",
 							},
+						},
+						"& .MuiInputAdornment-root": {
+							backgroundColor: "#f3f4f6",
+							height: "40px",
+							maxHeight: "none",
+							marginRight: 0,
+							padding: "0 10px",
+							borderLeft: "1px solid #e5e7eb",
+							borderTopRightRadius: "8px",
+							borderBottomRightRadius: "8px",
+						},
+						"& .MuiIconButton-root": {
+							borderRadius: "4px",
 						},
 						"& .MuiInputLabel-root": {
 							fontSize: "14px",

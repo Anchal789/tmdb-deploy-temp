@@ -19,7 +19,6 @@ const MovieCard: FunctionComponent<{
 				borderRadius: "0.5rem",
 				display: "flex",
 				flexDirection: "column",
-				justifyContent: "space-between",
 			}}
 		>
 			<div>
@@ -40,24 +39,22 @@ const MovieCard: FunctionComponent<{
 			<CardContent
 				component={"div"}
 				sx={{
-					padding: ".75rem .75rem .5rem .75rem",
+					padding: ".5rem.75rem .75rem .75rem",
 					"&:last-child": { paddingBottom: ".75rem" },
 				}}
 			>
 				<Typography
-					gutterBottom
 					variant='h5'
 					sx={{
 						fontSize: "1rem",
 						lineHeight: "1.5rem",
-						marginBottom: "0.35em",
 					}}
 					fontWeight={600}
 					component='div'
 				>
 					{title}
 				</Typography>
-				<Typography sx={{ color: "text.secondary" }}>
+				<Typography sx={{ color: "text.secondary", lineHeight: "24px" }}>
 					{dayjs(date).format("MMMM D, YYYY")}
 				</Typography>
 			</CardContent>

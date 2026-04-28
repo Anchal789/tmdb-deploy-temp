@@ -6,7 +6,10 @@ import {
 } from "react";
 import Autocomplete from "../../../components/AutoComplete";
 import TextField from "../../../components/TextField";
-import type { CountriesType, OTTProviderResponseType } from "../../../types/filters";
+import type {
+	CountriesType,
+	OTTProviderResponseType,
+} from "../../../types/filters";
 import { useFilters } from "../../../store/store";
 import { COUNTRY_OPTIONS } from "../../../constants/filterConstants";
 import Typography from "../../../components/Typography";
@@ -18,8 +21,8 @@ const WhereToWatchFilter: FunctionComponent<{
 	countriesData: Array<CountriesType>;
 	setCountriesCount: Dispatch<SetStateAction<number>>;
 	ottProviders: Array<OTTProviderResponseType>;
-	selectedCountry?: CountriesType
-}> = ({ countriesData, setCountriesCount, ottProviders,selectedCountry }) => {
+	selectedCountry?: CountriesType;
+}> = ({ countriesData, setCountriesCount, ottProviders, selectedCountry }) => {
 	const [open, setOpen] = useState<boolean>(false);
 	const { state, dispatch } = useFilters();
 	const { filters } = state;
@@ -28,7 +31,18 @@ const WhereToWatchFilter: FunctionComponent<{
 
 	return (
 		<>
-			<Typography fontWeight={300}>Country</Typography>
+			<Typography
+				fontWeight={300}
+				sx={{
+					lineHeight: "16px",
+					color: "#000",
+					display: "inline-flex",
+					alignItems: "center",
+					marginBottom: "10px",
+				}}
+			>
+				Country
+			</Typography>
 			<Select
 				open={open}
 				onClose={() => setOpen(false)}
@@ -43,6 +57,7 @@ const WhereToWatchFilter: FunctionComponent<{
 				value={selectedCountry?.native_name}
 				sx={{
 					padding: ".375rem .75rem",
+					borderRadius: "0.375rem",
 					cursor: "pointer",
 					"& .MuiSelect-outlined": {
 						padding: 0,
@@ -51,12 +66,30 @@ const WhereToWatchFilter: FunctionComponent<{
 						background: "#f8f9fa",
 						outlineColor: "#01b3e460",
 						transition: "all 0.2s ease-in-out",
+						borderRadius: "0.375rem",
 					},
 					"&:focus-visible .MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline":
 						{
 							borderColor: "#f8f9fa",
 							zIndex: 1,
 						},
+					"& .MuiOutlinedInput-root": {
+						borderRadius: "0.375rem",
+						fontSize: "14px",
+					},
+					"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+						{
+							borderColor: "#01b3e460 !important",
+						},
+					"& .MuiAutocomplete-input": {
+						cursor: "pointer",
+					},
+					"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
+						minHeight: "38px",
+					},
+					"&:hover .MuiOutlinedInput-notchedOutline": {
+						borderColor: "#D3D3D4 !important",
+					},
 				}}
 				renderValue={() =>
 					selectedCountry ? (

@@ -8,7 +8,7 @@ const Slider = (
 ) => {
 	const tallIndices = props.tallMarks
 		.map((targetValue) => props.marks.findIndex((m) => m.value === targetValue))
-		.filter((index) => index !== -1); // Remove any that weren't found
+		.filter((index) => index !== -1);
 
 	const tallMarksSelector =
 		tallIndices.length > 0

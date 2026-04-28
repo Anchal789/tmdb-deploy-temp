@@ -12,6 +12,7 @@ const Typography = ({
 			{...props}
 			sx={{
 				lineHeight: 1.6,
+				color: "#000",
 				...sx,
 			}}
 		>

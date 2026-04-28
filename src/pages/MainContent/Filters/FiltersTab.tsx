@@ -7,13 +7,7 @@ import {
 } from "react";
 import AccordionDetails from "../../../components/AccordionDetails";
 import Typography from "../../../components/Typography";
-import {
-	Box,
-	Chip,
-	FormControlLabel,
-	RadioGroup,
-	Select,
-} from "@mui/material";
+import { Box, Chip, RadioGroup, Select } from "@mui/material";
 import Checkbox from "../../../components/Checkbox";
 import { useFilters } from "../../../store/store";
 import styles from "./AllFiltersComponent.module.scss";
@@ -36,6 +30,8 @@ import dayjs from "dayjs";
 import { useData } from "../../../lib/useData";
 import Slider from "../../../components/Slider";
 import RadioButton from "../../../components/RadioButton";
+import FormControlLabel from "../../../components/FormControlLabel";
+import QuestionMarkTooltip from "../../../components/QuestionMarkTooltip";
 
 const FilterTab: FunctionComponent<{
 	countriesData: Array<CountriesType>;
@@ -180,7 +176,7 @@ const FilterTab: FunctionComponent<{
 
 		return () => clearTimeout(timerId);
 	}, [tvNetworksSearchValue]);
-	
+
 	useEffect(() => {
 		const timerId = setTimeout(() => {
 			const currentLength = keyWordsSearchValue.trim().length;
@@ -301,7 +297,18 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Show Me</Typography>
+				<Typography
+					fontWeight={300}
+					sx={{
+						lineHeight: "16px",
+						color: "#000",
+						display: "inline-flex",
+						alignItems: "center",
+						marginBottom: "10px",
+					}}
+				>
+					Show Me <QuestionMarkTooltip />
+				</Typography>
 				<RadioGroup
 					aria-labelledby='demo-radio-buttons-group-label'
 					defaultValue='everything'
@@ -337,7 +344,18 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Availabilities</Typography>
+				<Typography
+					fontWeight={300}
+					sx={{
+						lineHeight: "16px",
+						color: "#000",
+						display: "inline-flex",
+						alignItems: "center",
+						marginBottom: "10px",
+					}}
+				>
+					Availabilities
+				</Typography>
 				<FormControlLabel
 					value='show_me'
 					control={
@@ -434,7 +452,18 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Release Dates</Typography>
+				<Typography
+					fontWeight={300}
+					sx={{
+						lineHeight: "16px",
+						color: "#000",
+						display: "inline-flex",
+						alignItems: "center",
+						marginBottom: "10px",
+					}}
+				>
+					Release Dates
+				</Typography>
 				<FormControlLabel
 					control={
 						<Checkbox

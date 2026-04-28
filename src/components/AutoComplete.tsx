@@ -51,13 +51,39 @@ const Autocomplete = <
 			{...props}
 			sx={{
 				"& .MuiOutlinedInput-root": {
-					borderRadius: "8px",
+					borderRadius: "0.375rem",
 					fontSize: "14px",
+				},
+				"&:hover": {
+					backgroundColor: "#f8f9fa",
+					borderRadius: "0.375rem",
+				},
+				"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+					{
+						borderColor: "#01b3e460 !important",
+					},
+				"& .MuiAutocomplete-input": {
+					cursor: "pointer",
+				},
+				"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
+					minHeight: "38px",
+				},
+				"&:hover .MuiOutlinedInput-notchedOutline": {
+					borderColor: "#D3D3D4 !important",
 				},
 				...sx,
 			}}
 			popupIcon={
-				<svg viewBox="0 0 512 512" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="#212529" width={"1rem"} height={"1rem"}><path d="M256 352 128 160h256z"></path></svg>
+				<svg
+					viewBox='0 0 512 512'
+					focusable='false'
+					xmlns='http://www.w3.org/2000/svg'
+					fill='#212529'
+					width={"1rem"}
+					height={"1rem"}
+				>
+					<path d='M256 352 128 160h256z'></path>
+				</svg>
 			}
 			renderInput={(params) => (
 				<TextField

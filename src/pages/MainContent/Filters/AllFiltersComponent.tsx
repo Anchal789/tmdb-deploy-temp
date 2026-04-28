@@ -21,6 +21,7 @@ import WhereToWatchFilter from "./WhereToWatchTab";
 import FilterTab from "./FiltersTab";
 import { useLocation } from "react-router";
 import { useData } from "../../../lib/useData";
+import QuestionMarkTooltip from "../../../components/QuestionMarkTooltip";
 
 const AllFiltersComponent: FunctionComponent<{
 	countriesData: Array<CountriesType>;
@@ -50,7 +51,12 @@ const AllFiltersComponent: FunctionComponent<{
 					<Typography
 						fontWeight={300}
 						mb={"10px"}
-						sx={{ lineHeight: "16px", color: "#000" }}
+						sx={{
+							lineHeight: "1rem",
+							color: "#000",
+							display: "inline-flex",
+							alignItems: "center",
+						}}
 					>
 						Sort Results By
 					</Typography>
@@ -75,21 +81,6 @@ const AllFiltersComponent: FunctionComponent<{
 								},
 							})
 						}
-						sx={{
-							borderColor: "#01b3e460",
-							"&:hover": {
-								backgroundColor: "#f8f9fa",
-							},
-							"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-								borderColor: "#01b3e460",
-							},
-							"& .MuiAutocomplete-input": {
-								cursor: "pointer",
-							},
-							"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
-								minHeight: "38px",
-							},
-						}}
 						disableClearable
 					/>
 				</AccordionDetails>
@@ -123,10 +114,21 @@ const AllFiltersComponent: FunctionComponent<{
 						borderRadius: "8px 8px 0 0",
 					}}
 				>
-					<Typography fontWeight={300}>My Services</Typography>
+					<Typography
+						fontWeight={300}
+						mb={"10px"}
+						sx={{
+							lineHeight: "16px",
+							color: "#000",
+							display: "inline-flex",
+							alignItems: "center",
+						}}
+					>
+						My Services <QuestionMarkTooltip />
+					</Typography>
 					<Box display={"flex"} alignItems={"center"}>
 						<Checkbox disabled />
-						<Typography>
+						<Typography sx={{ ml: ".5rem", lineHeight: "1.5" }}>
 							Restrict searches to my subscribed services?
 						</Typography>
 					</Box>
