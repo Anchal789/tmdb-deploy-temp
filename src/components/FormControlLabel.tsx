@@ -14,7 +14,7 @@ const FormControlLabel: FunctionComponent<FormControlLabelProps> = ({
 				...props.sx,
 				display: "flex",
 				alignItems: "center",
-				height: "26px",
+				height: props?.sx?.height || "26px",
 				margin: "0",
 				"& .MuiFormControlLabel-label": {
 					fontSize: "16px",

@@ -166,7 +166,8 @@ const WhereToWatchFilter: FunctionComponent<{
 				display={"grid"}
 				my={"14px"}
 				gridTemplateColumns={"repeat(4, 1fr)"}
-				gap={"6px"}
+				columnGap={"6px"}
+				rowGap={"10px"}
 			>
 				{ottProviders.map((provider) => (
 					<Tooltip key={provider.provider_id} title={provider.provider_name}>

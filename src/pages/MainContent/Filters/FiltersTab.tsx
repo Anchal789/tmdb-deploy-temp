@@ -465,6 +465,9 @@ const FilterTab: FunctionComponent<{
 					Release Dates
 				</Typography>
 				<FormControlLabel
+					sx={{
+						height: "24px",
+					}}
 					control={
 						<Checkbox
 							name='with_release_type'
@@ -662,14 +665,19 @@ const FilterTab: FunctionComponent<{
 					</Box>
 				)}
 
-				<div>
+				{/* <div> */}
 					<Box
 						display={"flex"}
 						alignItems={"center"}
 						justifyContent={"space-between"}
+						mt={"8px"}
 						mb={"8px"}
 					>
-						<Typography sx={{ width: "50%" }}>from</Typography>
+						<Typography
+							sx={{ width: "50%", color: "#a4a4a4", fontSize: "0.9rem" }}
+						>
+							from
+						</Typography>
 						<DatePicker
 							value={fromDate}
 							maxDate={toDate || undefined}
@@ -701,7 +709,11 @@ const FilterTab: FunctionComponent<{
 						alignItems={"center"}
 						justifyContent={"space-between"}
 					>
-						<Typography sx={{ width: "50%" }}>to</Typography>
+						<Typography
+							sx={{ width: "50%", color: "#a4a4a4", fontSize: "0.9rem" }}
+						>
+							to
+						</Typography>
 						<DatePicker
 							value={toDate}
 							minDate={fromDate || undefined}
@@ -728,7 +740,7 @@ const FilterTab: FunctionComponent<{
 							}}
 						/>
 					</Box>
-				</div>
+				{/* </div> */}
 			</AccordionDetails>
 			<AccordionDetails
 				sx={{
@@ -736,55 +748,82 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Genres</Typography>
-				{genres?.genres?.map((genre: GenreType) => {
-					const genreIdStr = genre.id.toString();
-					const currentGenresStr = filters?.with_genres || "";
-					const currentGenresArray = currentGenresStr
-						? currentGenresStr.split(",")
-						: [];
+				<Typography
+					fontWeight={300}
+					sx={{
+						lineHeight: "16px",
+						color: "#000",
+						display: "inline-flex",
+						alignItems: "center",
+						marginBottom: "10px",
+						width: "100%",
+					}}
+				>
+					Genres
+				</Typography>
+				<Box mt={"-8px"}>
+					{genres?.genres?.map((genre: GenreType) => {
+						const genreIdStr = genre.id.toString();
+						const currentGenresStr = filters?.with_genres || "";
+						const currentGenresArray = currentGenresStr
+							? currentGenresStr.split(",")
+							: [];
 
-					const isSelected = currentGenresArray.includes(genreIdStr);
+						const isSelected = currentGenresArray.includes(genreIdStr);
 
-					return (
-						<Chip
-							key={genre.id}
-							label={genre.name}
-							variant={isSelected ? "filled" : "outlined"}
-							sx={{
-								cursor: "pointer",
-								backgroundColor: isSelected ? "#01b4e4" : "",
-								borderColor: "#9e9e9e",
-								color: isSelected ? "white" : "inherit",
-								"&:hover": {
-									backgroundColor: isSelected ? "#01b4e4" : "#e0e0e0",
-								},
-							}}
-							onClick={() => {
-								let newGenresArray: string[];
-
-								if (isSelected) {
-									newGenresArray = currentGenresArray.filter(
-										(id) => id !== genreIdStr,
-									);
-								} else {
-									newGenresArray = [...currentGenresArray, genreIdStr];
-								}
-
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										with_genres:
-											newGenresArray.length > 0
-												? newGenresArray.join(",")
-												: null,
+						return (
+							<Chip
+								key={genre.id}
+								label={genre.name}
+								variant={isSelected ? "filled" : "outlined"}
+								sx={{
+									cursor: "pointer",
+									backgroundColor: isSelected ? "#01b4e4" : "",
+									borderColor: "#9e9e9e",
+									color: isSelected ? "white" : "#000",
+									marginRight: "8px",
+									marginTop: "8px",
+									fontSize: "0.9rem",
+									fontWeight: 400,
+									padding: "4px 12px",
+									borderRadius: "14px",
+									"&:hover ": {
+										backgroundColor: "#01b4e4 !important",
+										textDecoration: "underline",
+										color: "#fff",
+										borderColor: "#01b4e4",
+										textUnderlineOffset: "3px",
 									},
-								});
-							}}
-						/>
-					);
-				})}
+									"& .MuiChip-label": {
+										padding: "0",
+									},
+								}}
+								onClick={() => {
+									let newGenresArray: string[];
+
+									if (isSelected) {
+										newGenresArray = currentGenresArray.filter(
+											(id) => id !== genreIdStr,
+										);
+									} else {
+										newGenresArray = [...currentGenresArray, genreIdStr];
+									}
+
+									dispatch({
+										type: "SET_FILTERS",
+										payload: {
+											...filters,
+											with_genres:
+												newGenresArray.length > 0
+													? newGenresArray.join(",")
+													: null,
+										},
+									});
+								}}
+							/>
+						);
+					})}
+				</Box>
 			</AccordionDetails>
 			<AccordionDetails
 				sx={{
@@ -810,9 +849,17 @@ const FilterTab: FunctionComponent<{
 								cursor: "pointer",
 								backgroundColor: isSelected ? "#01b4e4" : "",
 								borderColor: "#9e9e9e",
-								color: isSelected ? "white" : "inherit",
-								"&:hover": {
-									backgroundColor: isSelected ? "#01b4e4" : "#e0e0e0",
+								color: isSelected ? "white" : "#000",
+								marginRight: "8px",
+								marginTop: "8px",
+								fontSize: "0.9rem",
+								fontWeight: 400,
+								"&:hover ": {
+									backgroundColor: "#01b4e4 !important",
+									textDecoration: "underline",
+									color: "#fff",
+									borderColor: "#01b4e4",
+									textUnderlineOffset: "3px",
 								},
 							}}
 							onClick={() => {
