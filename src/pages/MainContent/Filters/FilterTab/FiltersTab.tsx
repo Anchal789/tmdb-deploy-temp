@@ -5,44 +5,41 @@ import {
 	type ChangeEvent,
 	type FunctionComponent,
 } from "react";
-import AccordionDetails from "../../../components/AccordionDetails";
-import Typography from "../../../components/Typography";
-import {
-	Box,
-	Chip,
-	FormControlLabel,
-	Radio,
-	RadioGroup,
-	Select,
-} from "@mui/material";
-import Checkbox from "../../../components/Checkbox";
-import { useFilters } from "../../../store/store";
-import styles from "./AllFiltersComponent.module.scss";
+import AccordionDetails from "../../../../components/AccordionDetails";
+import Typography from "../../../../components/Typography";
+import { Box, Chip, RadioGroup, Select } from "@mui/material";
+import Checkbox from "../../../../components/Checkbox";
+import { useFilters } from "../../../../store/store";
+import styles from "../AllFiltersComponent.module.scss";
 import { useLocation } from "react-router";
 import {
 	COUNTRY_OPTIONS,
 	FILTERS_INITIAL_STATE,
 	LANGUAGES_OPTIONS,
-} from "../../../constants/filterConstants";
-import Autocomplete from "../../../components/AutoComplete";
+} from "../../../../constants/filterConstants";
+import Autocomplete from "../../../../components/AutoComplete";
 import type {
 	CountriesType,
 	GenreType,
 	TvNetworksType,
-} from "../../../types/filters";
-import TextField from "../../../components/TextField";
-import DatePicker from "../../../components/Datepicker";
+} from "../../../../types/filters";
+import TextField from "../../../../components/TextField";
+import DatePicker from "../../../../components/Datepicker";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import { useData } from "../../../lib/useData";
-import Slider from "../../../components/Slider";
+import { useData } from "../../../../lib/useData";
+import Slider from "../../../../components/Slider";
+import RadioButton from "../../../../components/RadioButton";
+import FormControlLabel from "../../../../components/FormControlLabel";
+import QuestionMarkTooltip from "../../../../components/QuestionMarkTooltip";
+import FilterSectionTitle from "../../../../components/FilterSectionTitle";
+import LanguageFilter from "./LanguageFilter";
 
 const FilterTab: FunctionComponent<{
 	countriesData: Array<CountriesType>;
 	selectedCountry?: CountriesType;
 }> = ({ countriesData, selectedCountry }) => {
 	const [open, setOpen] = useState<boolean>(false);
-	const [languageOpen, setLanguageOpen] = useState<boolean>(false);
 	const [tvNetworksSearchValue, setTvNetworkSearchValue] = useState<string>("");
 	const [tvNetworksDebouncedSearchValue, setTvNetworksDebouncedSearchValue] =
 		useState<string>("");
@@ -180,7 +177,7 @@ const FilterTab: FunctionComponent<{
 
 		return () => clearTimeout(timerId);
 	}, [tvNetworksSearchValue]);
-	
+
 	useEffect(() => {
 		const timerId = setTimeout(() => {
 			const currentLength = keyWordsSearchValue.trim().length;
@@ -200,10 +197,6 @@ const FilterTab: FunctionComponent<{
 
 		return () => clearTimeout(timerId);
 	}, [keyWordsSearchValue]);
-
-	const selectedOriginalLanguage = LANGUAGES_OPTIONS.find(
-		(item) => item.iso_639_1 === filters.with_original_language,
-	);
 
 	const handleUserScoreChange = (
 		_event: Event,
@@ -301,7 +294,18 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Show Me</Typography>
+				<Typography
+					fontWeight={300}
+					sx={{
+						lineHeight: "16px",
+						color: "#000",
+						display: "inline-flex",
+						alignItems: "center",
+						marginBottom: "10px",
+					}}
+				>
+					Show Me <QuestionMarkTooltip />
+				</Typography>
 				<RadioGroup
 					aria-labelledby='demo-radio-buttons-group-label'
 					defaultValue='everything'
@@ -309,7 +313,7 @@ const FilterTab: FunctionComponent<{
 				>
 					<FormControlLabel
 						value='everything'
-						control={<Radio />}
+						control={<RadioButton />}
 						label='Everything'
 						sx={{
 							cursor: "pointer",
@@ -317,14 +321,14 @@ const FilterTab: FunctionComponent<{
 					/>
 					<FormControlLabel
 						value='moviesIHaveNotSeen'
-						control={<Radio />}
+						control={<RadioButton />}
 						label="Movies I Haven't Seen"
 						disabled
 						sx={{ cursor: "pointer" }}
 					/>
 					<FormControlLabel
 						value='moviesIHaveSeen'
-						control={<Radio />}
+						control={<RadioButton />}
 						label='Movies I Have Seen'
 						disabled
 						sx={{ cursor: "pointer" }}
@@ -337,7 +341,7 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Availabilities</Typography>
+				<FilterSectionTitle title='Availabilities' />
 				<FormControlLabel
 					value='show_me'
 					control={
@@ -434,8 +438,11 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Release Dates</Typography>
+				<FilterSectionTitle title='Release Dates' />
 				<FormControlLabel
+					sx={{
+						height: "24px",
+					}}
 					control={
 						<Checkbox
 							name='with_release_type'
@@ -633,73 +640,80 @@ const FilterTab: FunctionComponent<{
 					</Box>
 				)}
 
-				<div>
-					<Box
-						display={"flex"}
-						alignItems={"center"}
-						justifyContent={"space-between"}
-						mb={"8px"}
+				{/* <div> */}
+				<Box
+					display={"flex"}
+					alignItems={"center"}
+					justifyContent={"space-between"}
+					mt={"11px"}
+					mb={"8px"}
+				>
+					<Typography
+						sx={{ width: "100px", color: "#a4a4a4", fontSize: "0.9rem" }}
 					>
-						<Typography sx={{ width: "50%" }}>from</Typography>
-						<DatePicker
-							value={fromDate}
-							maxDate={toDate || undefined}
-							onChange={(newValue: Dayjs | null) => {
-								const formattedDate = newValue
-									? newValue.format("YYYY-MM-DD")
-									: null;
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										"release_date.gte": formattedDate,
-									},
-								});
-							}}
-							format='MM/DD/YYYY'
-							placeholder='Select start date'
-							error={hasDateError}
-							helperText={
-								hasDateError ? "Start date must be before end date" : ""
-							}
-							textFieldProps={{
-								variant: "outlined",
-							}}
-						/>
-					</Box>
-					<Box
-						display={"flex"}
-						alignItems={"center"}
-						justifyContent={"space-between"}
+						from
+					</Typography>
+					<DatePicker
+						value={fromDate}
+						maxDate={toDate || undefined}
+						onChange={(newValue: Dayjs | null) => {
+							const formattedDate = newValue
+								? newValue.format("YYYY-MM-DD")
+								: null;
+							dispatch({
+								type: "SET_FILTERS",
+								payload: {
+									...filters,
+									"release_date.gte": formattedDate,
+								},
+							});
+						}}
+						format='MM/DD/YYYY'
+						placeholder='Select start date'
+						error={hasDateError}
+						helperText={
+							hasDateError ? "Start date must be before end date" : ""
+						}
+						textFieldProps={{
+							variant: "outlined",
+						}}
+					/>
+				</Box>
+				<Box
+					display={"flex"}
+					alignItems={"center"}
+					justifyContent={"space-between"}
+				>
+					<Typography
+						sx={{ width: "100px", color: "#a4a4a4", fontSize: "0.9rem" }}
 					>
-						<Typography sx={{ width: "50%" }}>to</Typography>
-						<DatePicker
-							value={toDate}
-							minDate={fromDate || undefined}
-							onChange={(newValue: Dayjs | null) => {
-								const formattedDate = newValue
-									? newValue.format("YYYY-MM-DD")
-									: null;
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										"release_date.lte": formattedDate,
-									},
-								});
-							}}
-							format='MM/DD/YYYY'
-							placeholder='Select end date'
-							error={hasDateError}
-							helperText={
-								hasDateError ? "End date must be after start date" : ""
-							}
-							textFieldProps={{
-								variant: "outlined",
-							}}
-						/>
-					</Box>
-				</div>
+						to
+					</Typography>
+					<DatePicker
+						value={toDate}
+						minDate={fromDate || undefined}
+						onChange={(newValue: Dayjs | null) => {
+							const formattedDate = newValue
+								? newValue.format("YYYY-MM-DD")
+								: null;
+							dispatch({
+								type: "SET_FILTERS",
+								payload: {
+									...filters,
+									"release_date.lte": formattedDate,
+								},
+							});
+						}}
+						format='MM/DD/YYYY'
+						placeholder='Select end date'
+						error={hasDateError}
+						helperText={hasDateError ? "End date must be after start date" : ""}
+						textFieldProps={{
+							variant: "outlined",
+						}}
+					/>
+				</Box>
+				{/* </div> */}
 			</AccordionDetails>
 			<AccordionDetails
 				sx={{
@@ -707,55 +721,73 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Genres</Typography>
-				{genres?.genres?.map((genre: GenreType) => {
-					const genreIdStr = genre.id.toString();
-					const currentGenresStr = filters?.with_genres || "";
-					const currentGenresArray = currentGenresStr
-						? currentGenresStr.split(",")
-						: [];
+				<FilterSectionTitle title='Genres' />
+				<Box mt={"-8px"}>
+					{genres?.genres?.map((genre: GenreType) => {
+						const genreIdStr = genre.id.toString();
+						const currentGenresStr = filters?.with_genres || "";
+						const currentGenresArray = currentGenresStr
+							? currentGenresStr.split(",")
+							: [];
 
-					const isSelected = currentGenresArray.includes(genreIdStr);
+						const isSelected = currentGenresArray.includes(genreIdStr);
 
-					return (
-						<Chip
-							key={genre.id}
-							label={genre.name}
-							variant={isSelected ? "filled" : "outlined"}
-							sx={{
-								cursor: "pointer",
-								backgroundColor: isSelected ? "#01b4e4" : "",
-								borderColor: "#9e9e9e",
-								color: isSelected ? "white" : "inherit",
-								"&:hover": {
-									backgroundColor: isSelected ? "#01b4e4" : "#e0e0e0",
-								},
-							}}
-							onClick={() => {
-								let newGenresArray: string[];
-
-								if (isSelected) {
-									newGenresArray = currentGenresArray.filter(
-										(id) => id !== genreIdStr,
-									);
-								} else {
-									newGenresArray = [...currentGenresArray, genreIdStr];
-								}
-
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										with_genres:
-											newGenresArray.length > 0
-												? newGenresArray.join(",")
-												: null,
+						return (
+							<Chip
+								key={genre.id}
+								label={genre.name}
+								variant={isSelected ? "filled" : "outlined"}
+								sx={{
+									cursor: "pointer",
+									backgroundColor: isSelected ? "#01b4e4" : "",
+									border: "1px solid",
+									borderColor: isSelected ? "#01b4e4" : "#9e9e9e",
+									color: isSelected ? "white" : "#000",
+									marginRight: "8px",
+									marginTop: "8px",
+									fontSize: "0.9rem",
+									fontWeight: 400,
+									height: "100%",
+									padding: "4px 12px",
+									borderRadius: "14px",
+									display: "inline-flex",
+									"&:hover ": {
+										backgroundColor: "#01b4e4 !important",
+										textDecoration: "underline",
+										color: "#fff",
+										borderColor: "#01b4e4",
+										textUnderlineOffset: "3px",
 									},
-								});
-							}}
-						/>
-					);
-				})}
+									"& .MuiChip-label": {
+										padding: "0",
+									},
+								}}
+								onClick={() => {
+									let newGenresArray: string[];
+
+									if (isSelected) {
+										newGenresArray = currentGenresArray.filter(
+											(id) => id !== genreIdStr,
+										);
+									} else {
+										newGenresArray = [...currentGenresArray, genreIdStr];
+									}
+
+									dispatch({
+										type: "SET_FILTERS",
+										payload: {
+											...filters,
+											with_genres:
+												newGenresArray.length > 0
+													? newGenresArray.join(",")
+													: null,
+										},
+									});
+								}}
+							/>
+						);
+					})}
+				</Box>
 			</AccordionDetails>
 			<AccordionDetails
 				sx={{
@@ -763,58 +795,69 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Certifications</Typography>
+				<FilterSectionTitle title='Certifications' />
+				<Box mt={"-8px"}>
+					{["U", "UA", "A"]?.map((certification) => {
+						const currentCertificationsStr = filters?.certification?.split("|");
 
-				{["U", "UA", "A"]?.map((certification) => {
-					const currentCertificationsStr = filters?.certification?.split("|");
+						const isSelected = currentCertificationsStr?.find(
+							(cert) => cert === certification,
+						);
 
-					const isSelected = currentCertificationsStr?.find(
-						(cert) => cert === certification,
-					);
-
-					return (
-						<Chip
-							key={certification}
-							label={certification}
-							variant={isSelected ? "filled" : "outlined"}
-							sx={{
-								cursor: "pointer",
-								backgroundColor: isSelected ? "#01b4e4" : "",
-								borderColor: "#9e9e9e",
-								color: isSelected ? "white" : "inherit",
-								"&:hover": {
-									backgroundColor: isSelected ? "#01b4e4" : "#e0e0e0",
-								},
-							}}
-							onClick={() => {
-								let newCertificationArray: string[];
-
-								if (isSelected) {
-									newCertificationArray =
-										currentCertificationsStr?.filter(
-											(cert) => cert !== certification,
-										) || [];
-								} else {
-									newCertificationArray = [
-										...(currentCertificationsStr || []),
-										certification,
-									];
-								}
-
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										certification:
-											newCertificationArray.length > 0
-												? newCertificationArray.join("|")
-												: null,
+						return (
+							<Chip
+								key={certification}
+								label={certification}
+								variant={isSelected ? "filled" : "outlined"}
+								sx={{
+									cursor: "pointer",
+									backgroundColor: isSelected ? "#01b4e4" : "",
+									borderColor: "#9e9e9e",
+									color: isSelected ? "white" : "#000",
+									marginRight: "8px",
+									marginTop: "8px",
+									fontSize: "0.9rem",
+									fontWeight: 400,
+									display: "inline-flex",
+									borderRadius: "14px",
+									"&:hover ": {
+										backgroundColor: "#01b4e4 !important",
+										textDecoration: "underline",
+										color: "#fff",
+										borderColor: "#01b4e4",
+										textUnderlineOffset: "3px",
 									},
-								});
-							}}
-						/>
-					);
-				})}
+								}}
+								onClick={() => {
+									let newCertificationArray: string[];
+
+									if (isSelected) {
+										newCertificationArray =
+											currentCertificationsStr?.filter(
+												(cert) => cert !== certification,
+											) || [];
+									} else {
+										newCertificationArray = [
+											...(currentCertificationsStr || []),
+											certification,
+										];
+									}
+
+									dispatch({
+										type: "SET_FILTERS",
+										payload: {
+											...filters,
+											certification:
+												newCertificationArray.length > 0
+													? newCertificationArray.join("|")
+													: null,
+										},
+									});
+								}}
+							/>
+						);
+					})}
+				</Box>
 			</AccordionDetails>
 			{pageURl.includes("tv") && (
 				<AccordionDetails
@@ -823,7 +866,7 @@ const FilterTab: FunctionComponent<{
 						borderRadius: "8px 8px 0 0",
 					}}
 				>
-					<Typography fontWeight={300}>Network</Typography>
+					<FilterSectionTitle title='Network' />
 					<Autocomplete
 						multiple
 						filterSelectedOptions
@@ -866,103 +909,8 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Language</Typography>
-				<Select
-					open={languageOpen}
-					onClose={() => setLanguageOpen(false)}
-					onOpen={() => setLanguageOpen(true)}
-					fullWidth
-					MenuProps={{
-						autoFocus: false,
-						PaperProps: {
-							sx: { maxHeight: 300 },
-						},
-					}}
-					value={selectedOriginalLanguage?.native_name}
-					sx={{
-						padding: ".375rem .75rem",
-						cursor: "pointer",
-						"& .MuiSelect-outlined": {
-							padding: 0,
-						},
-						"&:hover": {
-							background: "#f8f9fa",
-							outlineColor: "#01b3e460",
-							transition: "all 0.2s ease-in-out",
-						},
-						"&:focus-visible .MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline":
-							{
-								borderColor: "#f8f9fa",
-								zIndex: 1,
-							},
-					}}
-					renderValue={() =>
-						selectedOriginalLanguage ? (
-							<Box
-								sx={{
-									display: "flex",
-									alignItems: "center",
-									gap: 1,
-								}}
-							>
-								<Typography sx={{ fontSize: "0.9rem" }}>
-									<Typography>
-										{selectedOriginalLanguage?.native_name}{" "}
-										{selectedOriginalLanguage.count &&
-											`(${selectedOriginalLanguage.count})`}
-									</Typography>
-								</Typography>
-							</Box>
-						) : (
-							<span style={{ color: "#aaa" }}>None Selected</span>
-						)
-					}
-				>
-					<Autocomplete
-						options={LANGUAGES_OPTIONS.map((option) => option.native_name)}
-						renderInput={() => <TextField />}
-						onChange={(_event, value) => {
-							dispatch({
-								type: "SET_FILTERS",
-								payload: {
-									...filters,
-									with_original_language:
-										LANGUAGES_OPTIONS.find(
-											(option) => option.native_name === value,
-										)?.iso_639_1 || null,
-								},
-							});
-						}}
-						fullWidth
-						sx={{
-							".MuiAutocomplete-listbox": {
-								padding: "0 !important",
-							},
-						}}
-						renderOption={(props, option) => {
-							const { key, ...optionProps } = props;
-							const language = LANGUAGES_OPTIONS.find(
-								(country) => country.native_name === option,
-							);
-							const languageCount =
-								LANGUAGES_OPTIONS.find(
-									(item) => item.iso_639_1 === language?.iso_639_1,
-								)?.count || null;
-							return (
-								<Box
-									key={key}
-									component='li'
-									sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-									{...optionProps}
-								>
-									<Typography>
-										{option} {languageCount && `(${languageCount})`}
-									</Typography>
-								</Box>
-							);
-						}}
-					/>
-				</Select>
+				<FilterSectionTitle title='Language' />
+				<LanguageFilter dispatch={dispatch} filters={filters} />
 			</AccordionDetails>
 			<AccordionDetails
 				sx={{
@@ -970,7 +918,7 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>User Score</Typography>
+				<FilterSectionTitle title='User Score' />
 				<Slider
 					getAriaLabel={() => "User Score"}
 					value={[
@@ -988,6 +936,9 @@ const FilterTab: FunctionComponent<{
 						value: index,
 						label: index % 5 === 0 ? index.toString() : "",
 					}))}
+					valueLabelFormat={() =>
+						`Rated ${filters["vote_average.gte"]} - ${filters["vote_average.lte"]}`
+					}
 				/>
 			</AccordionDetails>
 			<AccordionDetails
@@ -996,7 +947,7 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Minimum User Votes</Typography>
+				<FilterSectionTitle title='Minimum User Votes' />
 				<Slider
 					getAriaLabel={() => "Minimum User Votes"}
 					value={
@@ -1017,7 +968,7 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Runtime</Typography>
+				<FilterSectionTitle title='Runtime' />
 				<Slider
 					getAriaLabel={() => "Runtime"}
 					value={[
@@ -1044,7 +995,7 @@ const FilterTab: FunctionComponent<{
 					borderRadius: "8px 8px 0 0",
 				}}
 			>
-				<Typography fontWeight={300}>Keywords</Typography>
+				<FilterSectionTitle title='Keywords' />
 				<Autocomplete
 					multiple
 					filterSelectedOptions

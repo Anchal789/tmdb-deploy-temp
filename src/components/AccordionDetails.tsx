@@ -8,9 +8,7 @@ const AccordionDetails = (props: AccordionDetailsProps) => {
 		<MuiAccordionDetails
 			{...props}
 			sx={{
-				px: 2,
-				py: 2,
-				fontSize: "14px",
+				padding: "14px 16px 16px",
 				...props?.sx,
 			}}
 		/>

@@ -2,7 +2,7 @@
 
 .movies {
     width: calc(100vw - 80px - 268px);
-    max-width: calc($maxScreenWidth - 80px - 268px);
+    max-width: calc($maxScreenWidth - 110px - 268px);
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
     gap: 1.5rem;

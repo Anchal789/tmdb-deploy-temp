@@ -18,9 +18,10 @@ import AccordionDetails from "../../../components/AccordionDetails";
 import { Box } from "@mui/material";
 import Checkbox from "../../../components/Checkbox";
 import WhereToWatchFilter from "./WhereToWatchTab";
-import FilterTab from "./FiltersTab";
+import FilterTab from "./FilterTab/FiltersTab";
 import { useLocation } from "react-router";
 import { useData } from "../../../lib/useData";
+import QuestionMarkTooltip from "../../../components/QuestionMarkTooltip";
 
 const AllFiltersComponent: FunctionComponent<{
 	countriesData: Array<CountriesType>;
@@ -47,7 +48,16 @@ const AllFiltersComponent: FunctionComponent<{
 		<div className={styles.filtersContainer}>
 			<Accordion title='Sort'>
 				<AccordionDetails>
-					<Typography fontWeight={300} mb={"10px"} sx={{ lineHeight: "16px", color: "#000" }}>
+					<Typography
+						fontWeight={300}
+						mb={"10px"}
+						sx={{
+							lineHeight: "1rem",
+							color: "#000",
+							display: "inline-flex",
+							alignItems: "center",
+						}}
+					>
 						Sort Results By
 					</Typography>
 					<Autocomplete
@@ -72,11 +82,6 @@ const AllFiltersComponent: FunctionComponent<{
 							})
 						}
 						disableClearable
-						sx={{
-							// "&:focus-visible": {
-								outlineColor: "#ADDFF2"
-							// }
-						}}
 					/>
 				</AccordionDetails>
 			</Accordion>
@@ -87,14 +92,14 @@ const AllFiltersComponent: FunctionComponent<{
 							fontWeight={600}
 							color='text.primary'
 							sx={{
-								fontSize: "18px",
+								fontSize: "1.1rem",
 								lineHeight: "1",
 							}}
 						>
 							Where To Watch
 						</Typography>
 						<Typography
-							sx={{ fontSize: ".875rem", }}
+							sx={{ fontSize: ".875rem", lineHeight: "1", height: "100%" }}
 							fontWeight={300}
 							className={styles.countryCount}
 						>
@@ -109,10 +114,21 @@ const AllFiltersComponent: FunctionComponent<{
 						borderRadius: "8px 8px 0 0",
 					}}
 				>
-					<Typography fontWeight={300}>My Services</Typography>
+					<Typography
+						fontWeight={300}
+						mb={"10px"}
+						sx={{
+							lineHeight: "16px",
+							color: "#000",
+							display: "inline-flex",
+							alignItems: "center",
+						}}
+					>
+						My Services <QuestionMarkTooltip />
+					</Typography>
 					<Box display={"flex"} alignItems={"center"}>
 						<Checkbox disabled />
-						<Typography>
+						<Typography sx={{ ml: ".5rem", lineHeight: "1.5" }}>
 							Restrict searches to my subscribed services?
 						</Typography>
 					</Box>
