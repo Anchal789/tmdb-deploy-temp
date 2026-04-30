@@ -120,6 +120,7 @@ const DatePicker = ({
 						},
 						"& .MuiPickersSectionList-root": {
 							fontSize: "0.81rem",
+							height: "37.3px",
 						},
 						"& .MuiPickersInputBase-root": {
 							borderRadius: ".375rem",

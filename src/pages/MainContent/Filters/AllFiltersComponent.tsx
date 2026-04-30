@@ -18,7 +18,7 @@ import AccordionDetails from "../../../components/AccordionDetails";
 import { Box } from "@mui/material";
 import Checkbox from "../../../components/Checkbox";
 import WhereToWatchFilter from "./WhereToWatchTab";
-import FilterTab from "./FiltersTab";
+import FilterTab from "./FilterTab/FiltersTab";
 import { useLocation } from "react-router";
 import { useData } from "../../../lib/useData";
 import QuestionMarkTooltip from "../../../components/QuestionMarkTooltip";
