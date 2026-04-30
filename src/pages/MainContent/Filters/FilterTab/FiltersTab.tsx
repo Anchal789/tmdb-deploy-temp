@@ -1,4 +1,5 @@
 import {
+	lazy,
 	useEffect,
 	useRef,
 	useState,
@@ -10,12 +11,10 @@ import Typography from "../../../../components/Typography";
 import { Box, Chip, RadioGroup, Select } from "@mui/material";
 import Checkbox from "../../../../components/Checkbox";
 import { useFilters } from "../../../../store/store";
-import styles from "../AllFiltersComponent.module.scss";
 import { useLocation } from "react-router";
 import {
 	COUNTRY_OPTIONS,
 	FILTERS_INITIAL_STATE,
-	LANGUAGES_OPTIONS,
 } from "../../../../constants/filterConstants";
 import Autocomplete from "../../../../components/AutoComplete";
 import type {
@@ -33,7 +32,9 @@ import RadioButton from "../../../../components/RadioButton";
 import FormControlLabel from "../../../../components/FormControlLabel";
 import QuestionMarkTooltip from "../../../../components/QuestionMarkTooltip";
 import FilterSectionTitle from "../../../../components/FilterSectionTitle";
-import LanguageFilter from "./LanguageFilter";
+
+const LanguageFilter = lazy(() => import("./LanguageFilter"));
+const AvailabilitiesFilter = lazy(() => import("./AvailabilitiesFilter"));
 
 const FilterTab: FunctionComponent<{
 	countriesData: Array<CountriesType>;
@@ -96,30 +97,6 @@ const FilterTab: FunctionComponent<{
 		url: `/search/keyword`,
 		params: { language: "en-US", query: keyWordsDebouncedSearchValue },
 	});
-
-	const handleCheckboxesChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const { name, checked } = event.target;
-
-		const currentTypes = filters.with_watch_monetization_types
-			? filters.with_watch_monetization_types.split("|")
-			: [];
-
-		let newTypes: string[];
-
-		if (checked) {
-			newTypes = [...currentTypes, name];
-		} else {
-			newTypes = currentTypes.filter((type) => type !== name);
-		}
-
-		dispatch({
-			type: "SET_FILTERS",
-			payload: {
-				...filters,
-				with_watch_monetization_types: newTypes.join("|"),
-			},
-		});
-	};
 
 	const fromDate = filters["release_date.gte"]
 		? dayjs(filters["release_date.gte"])
@@ -342,95 +319,7 @@ const FilterTab: FunctionComponent<{
 				}}
 			>
 				<FilterSectionTitle title='Availabilities' />
-				<FormControlLabel
-					value='show_me'
-					control={
-						<Checkbox
-							checked={filters.with_watch_monetization_types === null}
-							onChange={(event) => {
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										with_watch_monetization_types: event.target.checked
-											? null
-											: "flatrate|free|ads|rent|buy",
-									},
-								});
-							}}
-						/>
-					}
-					label='Search all availabilities?'
-				/>
-				{filters.with_watch_monetization_types && (
-					<div className={styles.availabilitiesCheckboxesContainer}>
-						<FormControlLabel
-							value='flatrate'
-							control={
-								<Checkbox
-									name='flatrate'
-									checked={filters.with_watch_monetization_types.includes(
-										"flatrate",
-									)}
-									onChange={handleCheckboxesChange}
-								/>
-							}
-							label='Stream'
-						/>
-						<FormControlLabel
-							value='free'
-							control={
-								<Checkbox
-									name='free'
-									checked={filters.with_watch_monetization_types.includes(
-										"free",
-									)}
-									onChange={handleCheckboxesChange}
-								/>
-							}
-							label='Free'
-						/>
-						<FormControlLabel
-							value='ads'
-							control={
-								<Checkbox
-									name='ads'
-									checked={filters.with_watch_monetization_types.includes(
-										"ads",
-									)}
-									onChange={handleCheckboxesChange}
-								/>
-							}
-							label='Ads'
-						/>
-						<FormControlLabel
-							value='rent'
-							control={
-								<Checkbox
-									name='rent'
-									checked={filters.with_watch_monetization_types.includes(
-										"rent",
-									)}
-									onChange={handleCheckboxesChange}
-								/>
-							}
-							label='Rent'
-						/>
-						<FormControlLabel
-							value='buy'
-							control={
-								<Checkbox
-									name='buy'
-									checked={filters.with_watch_monetization_types.includes(
-										"buy",
-									)}
-									onChange={handleCheckboxesChange}
-								/>
-							}
-							label='Buy'
-						/>
-					</div>
-				)}
+				<AvailabilitiesFilter dispatch={dispatch} filters={filters} />
 			</AccordionDetails>
 			<AccordionDetails
 				sx={{
@@ -463,7 +352,8 @@ const FilterTab: FunctionComponent<{
 					label='Search all releases?'
 				/>
 
-				{(pageURl === "/movie/upcoming" ||
+				{(filters.with_release_type ||
+					pageURl === "/movie/upcoming" ||
 					pageURl === "/movie/now-playing") && (
 					<FormControlLabel
 						control={
@@ -482,10 +372,14 @@ const FilterTab: FunctionComponent<{
 							/>
 						}
 						label='Search all countries?'
+						sx={{
+							marginTop: "6px !important",
+							marginBottom: "20px !important",
+						}}
 					/>
 				)}
 
-				{filters.region && (
+				{filters.with_release_type && filters.region && (
 					<Select
 						open={open}
 						onClose={() => setOpen(false)}
@@ -501,6 +395,7 @@ const FilterTab: FunctionComponent<{
 						sx={{
 							padding: ".375rem .75rem",
 							cursor: "pointer",
+							marginBottom: "10px",
 							"& .MuiSelect-outlined": {
 								padding: 0,
 							},
@@ -931,7 +826,7 @@ const FilterTab: FunctionComponent<{
 					]}
 					max={10}
 					onChange={handleUserScoreChange}
-					tallMarks={[0, 5, 10]}
+					tallmarks={[0, 5, 10]}
 					marks={Array.from({ length: 11 }, (_, index) => ({
 						value: index,
 						label: index % 5 === 0 ? index.toString() : "",
@@ -957,7 +852,7 @@ const FilterTab: FunctionComponent<{
 					}
 					max={500}
 					onChange={handleMinimumUserScoreChange}
-					tallMarks={[0, 100, 200, 300, 400, 500]}
+					tallmarks={[0, 100, 200, 300, 400, 500]}
 					marks={generateMarks(0, 500, 50, [0, 100, 200, 300, 400, 500])}
 					step={50}
 				/>
@@ -981,7 +876,7 @@ const FilterTab: FunctionComponent<{
 					]}
 					max={400}
 					onChange={handleRuntimeChange}
-					tallMarks={[0, 120, 240, 360]}
+					tallmarks={[0, 120, 240, 360]}
 					marks={generateMarks(0, 400, 15, [0, 120, 240, 360])}
 					step={15}
 					valueLabelFormat={() =>

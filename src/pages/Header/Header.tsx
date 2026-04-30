@@ -125,9 +125,9 @@ const Header = () => {
 								</p>
 							</li>
 							<li className={styles["list-items"]}>
-								<p className={styles["list-content"]}>
-									<div className={styles["box-visible"]}>EN</div>
-								</p>
+								<div className={styles["list-content"]}>
+									<p className={styles["box-visible"]}>EN</p>
+								</div>
 							</li>
 							<li className={styles["list-items"]}>
 								<p className={styles["list-content"]}>
