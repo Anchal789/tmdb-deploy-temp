@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { lazy, useCallback, useEffect, useRef, useState } from "react";
 import styles from "./MoviesContent.module.scss";
 import MoviesContainer from "./MoviesContainer/Movies";
 import type { MovieType } from "../../types/movies";
@@ -12,7 +12,8 @@ import Button from "../../components/Button";
 import TopLoader from "../../UI/TopLoader";
 import { useFilters } from "../../store/store";
 import type { CountriesType } from "../../types/filters";
-import AllFiltersComponent from "./Filters/AllFiltersComponent";
+
+const AllFiltersComponent = lazy(() => import("./Filters/AllFiltersComponent"));
 
 const MoviesContent = () => {
 	const { state, dispatch } = useFilters();

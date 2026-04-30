@@ -43,16 +43,25 @@ const Autocomplete = <
 	textFieldProps,
 	sx,
 	className,
+	isSelectOnly = true,
 	...props
-}: AppAutocompleteProps<T, Multiple, DisableClearable, FreeSolo>) => {
+}: AppAutocompleteProps<T, Multiple, DisableClearable, FreeSolo> & {
+	isSelectOnly?: boolean;
+}) => {
 	return (
 		<MuiAutocomplete
 			className={className}
 			{...props}
+			slotProps={{
+				config: {
+					readOnly: isSelectOnly,
+				},
+			}}
 			sx={{
 				"& .MuiOutlinedInput-root": {
 					borderRadius: "0.375rem",
 					fontSize: "14px",
+					cursor: isSelectOnly ? "pointer" : "text",
 				},
 				"&:hover": {
 					backgroundColor: "#f8f9fa",
@@ -63,7 +72,7 @@ const Autocomplete = <
 						borderColor: "#01b3e460 !important",
 					},
 				"& .MuiAutocomplete-input": {
-					cursor: "pointer",
+					cursor: isSelectOnly ? "pointer !important" : "inherit",
 				},
 				"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
 					minHeight: "38px",
@@ -94,6 +103,10 @@ const Autocomplete = <
 					error={error}
 					helperText={helperText}
 					size='small'
+					inputProps={{
+						...params.inputProps,
+						readOnly: isSelectOnly,
+					}}
 					sx={{
 						"& .MuiOutlinedInput-root": {
 							borderRadius: "8px",

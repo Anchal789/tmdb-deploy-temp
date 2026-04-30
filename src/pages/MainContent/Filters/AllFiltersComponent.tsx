@@ -8,7 +8,7 @@ import TextField from "../../../components/TextField";
 import styles from "./AllFiltersComponent.module.scss";
 import { useFilters } from "../../../store/store";
 import Typography from "../../../components/Typography";
-import { useState, type FunctionComponent } from "react";
+import { lazy, useState, type FunctionComponent } from "react";
 import type {
 	CountriesType,
 	DiscoverFiltersType,
@@ -17,11 +17,12 @@ import type {
 import AccordionDetails from "../../../components/AccordionDetails";
 import { Box } from "@mui/material";
 import Checkbox from "../../../components/Checkbox";
-import WhereToWatchFilter from "./WhereToWatchTab";
-import FilterTab from "./FilterTab/FiltersTab";
 import { useLocation } from "react-router";
 import { useData } from "../../../lib/useData";
 import QuestionMarkTooltip from "../../../components/QuestionMarkTooltip";
+
+const WhereToWatchFilter = lazy(() => import("./WhereToWatchTab"));
+const FilterTab = lazy(() => import("./FilterTab/FiltersTab"));
 
 const AllFiltersComponent: FunctionComponent<{
 	countriesData: Array<CountriesType>;

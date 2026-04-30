@@ -12,14 +12,15 @@ const MoviesContainer: FunctionComponent<{
 	return (
 		<>
 			<div className={styles.movies}>
-				{isLoading &&
-					Array.from(new Array(10)).map((index) => (
-						<div key={index}>
-							<Skeleton variant='rounded' height={280} />
-							<Skeleton variant='text' height={40} />
-							<Skeleton variant='text' />
-						</div>
-					))}
+				{isLoading && Array.from(new Array(10).keys()).map((index) => {
+						return (
+							<div key={index}>
+								<Skeleton variant='rounded' height={280} />
+								<Skeleton variant='text' height={40} />
+								<Skeleton variant='text' />
+							</div>
+						);
+					})}
 				{movies.map((movie) => (
 					<MovieCard
 						key={movie.id}

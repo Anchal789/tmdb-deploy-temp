@@ -2,15 +2,15 @@ import { Slider as MuiSlider, type SliderProps } from "@mui/material";
 
 const Slider = (
 	props: SliderProps & {
-		tallMarks: Array<number>;
+		tallmarks: Array<number>;
 		marks: Array<{ value: number; label: string }>;
 	},
 ) => {
-	const tallIndices = props.tallMarks
+	const tallIndices = props.tallmarks
 		.map((targetValue) => props.marks.findIndex((m) => m.value === targetValue))
 		.filter((index) => index !== -1);
 
-	const tallMarksSelector =
+	const tallmarksSelector =
 		tallIndices.length > 0
 			? tallIndices.map((index) => `&[data-index="${index}"]`).join(", ")
 			: "";
@@ -59,8 +59,8 @@ const Slider = (
 						opacity: 1,
 						backgroundColor: "#B3B5B6",
 					},
-					...(tallMarksSelector && {
-						[tallMarksSelector]: {
+					...(tallmarksSelector && {
+						[tallmarksSelector]: {
 							height: 23,
 						},
 					}),

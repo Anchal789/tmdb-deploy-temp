@@ -1,4 +1,5 @@
 import {
+	useEffect,
 	useState,
 	type Dispatch,
 	type FunctionComponent,
@@ -27,8 +28,9 @@ const WhereToWatchFilter: FunctionComponent<{
 	const { state, dispatch } = useFilters();
 	const { filters } = state;
 
-	setCountriesCount(ottProviders.length);
-
+	useEffect(() => {
+		setCountriesCount(countriesData.length);
+	}, [countriesData, setCountriesCount]);
 	return (
 		<>
 			<Typography
