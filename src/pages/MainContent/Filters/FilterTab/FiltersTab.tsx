@@ -10,6 +10,7 @@ import RadioButton from "../../../../components/RadioButton";
 import FormControlLabel from "../../../../components/FormControlLabel";
 import QuestionMarkTooltip from "../../../../components/QuestionMarkTooltip";
 import FilterSectionTitle from "../../../../components/FilterSectionTitle";
+import CustomTooltip from "../../../../components/Tooltip";
 
 const LanguageFilter = lazy(() => import("./LanguageFilter"));
 const AvailabilitiesFilter = lazy(() => import("./AvailabilitiesFilter"));
@@ -73,7 +74,10 @@ const FilterTab: FunctionComponent<{
 						marginBottom: "10px",
 					}}
 				>
-					Show Me <QuestionMarkTooltip />
+					Show Me
+					<CustomTooltip title={""}>
+						<QuestionMarkTooltip />
+					</CustomTooltip>
 				</Typography>
 				<RadioGroup
 					aria-labelledby='demo-radio-buttons-group-label'
@@ -116,7 +120,7 @@ const FilterTab: FunctionComponent<{
 				filters={filters}
 				pageURl={pageURl}
 			/>
-			
+
 			{/* Genre Filter */}
 			<GenreFilter dispatch={dispatch} filters={filters} pageURl={pageURl} />
 
@@ -201,7 +205,7 @@ const FilterTab: FunctionComponent<{
 			<LanguageFilter dispatch={dispatch} filters={filters} />
 
 			{/* Slider Filters */}
-			<SliderFilters dispatch={dispatch} filters={filters}/>
+			<SliderFilters dispatch={dispatch} filters={filters} />
 
 			{/* Keyword Filter */}
 			<KeywordFilter dispatch={dispatch} filters={filters} />

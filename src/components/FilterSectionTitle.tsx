@@ -1,7 +1,9 @@
 import type { FunctionComponent } from "react";
 import Typography from "./Typography";
+import { type TypographyProps } from "@mui/material";
 
-const FilterSectionTitle: FunctionComponent<{ title: string }> = ({ title }) => {
+
+const FilterSectionTitle: FunctionComponent<{ title: string, sx?: TypographyProps }> = ({ title, sx }) => {
 	return (
 		<Typography
 			fontWeight={300}
@@ -11,7 +13,8 @@ const FilterSectionTitle: FunctionComponent<{ title: string }> = ({ title }) => 
 				display: "inline-flex",
 				alignItems: "center",
 				marginBottom: "10px",
-				width: "100%",
+				width: sx?.width || "100%",
+				...sx
 			}}
 		>
             {title}

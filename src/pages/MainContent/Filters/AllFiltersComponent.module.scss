@@ -4,6 +4,10 @@
 	min-width: 260px;
 	width: 260px;
 
+	@media (max-width: 1160px) {
+		min-width: 100%;
+	}
+
 	.whereToWatchTitleContainer {
 		display: flex;
 		justify-content: space-between;
@@ -33,12 +37,55 @@
 		}
 	}
 
-	.providerLogo {
-		width: 50px;
-		height: 50px;
-		object-fit: cover;
-		border-radius: 8px;
+	.providerContainer {
+		display: inline-flex;
 		cursor: pointer;
+
+		.providerLogo {
+			width: 50px;
+			height: 50px;
+			object-fit: cover;
+			border-radius: 8px;
+			cursor: pointer;
+			position: relative;
+			z-index: 0;
+		}
+		.providerHover {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			align-content: center;
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			background: rgba(1, 180, 228, 0.9);
+			z-index: 2;
+			border-radius: 8px;
+			font-size: 2em;
+
+			.providerHoverImage {
+				background: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-739-check-white-a09b2a26e235b77489dfd57be3b66a17ff86efd5fb94d6db5f10cd3ced01e5a6.svg");
+				position: relative;
+				top: 0;
+				left: 0;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				min-width: 1em;
+				width: 1em;
+				min-height: 1em;
+				height: 1em;
+				line-height: inherit;
+				background-position: center center;
+				background-repeat: no-repeat;
+				color: inherit;
+				box-sizing: border-box;
+			}
+		}
+	}
+
+	.hideProviderHover {
+		display: none;
 	}
 
 	.availabilitiesCheckboxesContainer {

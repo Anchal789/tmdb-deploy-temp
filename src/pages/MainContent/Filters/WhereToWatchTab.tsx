@@ -14,7 +14,11 @@ import type {
 	OTTProviderResponseType,
 } from "../../../types/filters";
 import { useFilters } from "../../../store/store";
-import { COUNTRY_OPTIONS, MENU_PAPER_PROPS, SELECT_STYLES } from "../../../constants/filterConstants";
+import {
+	COUNTRY_OPTIONS,
+	MENU_PAPER_PROPS,
+	SELECT_STYLES,
+} from "../../../constants/filterConstants";
 import Typography from "../../../components/Typography";
 import {
 	Box,
@@ -24,15 +28,17 @@ import {
 	Select,
 } from "@mui/material";
 import styles from "./AllFiltersComponent.module.scss";
-import Tooltip from "../../../components/Tooltip";
 import type { Action } from "../../../types/common";
 import { Search } from "@mui/icons-material";
+import CustomTooltip from "../../../components/Tooltip";
 
 const WhereToWatchFilter: FunctionComponent<{
 	countriesData: Array<CountriesType>;
 	setCountriesCount: Dispatch<SetStateAction<number>>;
 	ottProviders: Array<OTTProviderResponseType>;
 }> = ({ countriesData, setCountriesCount, ottProviders }) => {
+	const [hoverOn, setHoverOn] = useState<number | null>(null);
+
 	const { state, dispatch } = useFilters();
 	const { filters } = state;
 
@@ -61,28 +67,65 @@ const WhereToWatchFilter: FunctionComponent<{
 				columnGap={"6px"}
 				rowGap={"10px"}
 			>
-				{ottProviders.map((provider) => (
-					<Tooltip key={provider.provider_id} title={provider.provider_name}>
-						<img
-							src={`https://media.themoviedb.org/t/p/original${provider.logo_path}`}
-							alt={provider.provider_name}
-							className={styles.providerLogo}
-							loading='lazy'
-							onClick={() => {
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										with_watch_providers: filters?.with_watch_providers
-											? filters?.with_watch_providers +
-												`|${provider.provider_id}`
-											: String(provider.provider_id),
-									},
-								});
-							}}
-						/>
-					</Tooltip>
-				))}
+				{ottProviders.map((provider) => {
+					const currentSelected = filters?.with_watch_providers
+						? filters.with_watch_providers.split("|")
+						: [];
+					const isSelected = currentSelected.includes(
+						String(provider.provider_id),
+					);
+					const isHovered = hoverOn === provider.provider_id;
+					const showOverlay = isSelected || isHovered;
+
+					return (
+						<CustomTooltip
+							key={provider.provider_id}
+							title={provider.provider_name}
+						>
+							<div
+								className={styles.providerContainer}
+								onMouseEnter={() => setHoverOn(provider.provider_id)}
+								onMouseLeave={() => setHoverOn(null)}
+								onClick={() => {
+									const currentState =
+										filters?.with_watch_providers?.split("|");
+
+									if (currentState?.includes(String(provider.provider_id))) {
+										currentSelected.splice(
+											currentSelected.indexOf(String(provider.provider_id)),
+											1,
+										);
+									} else {
+										currentSelected.push(String(provider.provider_id));
+									}
+									dispatch({
+										type: "SET_FILTERS",
+										payload: {
+											...filters,
+											with_watch_providers: currentSelected.join("|"),
+										},
+									});
+								}}
+							>
+								<img
+									src={`https://media.themoviedb.org/t/p/original${provider.logo_path}`}
+									alt={provider.provider_name}
+									className={styles.providerLogo}
+									loading='lazy'
+								/>
+								<div
+									className={
+										showOverlay
+											? styles.providerHover
+											: styles.hideProviderHover
+									}
+								>
+									<span className={styles.providerHoverImage}></span>
+								</div>
+							</div>
+						</CustomTooltip>
+					);
+				})}
 			</Box>
 		</>
 	);
@@ -168,7 +211,6 @@ const CountryFilter: FunctionComponent<{
 		<Select
 			fullWidth
 			displayEmpty
-			// value={activeSelection.iso_3166_1 || ""}
 			onOpen={() => setSearchTerm("")}
 			renderValue={() => renderOptionLabel(activeSelection, true)}
 			MenuProps={{
@@ -176,6 +218,28 @@ const CountryFilter: FunctionComponent<{
 				PaperProps: MENU_PAPER_PROPS,
 				TransitionProps: { onEntered: handleMenuOpened },
 			}}
+			IconComponent={() => (
+				<Box
+					sx={{
+						padding: "0.375rem",
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						cursor: "pointer",
+					}}
+				>
+					<svg
+						viewBox='0 0 512 512'
+						focusable='false'
+						xmlns='http://www.w3.org/2000/svg'
+						fill='#212529'
+						width={"1rem"}
+						height={"1rem"}
+					>
+						<path d='M256 352 128 160h256z'></path>
+					</svg>
+				</Box>
+			)}
 			sx={SELECT_STYLES}
 		>
 			<ListSubheader

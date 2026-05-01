@@ -103,6 +103,7 @@ export const FILTERS_INITIAL_STATE: DiscoverFiltersType = {
 export const MENU_PAPER_PROPS = {
 	sx: {
 		marginTop: "0.25rem",
+		paddingTop: ".5rem",
 		width: "226.4px",
 		height: "217.6px",
 		display: "flex",
@@ -153,6 +154,10 @@ export const SELECT_STYLES = {
 	"& .MuiOutlinedInput-notchedOutline": {
 		borderWidth: "1px !important",
 	},
+	"& .MuiSelect-icon": {
+        transform: "none !important",
+        pointerEvents: "none", 
+    }
 };
 
 export const COUNTRY_OPTIONS: Array<CountriesType> = [

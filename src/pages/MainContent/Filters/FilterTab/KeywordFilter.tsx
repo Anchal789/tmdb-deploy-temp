@@ -73,6 +73,8 @@ const KeywordFilter: FunctionComponent<{
 				getOptionLabel={(option) => option.name || option.name}
 				isOptionEqualToValue={(option, value) => option.id === value.id}
 				value={selectedKeyWords}
+				popupIcon={" "}
+				isSelectOnly={false}
 				onChange={(_event, newValue) => {
 					setSelectedKeyWords(newValue);
 					const newIdsString =
@@ -98,7 +100,16 @@ const KeywordFilter: FunctionComponent<{
 					}
 				}}
 				fullWidth
-				placeholder='Filter by keywords...'
+				placeholder={
+					filters?.with_keywords && filters?.with_keywords?.length > 0
+						? ""
+						: "Filter by keywords..."
+				}
+				sx={{
+					"&:hover": {
+						backgroundColor: "#fff",
+					},
+				}}
 			/>
 		</AccordionDetails>
 	);

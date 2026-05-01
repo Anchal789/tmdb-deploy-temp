@@ -24,6 +24,8 @@ import TextField from "../../../../components/TextField";
 import { Search } from "@mui/icons-material";
 import AccordionDetails from "../../../../components/AccordionDetails";
 import FilterSectionTitle from "../../../../components/FilterSectionTitle";
+import CustomTooltip from "../../../../components/Tooltip";
+import QuestionMarkTooltip from "../../../../components/QuestionMarkTooltip";
 
 const LanguageFilter: FunctionComponent<{
 	dispatch: Dispatch<Action>;
@@ -100,7 +102,17 @@ const LanguageFilter: FunctionComponent<{
 				borderRadius: "8px 8px 0 0",
 			}}
 		>
-			<FilterSectionTitle title='Language' />
+			<Box>
+				<FilterSectionTitle title='Language' sx={{ width: "fit-content" }} />
+				<CustomTooltip
+					title={"Filter items based on their original language."}
+					sx={{ display: "flex" }}
+				>
+					<span>
+						<QuestionMarkTooltip />
+					</span>
+				</CustomTooltip>
+			</Box>
 			<Select
 				fullWidth
 				displayEmpty
@@ -113,6 +125,25 @@ const LanguageFilter: FunctionComponent<{
 					TransitionProps: { onEntered: handleMenuOpened },
 				}}
 				sx={SELECT_STYLES}
+				IconComponent={() => (
+					<Box sx={{
+						padding: "0.375rem",
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+					}}>
+						<svg
+							viewBox='0 0 512 512'
+							focusable='false'
+							xmlns='http://www.w3.org/2000/svg'
+							fill='#212529'
+							width={"1rem"}
+							height={"1rem"}
+						>
+							<path d='M256 352 128 160h256z'></path>
+						</svg>
+					</Box>
+				)}
 			>
 				<ListSubheader
 					sx={{

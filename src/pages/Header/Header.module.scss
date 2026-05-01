@@ -16,8 +16,12 @@
 	transition-timing-function: ease-in;
 	transition: all 0.3s;
 
+	@media screen and (max-width: 1160px) {
+		padding: 0 20px;
+	}
+
 	&.hide-header {
-		transform: translateY(-100%); // Pulls it up exactly by its height
+		transform: translateY(-100%);
 	}
 
 	.nav {
@@ -25,131 +29,226 @@
 		z-index: 1;
 		top: 0;
 		max-width: $maxScreenWidth;
-	}
 
-	.hide-nav {
-		display: none;
-	}
+		@media (max-width: 1160px) {
+			padding: 0.5rem 0;
+			height: 100%;
+		}
 
-	.navigationBar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0 40px;
+		.hide-nav {
+			display: none;
+		}
 
-		.left-section {
+		.nav-container-xl {
 			display: flex;
-			justify-content: center;
+			justify-content: space-between;
 			align-items: center;
-			gap: 16px;
+			padding: 0 40px;
 
-			.nav-logo {
-				font-size: 1.8rem;
+			@media (max-width: 1160px) {
+				display: none;
 			}
 
-			.nav-list {
+			.left-section {
 				display: flex;
+				justify-content: center;
 				align-items: center;
-				gap: 15px;
-				padding: 8px 0;
-				list-style: none;
+				gap: 16px;
 
-				.list-content {
-					text-decoration: none;
-					color: $color-white;
-					font-size: $font-size-base;
-					line-height: $line-height-24;
-					cursor: pointer;
-					font-weight: 600;
-					padding: 0.5rem 1rem;
-					display: inline-block;
+				.nav-logo {
+					font-size: 1.8rem;
+				}
+
+				.nav-list {
+					display: flex;
+					align-items: center;
+					gap: 15px;
+					padding: 8px 0;
+					list-style: none;
+
+					.list-content {
+						text-decoration: none;
+						color: $color-white;
+						font-size: $font-size-base;
+						line-height: $line-height-24;
+						cursor: pointer;
+						font-weight: 600;
+						padding: 0.5rem 1rem;
+						display: inline-block;
+					}
+				}
+			}
+
+			.right-section {
+				display: flex;
+				justify-content: center;
+				gap: 16px;
+
+				.nav-list {
+					display: flex;
+					align-items: center;
+					list-style: none;
+
+					.list-items {
+						height: 100%;
+						display: flex;
+						align-items: center;
+
+						.list-content {
+							text-decoration: none;
+							color: $color-white;
+							line-height: $line-height-24;
+							cursor: pointer;
+							font-weight: 600;
+							display: flex;
+							margin-left: 30px;
+
+							.box-visible {
+								width: 28px;
+								height: 26px;
+								border: 1px solid $color-white;
+								border-radius: 3px;
+								padding: 3px 5px;
+								font-size: 0.9em;
+								line-height: 22px;
+								text-box-trim: trim-both;
+
+								&:hover {
+									background-color: $color-white;
+									color: #032541;
+								}
+							}
+						}
+
+						.profile-icon {
+							padding: 4px 0;
+						}
+
+						.add-icon {
+							text-decoration: none;
+							cursor: pointer;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							margin-left: 30px;
+
+							.add-icon-img {
+								width: 1.4rem;
+								height: auto;
+							}
+						}
+
+						.notification-icon {
+							margin-left: 30px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							filter: invert(1);
+
+							.notification-icon-img {
+								width: 1.4rem;
+								height: auto;
+							}
+						}
+
+						.search-icon {
+							text-decoration: none;
+							cursor: pointer;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							margin-left: 30px;
+
+							.search-icon-img {
+								width: 1.85rem;
+								height: auto;
+							}
+						}
+					}
 				}
 			}
 		}
 
-		.right-section {
-			display: flex;
-			justify-content: center;
-			gap: 16px;
+		.nav-container-sm {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			align-items: center;
+			grid-auto-flow: row;
+			height: 100%;
 
-			.nav-list {
+			@media screen and (min-width: 1160px) {
+				display: none;
+			}
+
+			.menu-items {
+				height: 100%;
 				display: flex;
 				align-items: center;
-				list-style: none;
+
+				.menu-icon {
+					text-decoration: none;
+					cursor: pointer;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					.menu-icon-img {
+						font-size: 1.4em;
+						min-width: 1em;
+						width: 1em;
+						min-height: 1em;
+						height: 1em;
+						filter: invert(1);
+					}
+				}
+			}
+
+			.logo-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.icon-container {
+				display: flex;
+				justify-content: flex-end;
+				gap: 14px;
 
 				.list-items {
 					height: 100%;
 					display: flex;
 					align-items: center;
 
-					.list-content {
-						text-decoration: none;
-						color: $color-white;
-						line-height: $line-height-24;
-						cursor: pointer;
-						font-weight: 600;
-						display: flex;
-						margin-left: 30px;
-
-						.box-visible {
-							width: 28px;
-							height: 26px;
-							border: 1px solid $color-white;
-							border-radius: 3px;
-							padding: 3px 5px;
-							font-size: 0.9em;
-							line-height: 22px;
-							text-box-trim: trim-both;
-
-							&:hover {
-								background-color: $color-white;
-								color: #032541;
-							}
-						}
-					}
-
-					.profile-icon {
-						padding: 4px 0;
-					}
-
-					.add-icon {
+					.user-icon {
 						text-decoration: none;
 						cursor: pointer;
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						margin-left: 30px;
 
-						.add-icon-img {
-							width: 1.4rem;
-							height: auto;
+						.user-icon-img {
+							font-size: 1.4em;
+							min-width: 1em;
+							width: 1em;
+							min-height: 1em;
+							height: 1em;
+							filter: invert(1);
 						}
 					}
-
-					.notification-icon {
-						margin-left: 30px;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						filter: invert(1);
-
-						.notification-icon-img {
-							width: 1.4rem;
-							height: auto;
-						}
-					}
-
 					.search-icon {
 						text-decoration: none;
 						cursor: pointer;
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						margin-left: 30px;
+						font-size: 1.1em;
 
 						.search-icon-img {
-							width: 1.85rem;
-							height: auto;
+							font-size: 1.4em;
+							min-width: 1em;
+							width: 1em;
+							min-height: 1em;
+							height: 1em;
 						}
 					}
 				}
@@ -183,7 +282,6 @@
 	line-height: $line-height-22;
 	font-weight: 500;
 }
-
 
 .popover-list-link:active {
 	color: $color-white;

@@ -70,6 +70,11 @@ const AllFiltersComponent: FunctionComponent<{
 							)?.label
 						}
 						defaultValue={"Popularity Descending"}
+						slotProps={{
+							paper: {
+								
+							}
+						}}
 						renderInput={() => <TextField />}
 						onChange={(_event, value) =>
 							dispatch({
