@@ -22,7 +22,7 @@ const MovieCard: FunctionComponent<{
 			}}
 		>
 			<div>
-				{/* <CardMedia
+				<CardMedia
 					image={
 						imgUrl
 							? `https://media.themoviedb.org/t/p/w220_and_h330_face${imgUrl}`
@@ -34,7 +34,7 @@ const MovieCard: FunctionComponent<{
 					sx={{
 						backgroundSize: "50%",
 					}}
-				/> */}
+				/>
 			</div>
 			<CardContent
 				component={"div"}
