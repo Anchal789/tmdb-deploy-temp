@@ -4,15 +4,17 @@ import type { MovieType } from "../../../types/movies";
 import MovieCard from "../../../UI/MovieCard/MovieCard";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "../../../components/Typography";
+import type { TvNetworksType } from "../../../types/filters";
 
 const MoviesContainer: FunctionComponent<{
-	movies: Array<MovieType>;
+	movies: Array<MovieType | TvNetworksType>;
 	isLoading?: boolean;
 }> = ({ movies, isLoading }) => {
 	return (
 		<>
 			<div className={styles.movies}>
-				{isLoading && Array.from(new Array(10).keys()).map((index) => {
+				{isLoading &&
+					Array.from(new Array(10).keys()).map((index) => {
 						return (
 							<div key={index}>
 								<Skeleton variant='rounded' height={280} />
@@ -25,8 +27,12 @@ const MoviesContainer: FunctionComponent<{
 					<MovieCard
 						key={movie.id}
 						imgUrl={movie.poster_path}
-						title={movie.title}
-						date={movie.release_date}
+						title={"title" in movie ? movie.title : movie.name}
+						date={
+							"release_date" in movie
+								? movie.release_date
+								: movie.first_air_date
+						}
 					/>
 				))}
 			</div>

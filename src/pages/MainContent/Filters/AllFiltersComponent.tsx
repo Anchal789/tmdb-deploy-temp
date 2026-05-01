@@ -70,6 +70,11 @@ const AllFiltersComponent: FunctionComponent<{
 							)?.label
 						}
 						defaultValue={"Popularity Descending"}
+						slotProps={{
+							paper: {
+								
+							}
+						}}
 						renderInput={() => <TextField />}
 						onChange={(_event, value) =>
 							dispatch({
@@ -139,7 +144,6 @@ const AllFiltersComponent: FunctionComponent<{
 						countriesData={countriesData}
 						setCountriesCount={setCountriesCount}
 						ottProviders={ottProviders}
-						selectedCountry={selectedCountry}
 					/>
 				</AccordionDetails>
 			</Accordion>

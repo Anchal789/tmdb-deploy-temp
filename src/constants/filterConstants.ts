@@ -99,6 +99,67 @@ export const FILTERS_INITIAL_STATE: DiscoverFiltersType = {
 	"with_runtime.lte": 400,
 };
 
+
+export const MENU_PAPER_PROPS = {
+	sx: {
+		marginTop: "0.25rem",
+		paddingTop: ".5rem",
+		width: "226.4px",
+		height: "217.6px",
+		display: "flex",
+		flexDirection: "column",
+		overflow: "hidden",
+		"& .MuiList-root": {
+			paddingTop: 0,
+			paddingBottom: 0,
+			display: "flex",
+			flexDirection: "column",
+			height: "100%",
+		},
+		border: ".8px solid #21252933",
+		borderRadius: "0.375rem",
+		boxShadow: "0px 6px 13px rgba(0, 0, 0, 0.125)",
+	},
+};
+
+export const SELECT_STYLES = {
+	borderRadius: "0.375rem",
+	"& .MuiSelect-select": {
+		padding: "8.5px 14px",
+		fontSize: "14px",
+	},
+	"& .MuiOutlinedInput-root": {
+		borderRadius: "0.375rem",
+		fontSize: "14px",
+	},
+	"&:hover": {
+		backgroundColor: "#F8F9FA",
+		borderRadius: "0.375rem",
+	},
+	"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+		borderColor: "#01b3e460 !important",
+	},
+	"& .MuiAutocomplete-input": {
+		cursor: "pointer",
+	},
+	"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
+		minHeight: "38px",
+	},
+	"&:hover .MuiOutlinedInput-notchedOutline": {
+		borderColor: "#D3D3D4 !important",
+	},
+	"&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+		borderColor: "#01b3e460 !important",
+	},
+	"& .MuiOutlinedInput-notchedOutline": {
+		borderWidth: "1px !important",
+	},
+	"& .MuiSelect-icon": {
+        transform: "none !important",
+        pointerEvents: "none", 
+    }
+};
+
 export const COUNTRY_OPTIONS: Array<CountriesType> = [
 	{
 		flagUrl:

@@ -3,6 +3,7 @@ import logo from "../../assets/tmdb-logo.svg";
 import styles from "./Header.module.scss";
 import Popover from "@mui/material/Popover";
 import { useNavigate } from "react-router";
+import { MenuRounded } from "@mui/icons-material";
 
 const Header = () => {
 	const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -44,7 +45,7 @@ const Header = () => {
 	return (
 		<header className={`${styles.header} ${hide ? styles["hide-header"] : ""}`}>
 			<nav className={styles.nav}>
-				<div className={styles.navigationBar}>
+				<div className={styles["nav-container-xl"]}>
 					<div className={styles["left-section"]}>
 						<a href='/' className={styles["nav-logo"]}>
 							<img src={logo} alt='logo' width='154' height='20' />
@@ -97,19 +98,13 @@ const Header = () => {
 								/>
 							</li>
 							<li>
-								<p className={styles["list-content"]}>
-									People
-								</p>
+								<p className={styles["list-content"]}>People</p>
 							</li>
 							<li>
-								<p className={styles["list-content"]}>
-									Awards
-								</p>
+								<p className={styles["list-content"]}>Awards</p>
 							</li>
 							<li>
-								<p className={styles["list-content"]}>
-									More
-								</p>
+								<p className={styles["list-content"]}>More</p>
 							</li>
 						</ul>
 					</div>
@@ -130,14 +125,10 @@ const Header = () => {
 								</div>
 							</li>
 							<li className={styles["list-items"]}>
-								<p className={styles["list-content"]}>
-									Login
-								</p>
+								<p className={styles["list-content"]}>Login</p>
 							</li>
 							<li className={styles["list-items"]}>
-								<p className={`${styles["list-content"]}`}>
-									Join TMDB
-								</p>
+								<p className={`${styles["list-content"]}`}>Join TMDB</p>
 							</li>
 							<li className={styles["list-items"]}>
 								<p className={`${styles["search-icon"]}`}>
@@ -149,6 +140,47 @@ const Header = () => {
 								</p>
 							</li>
 						</ul>
+					</div>
+				</div>
+				<div className={styles["nav-container-sm"]}>
+					<div className={styles["menu-items"]}>
+						<p className={`${styles["menu-icon"]}`}>
+							<img
+								src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-600-menu-7ef6e3f4266b4b216a8ef5920da43fc8c96e1ee805a219c5628fed5bfac854d5.svg'
+								alt='menu'
+								className={styles["menu-icon-img"]}
+							/>
+						</p>
+					</div>
+					<div className={styles["logo-container"]}>
+						<img
+							src={
+								"https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg"
+							}
+							alt='logo'
+							width='55'
+							height='40'
+						/>
+					</div>
+					<div className={styles["icon-container"]}>
+						<div className={styles["list-items"]}>
+							<p className={`${styles["user-icon"]}`}>
+								<img
+									src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-7de7dfcae838579a18f4eebc5b8847230d154718e481c5cd01c477cfcbc85993.svg'
+									alt='user'
+									className={styles["user-icon-img"]}
+								/>
+							</p>
+						</div>
+						<div className={styles["list-items"]}>
+							<p className={`${styles["search-icon"]}`}>
+								<img
+									src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-28-search-blue-177462d06db81ff2a02aa022c1c0be5ba4200d7bd3f51091ed9298980e3a26a1.svg'
+									alt='Search'
+									className={styles["search-icon-img"]}
+								/>
+							</p>
+						</div>
 					</div>
 				</div>
 			</nav>

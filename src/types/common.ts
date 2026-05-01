@@ -6,8 +6,8 @@ import type {
 } from "@tanstack/react-query";
 import type { DiscoverFiltersType } from "./filters";
 import type { DatePickerProps } from "@mui/x-date-pickers/DatePicker";
-import type { ReactNode } from "react";
-import type { TextFieldProps } from "@mui/material";
+import type { ElementType, ReactNode } from "react";
+import type { AutocompleteProps, ChipTypeMap, TextFieldProps } from "@mui/material";
 
 export interface UseAppQueryProps<TData> {
 	queryKey: any[];
@@ -76,3 +76,27 @@ export interface CustomDatePickerProps extends DatePickerProps {
 	placeholder?: string;
 	textFieldProps?: TextFieldProps;
 }
+
+export type AppAutocompleteProps<
+	T,
+	Multiple extends boolean | undefined = false,
+	DisableClearable extends boolean | undefined = false,
+	FreeSolo extends boolean | undefined = false,
+	ChipComponent extends ElementType = ChipTypeMap["defaultComponent"],
+> = AutocompleteProps<
+	T,
+	Multiple,
+	DisableClearable,
+	FreeSolo,
+	ChipComponent
+> & {
+	label?: string;
+	placeholder?: string;
+	error?: boolean;
+	helperText?: string;
+	textFieldProps?: Omit<
+		TextFieldProps,
+		"label" | "placeholder" | "error" | "helperText"
+	>;
+	className?: string;
+};

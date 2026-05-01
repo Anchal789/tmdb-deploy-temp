@@ -1,6 +1,5 @@
 import { lazy, useCallback, useEffect, useRef, useState } from "react";
 import styles from "./MoviesContent.module.scss";
-import MoviesContainer from "./MoviesContainer/Movies";
 import type { MovieType } from "../../types/movies";
 import {
 	API_URL_FOR_PAGE,
@@ -14,6 +13,7 @@ import { useFilters } from "../../store/store";
 import type { CountriesType } from "../../types/filters";
 
 const AllFiltersComponent = lazy(() => import("./Filters/AllFiltersComponent"));
+const MoviesContainer = lazy(() => import("./MoviesContainer/Movies"));
 
 const MoviesContent = () => {
 	const { state, dispatch } = useFilters();
