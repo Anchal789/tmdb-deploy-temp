@@ -139,7 +139,6 @@ const AllFiltersComponent: FunctionComponent<{
 						countriesData={countriesData}
 						setCountriesCount={setCountriesCount}
 						ottProviders={ottProviders}
-						selectedCountry={selectedCountry}
 					/>
 				</AccordionDetails>
 			</Accordion>

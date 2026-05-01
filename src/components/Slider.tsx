@@ -46,7 +46,7 @@ const Slider = (
 					zIndex: 20,
 				},
 				"& .MuiSlider-rail": {
-					opacity: 0.5,
+					opacity: 1,
 					backgroundColor: "#B3B5B6",
 					height: 8,
 				},
@@ -61,7 +61,7 @@ const Slider = (
 					},
 					...(tallmarksSelector && {
 						[tallmarksSelector]: {
-							height: 23,
+							height: 26,
 						},
 					}),
 				},

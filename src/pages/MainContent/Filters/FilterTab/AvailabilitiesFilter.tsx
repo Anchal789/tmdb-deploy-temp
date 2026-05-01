@@ -1,26 +1,18 @@
-import {
-	useRef,
-	type ChangeEvent,
-	type Dispatch,
-	type FunctionComponent,
-} from "react";
+import { type ChangeEvent, type Dispatch, type FunctionComponent } from "react";
 import FormControlLabel from "../../../../components/FormControlLabel";
 import type { DiscoverFiltersType } from "../../../../types/filters";
 import type { Action } from "../../../../types/common";
 import Checkbox from "../../../../components/Checkbox";
 import styles from "../AllFiltersComponent.module.scss";
+import AccordionDetails from "../../../../components/AccordionDetails";
+import FilterSectionTitle from "../../../../components/FilterSectionTitle";
 
 const AvailabilitiesFilter: FunctionComponent<{
 	dispatch: Dispatch<Action>;
 	filters: DiscoverFiltersType;
 }> = ({ dispatch, filters }) => {
-	const lastCheckedState = useRef<string>("");
-	const availabilitiesTouched = useRef(false);
-	const hasEverUnchecked = useRef(false);
-
 	const handleCheckboxesChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, checked } = event.target;
-		availabilitiesTouched.current = true;
 
 		const currentTypes = filters.with_watch_monetization_types
 			? filters.with_watch_monetization_types.split("|")
@@ -34,8 +26,6 @@ const AvailabilitiesFilter: FunctionComponent<{
 			newTypes = currentTypes.filter((type) => type !== name);
 		}
 
-		lastCheckedState.current = newTypes.join("|");
-
 		dispatch({
 			type: "SET_FILTERS",
 			payload: {
@@ -46,60 +36,41 @@ const AvailabilitiesFilter: FunctionComponent<{
 	};
 
 	return (
-		<>
+		<AccordionDetails
+			sx={{
+				borderBottom: "1px solid #e5e7eb",
+				borderRadius: "8px 8px 0 0",
+			}}
+		>
+			<FilterSectionTitle title='Availabilities' />
 			<FormControlLabel
 				value='show_me'
 				control={
 					<Checkbox
 						checked={filters.with_watch_monetization_types === null}
 						onChange={(event) => {
-							const isSearchingAll = event.target.checked;
-
-							if (isSearchingAll) {
-								if (!availabilitiesTouched.current) {
-									lastCheckedState.current = "";
-								}
-                                availabilitiesTouched.current = false;
-								hasEverUnchecked.current = true;
-
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										with_watch_monetization_types: null,
-									},
-								});
-							} else {
-								const nextValue = hasEverUnchecked.current
-									? lastCheckedState.current
-									: "flatrate|free|ads|rent|buy";
-
-								if (!hasEverUnchecked.current) {
-									lastCheckedState.current = "flatrate|free|ads|rent|buy";
-									hasEverUnchecked.current = true;
-								}
-
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										with_watch_monetization_types: nextValue,
-									},
-								});
-							}
+							dispatch({
+								type: "SET_FILTERS",
+								payload: {
+									...filters,
+									with_watch_monetization_types: event.target.checked
+										? null
+										: "flatrate|free|ads|rent|buy",
+								},
+							});
 						}}
 					/>
 				}
 				label='Search all availabilities?'
 			/>
-			{typeof filters.with_watch_monetization_types === "string" && (
+			{filters.with_watch_monetization_types && (
 				<div className={styles.availabilitiesCheckboxesContainer}>
 					<FormControlLabel
 						value='flatrate'
 						control={
 							<Checkbox
 								name='flatrate'
-								checked={(filters.with_watch_monetization_types || "").includes(
+								checked={filters.with_watch_monetization_types.includes(
 									"flatrate",
 								)}
 								onChange={handleCheckboxesChange}
@@ -112,9 +83,7 @@ const AvailabilitiesFilter: FunctionComponent<{
 						control={
 							<Checkbox
 								name='free'
-								checked={(filters.with_watch_monetization_types || "").includes(
-									"free",
-								)}
+								checked={filters.with_watch_monetization_types.includes("free")}
 								onChange={handleCheckboxesChange}
 							/>
 						}
@@ -125,9 +94,7 @@ const AvailabilitiesFilter: FunctionComponent<{
 						control={
 							<Checkbox
 								name='ads'
-								checked={(filters.with_watch_monetization_types || "").includes(
-									"ads",
-								)}
+								checked={filters.with_watch_monetization_types.includes("ads")}
 								onChange={handleCheckboxesChange}
 							/>
 						}
@@ -138,9 +105,7 @@ const AvailabilitiesFilter: FunctionComponent<{
 						control={
 							<Checkbox
 								name='rent'
-								checked={(filters.with_watch_monetization_types || "").includes(
-									"rent",
-								)}
+								checked={filters.with_watch_monetization_types.includes("rent")}
 								onChange={handleCheckboxesChange}
 							/>
 						}
@@ -151,9 +116,7 @@ const AvailabilitiesFilter: FunctionComponent<{
 						control={
 							<Checkbox
 								name='buy'
-								checked={(filters.with_watch_monetization_types || "").includes(
-									"buy",
-								)}
+								checked={filters.with_watch_monetization_types.includes("buy")}
 								onChange={handleCheckboxesChange}
 							/>
 						}
@@ -161,7 +124,7 @@ const AvailabilitiesFilter: FunctionComponent<{
 					/>
 				</div>
 			)}
-		</>
+		</AccordionDetails>
 	);
 };
 

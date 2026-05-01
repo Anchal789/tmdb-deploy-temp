@@ -1,30 +1,38 @@
 import {
 	useEffect,
+	useMemo,
+	useRef,
 	useState,
 	type Dispatch,
 	type FunctionComponent,
 	type SetStateAction,
 } from "react";
-import Autocomplete from "../../../components/AutoComplete";
 import TextField from "../../../components/TextField";
 import type {
 	CountriesType,
+	DiscoverFiltersType,
 	OTTProviderResponseType,
 } from "../../../types/filters";
 import { useFilters } from "../../../store/store";
-import { COUNTRY_OPTIONS } from "../../../constants/filterConstants";
+import { COUNTRY_OPTIONS, MENU_PAPER_PROPS, SELECT_STYLES } from "../../../constants/filterConstants";
 import Typography from "../../../components/Typography";
-import { Box, Select } from "@mui/material";
+import {
+	Box,
+	InputAdornment,
+	ListSubheader,
+	MenuItem,
+	Select,
+} from "@mui/material";
 import styles from "./AllFiltersComponent.module.scss";
 import Tooltip from "../../../components/Tooltip";
+import type { Action } from "../../../types/common";
+import { Search } from "@mui/icons-material";
 
 const WhereToWatchFilter: FunctionComponent<{
 	countriesData: Array<CountriesType>;
 	setCountriesCount: Dispatch<SetStateAction<number>>;
 	ottProviders: Array<OTTProviderResponseType>;
-	selectedCountry?: CountriesType;
-}> = ({ countriesData, setCountriesCount, ottProviders, selectedCountry }) => {
-	const [open, setOpen] = useState<boolean>(false);
+}> = ({ countriesData, setCountriesCount, ottProviders }) => {
 	const { state, dispatch } = useFilters();
 	const { filters } = state;
 
@@ -45,125 +53,7 @@ const WhereToWatchFilter: FunctionComponent<{
 			>
 				Country
 			</Typography>
-			<Select
-				open={open}
-				onClose={() => setOpen(false)}
-				onOpen={() => setOpen(true)}
-				fullWidth
-				MenuProps={{
-					autoFocus: false,
-					PaperProps: {
-						sx: { maxHeight: 300 },
-					},
-				}}
-				value={selectedCountry?.native_name}
-				sx={{
-					padding: ".375rem .75rem",
-					borderRadius: "0.375rem",
-					cursor: "pointer",
-					"& .MuiSelect-outlined": {
-						padding: 0,
-					},
-					"&:hover": {
-						background: "#f8f9fa",
-						outlineColor: "#01b3e460",
-						transition: "all 0.2s ease-in-out",
-						borderRadius: "0.375rem",
-					},
-					"&:focus-visible .MuiNotchedOutlined-root-MuiOutlinedInput-notchedOutline":
-						{
-							borderColor: "#f8f9fa",
-							zIndex: 1,
-						},
-					"& .MuiOutlinedInput-root": {
-						borderRadius: "0.375rem",
-						fontSize: "14px",
-					},
-					"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-						{
-							borderColor: "#01b3e460 !important",
-						},
-					"& .MuiAutocomplete-input": {
-						cursor: "pointer",
-					},
-					"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
-						minHeight: "38px",
-					},
-					"&:hover .MuiOutlinedInput-notchedOutline": {
-						borderColor: "#D3D3D4 !important",
-					},
-				}}
-				renderValue={() =>
-					selectedCountry ? (
-						<Box
-							sx={{
-								display: "flex",
-								alignItems: "center",
-								gap: 1,
-							}}
-						>
-							<img
-								src={`https://www.themoviedb.org${selectedCountry.flagUrl}`}
-								alt={selectedCountry.native_name}
-								width={24}
-							/>
-							<Typography sx={{ fontSize: "0.9rem" }}>
-								{selectedCountry.native_name}
-							</Typography>
-						</Box>
-					) : (
-						<span style={{ color: "#aaa" }}>Select Country</span>
-					)
-				}
-			>
-				<Autocomplete
-					options={countriesData.map((option) => option.native_name)}
-					renderInput={() => <TextField />}
-					onChange={(_event, value) => {
-						dispatch({
-							type: "SET_FILTERS",
-							payload: {
-								...filters,
-								watch_region:
-									countriesData.find((option) => option.native_name === value)
-										?.iso_3166_1 || "",
-							},
-						});
-					}}
-					fullWidth
-					sx={{
-						".MuiAutocomplete-listbox": {
-							padding: "0 !important",
-						},
-					}}
-					renderOption={(props, option) => {
-						const { key, ...optionProps } = props;
-						const country = countriesData.find(
-							(country) => country.native_name === option,
-						);
-						const flagUrl = COUNTRY_OPTIONS.find(
-							(item) => item.iso_3166_1 === country?.iso_3166_1,
-						)?.flagUrl;
-						return (
-							<Box
-								key={key}
-								component='li'
-								sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-								{...optionProps}
-							>
-								<img
-									loading='lazy'
-									width='20'
-									srcSet={`https://www.themoviedb.org${flagUrl}`}
-									src={`https://www.themoviedb.org${flagUrl}`}
-									alt=''
-								/>
-								<Typography>{option}</Typography>
-							</Box>
-						);
-					}}
-				/>
-			</Select>
+			<CountryFilter dispatch={dispatch} filters={filters} />
 			<Box
 				display={"grid"}
 				my={"14px"}
@@ -199,3 +89,195 @@ const WhereToWatchFilter: FunctionComponent<{
 };
 
 export default WhereToWatchFilter;
+
+const CountryFilter: FunctionComponent<{
+	dispatch: Dispatch<Action>;
+	filters: DiscoverFiltersType;
+	selectedCountry?: CountriesType;
+}> = ({ dispatch, filters }) => {
+	const [searchTerm, setSearchTerm] = useState<string>("");
+	const searchFieldRef = useRef<HTMLInputElement>(null);
+	const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+	const activeSelection = useMemo(
+		() =>
+			COUNTRY_OPTIONS.find((o) => o.iso_3166_1 === filters.watch_region) ||
+			COUNTRY_OPTIONS[0],
+		[filters.watch_region],
+	);
+
+	const filteredOptions = useMemo(() => {
+		const cleanSearch = searchTerm.toLowerCase().trim();
+		if (!cleanSearch) return COUNTRY_OPTIONS;
+		return COUNTRY_OPTIONS.filter(
+			(opt) =>
+				opt?.native_name?.toLowerCase().includes(cleanSearch) ||
+				opt.english_name?.toLowerCase().includes(cleanSearch),
+		);
+	}, [searchTerm]);
+
+	const handleMenuOpened = () => {
+		searchFieldRef.current?.focus();
+
+		if (scrollContainerRef.current) {
+			const selectedItem =
+				scrollContainerRef.current.querySelector(".Mui-selected");
+			if (selectedItem) {
+				selectedItem.scrollIntoView({ block: "nearest" });
+			}
+		}
+	};
+
+	const renderOptionLabel = (
+		option: (typeof COUNTRY_OPTIONS)[0],
+		selectedValue?: boolean,
+	) => (
+		<Box
+			sx={{
+				color: "getContrastText()",
+				fontSize: "0.875rem",
+				display: "flex",
+				alignItems: "center",
+				gap: 1,
+				...(selectedValue && {
+					overflow: "hidden",
+					whiteSpace: "nowrap",
+					textOverflow: "ellipsis",
+				}),
+				...(!selectedValue && {
+					wordBreak: "break-word",
+					whiteSpace: "normal",
+					lineHeight: "1.4",
+				}),
+			}}
+		>
+			<img
+				loading='lazy'
+				width={selectedValue ? "24" : "20"}
+				srcSet={`https://www.themoviedb.org${option.flagUrl}`}
+				src={`https://www.themoviedb.org${option.flagUrl}`}
+				alt={`${option.native_name} flag`}
+			/>
+			<Typography sx={{ fontSize: "0.9rem", color: "getContrastText()" }}>
+				{option.native_name}
+			</Typography>
+		</Box>
+	);
+
+	return (
+		<Select
+			fullWidth
+			displayEmpty
+			// value={activeSelection.iso_3166_1 || ""}
+			onOpen={() => setSearchTerm("")}
+			renderValue={() => renderOptionLabel(activeSelection, true)}
+			MenuProps={{
+				autoFocus: false,
+				PaperProps: MENU_PAPER_PROPS,
+				TransitionProps: { onEntered: handleMenuOpened },
+			}}
+			sx={SELECT_STYLES}
+		>
+			<ListSubheader
+				sx={{
+					p: "0.75rem",
+					backgroundColor: "white",
+					zIndex: 10,
+					position: "sticky",
+					top: 0,
+				}}
+				onKeyDown={(e) => e.stopPropagation()}
+			>
+				<TextField
+					size='small'
+					fullWidth
+					inputRef={searchFieldRef}
+					placeholder='Filter'
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position='start'>
+								<Search fontSize='small' />
+							</InputAdornment>
+						),
+					}}
+					sx={{
+						"& .MuiSelect-select": {
+							padding: "8.5px 14px",
+
+							fontSize: "14px",
+						},
+
+						"& .MuiOutlinedInput-root": {
+							borderRadius: "0.375rem",
+
+							fontSize: "14px",
+						},
+
+						"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+							{
+								borderColor: "#01b3e460 !important",
+							},
+
+						"& .MuiAutocomplete-input": {
+							cursor: "pointer",
+						},
+
+						"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
+							minHeight: "38px",
+						},
+
+						"& .MuiOutlinedInput-notchedOutline": {
+							border: "0.8px solid #01b3e460 !important",
+
+							borderRadius: "0.375rem",
+						},
+					}}
+				/>
+			</ListSubheader>
+
+			<Box
+				ref={scrollContainerRef}
+				sx={{
+					overflowY: "auto",
+					overflowX: "hidden",
+					flex: 1,
+				}}
+			>
+				{filteredOptions.length > 0 ? (
+					filteredOptions.map((option) => (
+						<MenuItem
+							key={option.iso_3166_1 || "none"}
+							value={option.iso_3166_1 || ""}
+							selected={option.iso_3166_1 === activeSelection.iso_3166_1}
+							onClick={() => {
+								dispatch({
+									type: "SET_FILTERS",
+									payload: {
+										...filters,
+										watch_region: option.iso_3166_1,
+									},
+								});
+							}}
+							sx={{
+								py: 1,
+								"&.Mui-selected": {
+									backgroundColor: "#01b3e4 !important",
+									color: "#fff",
+									"&:hover": { backgroundColor: "#032541 !important" },
+								},
+							}}
+						>
+							{renderOptionLabel(option, false)}
+						</MenuItem>
+					))
+				) : (
+					<MenuItem disabled sx={{ justifyContent: "center", py: 4 }}>
+						No Data Found.
+					</MenuItem>
+				)}
+			</Box>
+		</Select>
+	);
+};

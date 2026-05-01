@@ -14,65 +14,16 @@ import {
 	MenuItem,
 	Select,
 } from "@mui/material";
-import { LANGUAGES_OPTIONS } from "../../../../constants/filterConstants";
+import {
+	LANGUAGES_OPTIONS,
+	MENU_PAPER_PROPS,
+	SELECT_STYLES,
+} from "../../../../constants/filterConstants";
 import Typography from "../../../../components/Typography";
 import TextField from "../../../../components/TextField";
 import { Search } from "@mui/icons-material";
-
-const MENU_PAPER_PROPS = {
-	sx: {
-		marginTop: "0.25rem",
-		width: "226.4px",
-		height: "217.6px",
-		display: "flex",
-		flexDirection: "column",
-		overflow: "hidden",
-		"& .MuiList-root": {
-			paddingTop: 0,
-			paddingBottom: 0,
-			display: "flex",
-			flexDirection: "column",
-			height: "100%",
-		},
-		border: ".8px solid #21252933",
-		borderRadius: "0.375rem",
-		boxShadow: "0px 6px 13px rgba(0, 0, 0, 0.125)",
-	},
-};
-
-const SELECT_STYLES = {
-	borderRadius: "0.375rem",
-	"& .MuiSelect-select": {
-		padding: "8.5px 14px",
-		fontSize: "14px",
-	},
-	"& .MuiOutlinedInput-root": {
-		borderRadius: "0.375rem",
-		fontSize: "14px",
-	},
-	"&:hover": {
-		backgroundColor: "#F8F9FA",
-		borderRadius: "0.375rem",
-	},
-	"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-		borderColor: "#01b3e460 !important",
-	},
-	"& .MuiAutocomplete-input": {
-		cursor: "pointer",
-	},
-	"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
-		minHeight: "38px",
-	},
-	"&:hover .MuiOutlinedInput-notchedOutline": {
-		borderColor: "#D3D3D4 !important",
-	},
-	"&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-		borderColor: "#01b3e460 !important",
-	},
-	"& .MuiOutlinedInput-notchedOutline": {
-		borderWidth: "1px !important",
-	},
-};
+import AccordionDetails from "../../../../components/AccordionDetails";
+import FilterSectionTitle from "../../../../components/FilterSectionTitle";
 
 const LanguageFilter: FunctionComponent<{
 	dispatch: Dispatch<Action>;
@@ -143,120 +94,128 @@ const LanguageFilter: FunctionComponent<{
 	);
 
 	return (
-		<Select
-			fullWidth
-			displayEmpty
-			value={activeSelection.iso_639_1 || ""}
-			onOpen={() => setSearchTerm("")}
-			renderValue={() => renderOptionLabel(activeSelection, true)}
-			MenuProps={{
-				autoFocus: false,
-				PaperProps: MENU_PAPER_PROPS,
-				TransitionProps: { onEntered: handleMenuOpened },
+		<AccordionDetails
+			sx={{
+				borderBottom: "1px solid #e5e7eb",
+				borderRadius: "8px 8px 0 0",
 			}}
-			sx={SELECT_STYLES}
 		>
-			<ListSubheader
-				sx={{
-					p: "0.75rem",
-					backgroundColor: "white",
-					zIndex: 10,
-					position: "sticky",
-					top: 0,
+			<FilterSectionTitle title='Language' />
+			<Select
+				fullWidth
+				displayEmpty
+				value={activeSelection.iso_639_1 || ""}
+				onOpen={() => setSearchTerm("")}
+				renderValue={() => renderOptionLabel(activeSelection, true)}
+				MenuProps={{
+					autoFocus: false,
+					PaperProps: MENU_PAPER_PROPS,
+					TransitionProps: { onEntered: handleMenuOpened },
 				}}
-				onKeyDown={(e) => e.stopPropagation()}
+				sx={SELECT_STYLES}
 			>
-				<TextField
-					size='small'
-					fullWidth
-					inputRef={searchFieldRef}
-					placeholder='Filter'
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-					InputProps={{
-						startAdornment: (
-							<InputAdornment position='start'>
-								<Search fontSize='small' />
-							</InputAdornment>
-						),
-					}}
+				<ListSubheader
 					sx={{
-						"& .MuiSelect-select": {
-							padding: "8.5px 14px",
+						p: "0.75rem",
+						backgroundColor: "white",
+						zIndex: 10,
+						position: "sticky",
+						top: 0,
+					}}
+					onKeyDown={(e) => e.stopPropagation()}
+				>
+					<TextField
+						size='small'
+						fullWidth
+						inputRef={searchFieldRef}
+						placeholder='Filter'
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						InputProps={{
+							startAdornment: (
+								<InputAdornment position='start'>
+									<Search fontSize='small' />
+								</InputAdornment>
+							),
+						}}
+						sx={{
+							"& .MuiSelect-select": {
+								padding: "8.5px 14px",
 
-							fontSize: "14px",
-						},
-
-						"& .MuiOutlinedInput-root": {
-							borderRadius: "0.375rem",
-
-							fontSize: "14px",
-						},
-
-						"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-							{
-								borderColor: "#01b3e460 !important",
+								fontSize: "14px",
 							},
 
-						"& .MuiAutocomplete-input": {
-							cursor: "pointer",
-						},
+							"& .MuiOutlinedInput-root": {
+								borderRadius: "0.375rem",
 
-						"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
-							minHeight: "38px",
-						},
+								fontSize: "14px",
+							},
 
-						"& .MuiOutlinedInput-notchedOutline": {
-							border: "0.8px solid #01b3e460 !important",
-
-							borderRadius: "0.375rem",
-						},
-					}}
-				/>
-			</ListSubheader>
-
-			<Box
-				ref={scrollContainerRef}
-				sx={{
-					overflowY: "auto",
-					overflowX: "hidden",
-					flex: 1,
-				}}
-			>
-				{filteredOptions.length > 0 ? (
-					filteredOptions.map((option) => (
-						<MenuItem
-							key={option.iso_639_1 || "none"}
-							value={option.iso_639_1 || ""}
-							selected={option.iso_639_1 === activeSelection.iso_639_1}
-							onClick={() => {
-								dispatch({
-									type: "SET_FILTERS",
-									payload: {
-										...filters,
-										with_original_language: option.iso_639_1,
-									},
-								});
-							}}
-							sx={{
-								py: 1,
-								"&.Mui-selected": {
-									backgroundColor: "#01b3e4 !important",
-									color: "#fff",
-									"&:hover": { backgroundColor: "#032541 !important" },
+							"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+								{
+									borderColor: "#01b3e460 !important",
 								},
-							}}
-						>
-							{renderOptionLabel(option, false)}
+
+							"& .MuiAutocomplete-input": {
+								cursor: "pointer",
+							},
+
+							"& .MuiOutlinedInput-root.MuiInputBase-sizeSmall": {
+								minHeight: "38px",
+							},
+
+							"& .MuiOutlinedInput-notchedOutline": {
+								border: "0.8px solid #01b3e460 !important",
+
+								borderRadius: "0.375rem",
+							},
+						}}
+					/>
+				</ListSubheader>
+
+				<Box
+					ref={scrollContainerRef}
+					sx={{
+						overflowY: "auto",
+						overflowX: "hidden",
+						flex: 1,
+					}}
+				>
+					{filteredOptions.length > 0 ? (
+						filteredOptions.map((option) => (
+							<MenuItem
+								key={option.iso_639_1 || "none"}
+								value={option.iso_639_1 || ""}
+								selected={option.iso_639_1 === activeSelection.iso_639_1}
+								onClick={() => {
+									dispatch({
+										type: "SET_FILTERS",
+										payload: {
+											...filters,
+											with_original_language: option.iso_639_1,
+										},
+									});
+								}}
+								sx={{
+									py: 1,
+									"&.Mui-selected": {
+										backgroundColor: "#01b3e4 !important",
+										color: "#fff",
+										"&:hover": { backgroundColor: "#032541 !important" },
+									},
+								}}
+							>
+								{renderOptionLabel(option, false)}
+							</MenuItem>
+						))
+					) : (
+						<MenuItem disabled sx={{ justifyContent: "center", py: 4 }}>
+							No Data Found.
 						</MenuItem>
-					))
-				) : (
-					<MenuItem disabled sx={{ justifyContent: "center", py: 4 }}>
-						No Data Found.
-					</MenuItem>
-				)}
-			</Box>
-		</Select>
+					)}
+				</Box>
+			</Select>
+		</AccordionDetails>
 	);
 };
 
