@@ -3,9 +3,10 @@ import logo from "../../assets/tmdb-logo.svg";
 import styles from "./Header.module.scss";
 import Popover from "@mui/material/Popover";
 import { useNavigate } from "react-router";
-import { MenuRounded } from "@mui/icons-material";
+import { useGlobalState } from "../../store/store";
 
 const Header = () => {
+	const { state, dispatch } = useGlobalState();
 	const [scrollPosition, setScrollPosition] = useState<number>(0);
 	const [hide, setHide] = useState<boolean>(false);
 	const [activeMenu, setActiveMenu] = useState<"movies" | "tv" | null>(null);
@@ -38,10 +39,14 @@ const Header = () => {
 			setScrollPosition(currentPosition);
 		};
 
-		window.addEventListener("scroll", handleScroll, { passive: true });
+		if (!state.isDrawerOpen)
+			window.addEventListener("scroll", handleScroll, { passive: true });
 		return () => window.removeEventListener("scroll", handleScroll);
-	}, [scrollPosition]);
+	}, [scrollPosition, state.isDrawerOpen]);
 
+	const handleDrawerToggle = () => {
+		dispatch({ type: "TOGGLE_DRAWER" });
+	};
 	return (
 		<header className={`${styles.header} ${hide ? styles["hide-header"] : ""}`}>
 			<nav className={styles.nav}>
@@ -144,7 +149,10 @@ const Header = () => {
 				</div>
 				<div className={styles["nav-container-sm"]}>
 					<div className={styles["menu-items"]}>
-						<p className={`${styles["menu-icon"]}`}>
+						<p
+							className={`${styles["menu-icon"]}`}
+							onClick={handleDrawerToggle}
+						>
 							<img
 								src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-600-menu-7ef6e3f4266b4b216a8ef5920da43fc8c96e1ee805a219c5628fed5bfac854d5.svg'
 								alt='menu'

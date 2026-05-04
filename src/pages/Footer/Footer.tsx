@@ -17,44 +17,44 @@ const Footer = () => {
                     <div className={styles.footerLinksContainer}>
                         <p className={styles.footerLinksTitle}>THE BASICS</p>
                         <ul className={styles.footerLinksList}>
-                            <li>About TMDB</li>
-                            <li>Contact Us</li>
-                            <li>API Documentation</li>
-                            <li>API for Business</li>
-                            <li>System Status</li>
+                            <li><p>About TMDB</p></li>
+                            <li><p>Contact Us</p></li>
+                            <li><p>API Documentation</p></li>
+                            <li><p>API for Business</p></li>
+                            <li><p>System Status</p></li>
                         </ul>
                     </div>
                     <div className={styles.footerLinksContainer}>
                         <p className={styles.footerLinksTitle}>GET INVOLVED</p>
                         <ul className={styles.footerLinksList}>
-                            <li>Contribution Bible</li>
-                            <li>Add New Movie</li>
-                            <li>Add New TV Show</li>
+                            <li><p>Contribution Bible</p></li>
+                            <li><p>Add New Movie</p></li>
+                            <li><p>Add New TV Show</p></li>
                         </ul>
                     </div>
                     <div className={styles.footerLinksContainer}>
                         <p className={styles.footerLinksTitle}>COMMUNITY</p>
                         <ul className={styles.footerLinksList}>
-                            <li>Guidelines</li>
-                            <li>Discussions</li>
-                            <li>Leaderboard</li>
-                            <li>Support Forums</li>
+                            <li><p>Guidelines</p></li>
+                            <li><p>Discussions</p></li>
+                            <li><p>Leaderboard</p></li>
+                            <li><p>Support Forums</p></li>
                         </ul>
                     </div>
                     <div className={styles.footerLinksContainer}>
                         <p className={styles.footerLinksTitle}>LEGAL</p>
                         <ul className={styles.footerLinksList}>
-                            <li>Terms of Use</li>
-                            <li>API Terms of Use</li>
-                            <li>Privacy Policy</li>
-                            <li>DMCA Policy</li>
+                            <li><p>Terms of Use</p></li>
+                            <li><p>API Terms of Use</p></li>
+                            <li><p>Privacy Policy</p></li>
+                            <li><p>DMCA Policy</p></li>
                         </ul>
                     </div>
 				</div>
-			</footer>
 			<Typography className={styles.buildText}>   
 				Build 4e4caf3 (10106)
 			</Typography>
+			</footer>
 		</>
 	);
 };

@@ -23,7 +23,7 @@ const reducer = (state: State, action: Action): State => {
 				...state,
 				appliedFilters: state.filters,
 				isDirty: false,
-				isFiltered: true
+				isFiltered: true,
 			};
 		case "INIT_PAGE_FILTERS":
 			return {
@@ -33,6 +33,8 @@ const reducer = (state: State, action: Action): State => {
 				isDirty: false,
 				isFiltered: false,
 			};
+		case "TOGGLE_DRAWER":
+			return { ...state, isDrawerOpen: !state.isDrawerOpen };
 		default:
 			return state;
 	}
@@ -44,6 +46,7 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
 		appliedFilters: FILTERS_INITIAL_STATE,
 		isDirty: false,
 		isFiltered: false,
+		isDrawerOpen: false,
 	});
 
 	return (
@@ -53,10 +56,10 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
 	);
 };
 
-export const useFilters = () => {
+export const useGlobalState = () => {
 	const context = useContext(FilterContext);
 	if (!context) {
-		throw new Error("useFilters must be used within FilterProvider");
+		throw new Error("useGlobalState must be used within FilterProvider");
 	}
 	return context;
 };

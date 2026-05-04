@@ -9,18 +9,19 @@ import { useLocation } from "react-router";
 import { useData, useInfiniteData } from "../../lib/useData";
 import Button from "../../components/Button";
 import TopLoader from "../../UI/TopLoader";
-import { useFilters } from "../../store/store";
+import { useGlobalState } from "../../store/store";
 import type { CountriesType } from "../../types/filters";
 
 const AllFiltersComponent = lazy(() => import("./Filters/AllFiltersComponent"));
 const MoviesContainer = lazy(() => import("./MoviesContainer/Movies"));
 
 const MoviesContent = () => {
-	const { state, dispatch } = useFilters();
+	const { state, dispatch } = useGlobalState();
 	const { appliedFilters, isDirty, isFiltered } = state;
 
 	const [isSearchButtonVisible, setIsSearchButtonVisible] =
 		useState<boolean>(true);
+	const [openMenus, setOpenMenus] = useState<string[]>([]);
 
 	const filterContainerRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +49,14 @@ const MoviesContent = () => {
 	const headerTitle = useCallback(() => {
 		return PAGE_URL_TITLE_MAP[pageUrl] || "Movies";
 	}, [pageUrl]);
+
+	const toggleMenu = (menuName: string) => {
+		setOpenMenus((prev) =>
+			prev.includes(menuName)
+				? prev.filter((item) => item !== menuName)
+				: [...prev, menuName],
+		);
+	};
 
 	useEffect(() => {
 		const handleScroll = async () => {
@@ -128,6 +137,7 @@ const MoviesContent = () => {
 										lineHeight: "2.25rem",
 										height: "50px",
 										marginTop: "50px",
+										boxShadow: "none",
 									}}
 									onClick={() => fetchNextPage()}
 								>
@@ -136,6 +146,100 @@ const MoviesContent = () => {
 							)}
 						</div>
 					</div>
+				</div>
+				<div
+					className={`${styles.drawer} ${state.isDrawerOpen ? styles.show : ""}`}
+				>
+					<ul className={styles.drawerList}>
+						<li
+							className={styles.drawerListItem}
+							onClick={() => toggleMenu("movies")}
+						>
+							<p className={styles.drawerListItemTitle}>Movies</p>
+							{openMenus.includes("movies") && (
+								<ul className={styles.listMenu}>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>Popular</p>
+									</li>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>Top Rated</p>
+									</li>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>Upcoming</p>
+									</li>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>Now Playing</p>
+									</li>
+								</ul>
+							)}
+						</li>
+						<li
+							className={styles.drawerListItem}
+							onClick={() => toggleMenu("tvShows")}
+						>
+							<p className={styles.drawerListItemTitle}>TV Shows</p>
+							{openMenus.includes("tvShows") && (
+								<ul className={styles.listMenu}>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>Popular</p>
+									</li>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>Top Rated</p>
+									</li>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>On TV</p>
+									</li>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>Airing Today</p>
+									</li>
+								</ul>
+							)}
+						</li>
+						<li
+							className={styles.drawerListItem}
+							onClick={() => toggleMenu("people")}
+						>
+							<p className={styles.drawerListItemTitle}>People</p>
+							{openMenus.includes("people") && (
+								<ul className={styles.listMenu}>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>Popular</p>
+									</li>
+								</ul>
+							)}
+						</li>
+						<li
+							className={styles.drawerListItem}
+							onClick={() => toggleMenu("awards")}
+						>
+							<p className={styles.drawerListItemTitle}>Awards</p>
+							{openMenus.includes("awards") && (
+								<ul className={styles.listMenu}>
+									<li className={styles.listMenuItem}>
+										<p className={styles.listMenuItemTitle}>Popular</p>
+									</li>
+									<li
+										className={`${styles.listMenuItem} ${styles.upcomingMenuItem}`}
+									>
+										<p className={styles.listMenuItemTitle}>Upcoming</p>
+									</li>
+								</ul>
+							)}
+						</li>
+					</ul>
+					<ul className={styles.drawerSubList}>
+						<li className={styles.drawerListSubItem}>Contribution Bible</li>
+						<li className={styles.drawerListSubItem}>Discussions</li>
+						<li className={styles.drawerListSubItem}>Leaderboard</li>
+						<li className={styles.drawerListSubItem}>API</li>
+						<li className={styles.drawerListSubItem}>Support</li>
+						<li className={styles.drawerListSubItem}>About</li>
+						<li
+							className={`${styles.drawerListSubItem} ${styles.loginSubItem}`}
+						>
+							Login
+						</li>
+					</ul>
 				</div>
 			</main>
 			{isDirty && isSearchButtonVisible && (

@@ -6,9 +6,9 @@ import Accordion from "../../../components/Accordion";
 import Autocomplete from "../../../components/AutoComplete";
 import TextField from "../../../components/TextField";
 import styles from "./AllFiltersComponent.module.scss";
-import { useFilters } from "../../../store/store";
+import { useGlobalState } from "../../../store/store";
 import Typography from "../../../components/Typography";
-import { lazy, useState, type FunctionComponent } from "react";
+import { lazy, useEffect, useState, type FunctionComponent } from "react";
 import type {
 	CountriesType,
 	DiscoverFiltersType,
@@ -28,8 +28,12 @@ const AllFiltersComponent: FunctionComponent<{
 	countriesData: Array<CountriesType>;
 }> = ({ countriesData }) => {
 	const [countriesCount, setCountriesCount] = useState<number>(0);
-	const { state, dispatch } = useFilters();
+	const { state, dispatch } = useGlobalState();
 	const { filters } = state;
+
+	const [filterTabExpand, setFilterTabExpand] = useState<boolean>(
+		window.innerWidth < 1160,
+	);
 
 	const pageUrl = useLocation().pathname;
 
@@ -44,6 +48,20 @@ const AllFiltersComponent: FunctionComponent<{
 	});
 
 	const ottProviders = data?.results || [];
+
+	useEffect(() => {
+		const handleResize = () => {
+			if (window.innerWidth < 1160) {
+				setFilterTabExpand(false);
+			} else {
+				setFilterTabExpand(true);
+			}
+		};
+
+		window.addEventListener("resize", handleResize);
+		handleResize();
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	return (
 		<div className={styles.filtersContainer}>
@@ -71,9 +89,7 @@ const AllFiltersComponent: FunctionComponent<{
 						}
 						defaultValue={"Popularity Descending"}
 						slotProps={{
-							paper: {
-								
-							}
+							paper: {},
 						}}
 						renderInput={() => <TextField />}
 						onChange={(_event, value) =>
@@ -147,7 +163,11 @@ const AllFiltersComponent: FunctionComponent<{
 					/>
 				</AccordionDetails>
 			</Accordion>
-			<Accordion title={"Filters"} defaultExpanded>
+			<Accordion
+				title={"Filters"}
+				expanded={filterTabExpand}
+				onChange={() => setFilterTabExpand(!filterTabExpand)}
+			>
 				<FilterTab
 					countriesData={countriesData}
 					selectedCountry={selectedCountry}

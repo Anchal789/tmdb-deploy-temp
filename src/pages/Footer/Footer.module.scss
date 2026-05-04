@@ -1,21 +1,42 @@
 @use "../../styles/variables" as *;
 
 .footer {
-	display: flex;
-	justify-content: center;
+	padding-top: 80px;
+	padding-bottom: 80px;
 	font-size: 0.9em;
+	background-image: radial-gradient(
+		at 30% top,
+		rgba(3, 29, 51, 1) 0%,
+		#032541 70%
+	);
+
+	@media (max-width: 1160px) {
+		justify-content: flex-start;
+		padding: 40px 20px;
+	}
 
 	.footerContent {
-		padding-top: 80px;
-		padding-bottom: 80px;
+		// padding-top: 80px;
+		// padding-bottom: 80px;
 		display: flex;
 		justify-content: center;
 		gap: 40px;
+
+		@media (max-width: 1160px) {
+			flex-direction: column;
+			gap: 30px;
+		}
 
 		.footerLogoSection {
 			text-align: right;
 			position: relative;
 			top: -36px;
+
+			@media (max-width: 1160px) {
+				top: 0;
+				text-align: left;
+				padding-bottom: 20px;
+			}
 
 			.tmdbLogo {
 				display: block;
@@ -24,6 +45,10 @@
 				right: 0;
 				width: 130px;
 				height: 94px;
+
+				@media screen and (max-width: 1160px) {
+					display: none;
+				}
 			}
 
 			.joinTheCommunityText {
@@ -31,6 +56,7 @@
 				top: 140px;
 				background-color: #fff;
 				color: #01b4e4;
+				line-height: 1.5;
 				font-size: 1.3em;
 				display: inline-block;
 				word-wrap: break-word;
@@ -39,6 +65,18 @@
 				border: 2px solid #fff;
 				transition: linear 0.1s;
 				border-radius: 5px;
+				font-weight: 700;
+				cursor: pointer;
+
+				&:hover {
+					text-decoration: underline;
+					text-underline-offset: 3px;
+				}
+
+				@media (max-width: 1160px) {
+					top: 0;
+					color: #235ea7;
+				}
 			}
 		}
 
@@ -60,24 +98,31 @@
 			& > li {
 				text-decoration: none;
 				font-weight: 400;
-				line-height: 23px;
-				font-size: 1.2em;
+				line-height: 1.5rem;
+
 				color: #fff;
 				cursor: pointer;
-                
+
 				&:hover {
 					text-decoration: underline;
+					text-underline-offset: 3px;
+				}
+
+				& > p {
+					font-size: 1.2em;
 				}
 			}
 		}
 	}
-}
-
-.buildText {
-	color: $color-white;
-	font-size: 0.7rem;
-	opacity: 0.1;
-	display: flex;
-	justify-content: center;
-	line-height: 17px;
+	.buildText {
+		color: $color-white;
+		font-size: 0.7rem;
+		opacity: 0.1;
+		display: flex;
+		justify-content: center;
+		line-height: 17px;
+		@media (max-width: 1160px) {
+			margin-top: 30px;
+		}
+	}
 }

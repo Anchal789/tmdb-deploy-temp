@@ -13,7 +13,7 @@ import type {
 	DiscoverFiltersType,
 	OTTProviderResponseType,
 } from "../../../types/filters";
-import { useFilters } from "../../../store/store";
+import { useGlobalState } from "../../../store/store";
 import {
 	COUNTRY_OPTIONS,
 	MENU_PAPER_PROPS,
@@ -39,7 +39,7 @@ const WhereToWatchFilter: FunctionComponent<{
 }> = ({ countriesData, setCountriesCount, ottProviders }) => {
 	const [hoverOn, setHoverOn] = useState<number | null>(null);
 
-	const { state, dispatch } = useFilters();
+	const { state, dispatch } = useGlobalState();
 	const { filters } = state;
 
 	useEffect(() => {
@@ -61,9 +61,10 @@ const WhereToWatchFilter: FunctionComponent<{
 			</Typography>
 			<CountryFilter dispatch={dispatch} filters={filters} />
 			<Box
-				display={"grid"}
+				display={"flex"}
 				my={"14px"}
-				gridTemplateColumns={"repeat(4, 1fr)"}
+				justifyContent={"space-between"}
+				flexWrap={"wrap"}
 				columnGap={"6px"}
 				rowGap={"10px"}
 			>

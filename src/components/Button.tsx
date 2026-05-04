@@ -26,7 +26,7 @@ const Button = ({
 				fontWeight: 500,
 				fontSize: "14px",
 				height: "40px",
-				"&.Mui-disabled": { backgroundColor: "#ECECEC",  },
+				"&.Mui-disabled": { backgroundColor: "#ECECEC", color: "#00000080" },
 				...sx,
 			}}
 			{...props}
