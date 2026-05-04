@@ -1,6 +1,7 @@
 const getHeaders = () => ({
 	"Content-Type": "application/json",
 	Authorization: `Bearer ${import.meta.env.VITE_BEARER_TOKEN}`,
+	"Cache-Control": "no-cache",
 });
 
 const request = async <T>({
@@ -37,7 +38,7 @@ const request = async <T>({
 				method,
 				headers: getHeaders(),
 				body: body ? JSON.stringify(body) : undefined,
-				cache: "no-cache"
+				cache: "no-cache",
 			},
 		);
 		if (!response.ok) {

@@ -11,6 +11,7 @@ import Button from "../../components/Button";
 import TopLoader from "../../UI/TopLoader";
 import { useGlobalState } from "../../store/store";
 import type { CountriesType } from "../../types/filters";
+import dayjs from "dayjs";
 
 const AllFiltersComponent = lazy(() => import("./Filters/AllFiltersComponent"));
 const MoviesContainer = lazy(() => import("./MoviesContainer/Movies"));
@@ -33,11 +34,18 @@ const MoviesContent = () => {
 
 	const params = { ...appliedFilters };
 
-	const { data, fetchNextPage, isLoading, isFetchingNextPage } =
+	const { data, fetchNextPage, isLoading, isFetchingNextPage, hasNextPage } =
 		useInfiniteData<MovieType>({
 			queryKey: ["movies&tv", endpoint, appliedFilters, pageUrl],
 			url: endpoint,
-			params: isFiltered ? { ...params } : {},
+			params: isFiltered
+				? { ...params, language: "en-US" }
+				: {
+						language: "en-US",
+						include_adult: false,
+						include_softcore: false,
+						"release_date.lte": dayjs().format("YYYY-MM-DD"),
+					},
 		});
 
 	const { data: countriesData } = useData<Array<CountriesType>>({
@@ -62,7 +70,9 @@ const MoviesContent = () => {
 		const handleScroll = async () => {
 			if (
 				window.innerHeight + window.scrollY >=
-				document.body.offsetHeight - 100
+					document.body.offsetHeight - 100 &&
+				hasNextPage &&
+				!isFetchingNextPage
 			) {
 				await fetchNextPage();
 			}
@@ -71,7 +81,7 @@ const MoviesContent = () => {
 		if (data?.pageParams.length === 1) return;
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
-	}, [fetchNextPage, data?.pageParams.length]);
+	}, [fetchNextPage, data?.pageParams.length, isFetchingNextPage]);
 
 	useEffect(() => {
 		const handleScroll = () => {
