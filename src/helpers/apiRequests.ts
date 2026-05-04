@@ -45,8 +45,9 @@ const request = async <T>({
 			const errorData = await response.json().catch(() => ({}));
 
 			throw {
-				status: response.status,
-				message: errorData.status_message || "Something went wrong",
+				status_code: errorData.status_code ?? response.status,
+				status_message: errorData.status_message || "Something went wrong",
+				success: false,
 			};
 		}
 
@@ -54,8 +55,9 @@ const request = async <T>({
 		return data as T;
 	} catch (error: any) {
 		throw {
-			message: error.message || "Network error",
-			status: error.status || 500,
+			status_code: error.status_code ?? 500,
+			status_message: error.status_message || error.message || "Network error",
+			success: false,
 		};
 	}
 };

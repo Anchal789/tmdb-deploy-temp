@@ -2,15 +2,15 @@
 
 .moviesContent {
 	background-color: $color-white;
-	margin-top: 64px;
+	margin-top: $header-height;
 
 	.container {
 		margin: 0 auto;
 		max-width: $maxScreenWidth;
-		padding: 30px 40px;
+		padding: 30px $nav-padding-x;
 
-		@media (max-width: 1160px) {
-			padding: 20px;
+		@media (max-width: $breakpoint-md) {
+			padding: $nav-padding-x-sm;
 		}
 
 		.heading {
@@ -24,23 +24,24 @@
 			display: flex;
 			gap: 30px;
 
-			@media (max-width: 1160px) {
+			@media (max-width: $breakpoint-md) {
 				flex-direction: column;
 				gap: 20px;
 			}
 		}
 	}
+
 	.drawer {
 		position: fixed;
-		top: 64px;
+		top: $header-height;
 		left: 0;
-		width: 80%; 
+		width: 80%;
 		height: 100%;
-		background: #032541e6;
+		background: $color-brand-primary-alpha;
 		-webkit-backdrop-filter: blur(20px);
 		backdrop-filter: blur(20px);
 		z-index: 9999;
-		padding: 20px;
+		padding: $nav-padding-x-sm;
 		box-sizing: border-box;
 
 		transition: transform 0.3s ease-in-out;
@@ -56,7 +57,7 @@
 			.drawerListItem {
 				.drawerListItemTitle {
 					padding-bottom: 10px;
-					color: #fff;
+					color: $color-white;
 					font-weight: 600;
 					font-size: 1.3em;
 				}
@@ -69,7 +70,7 @@
 						padding-bottom: 10px;
 
 						.listMenuItemTitle {
-							color: #fff;
+							color: $color-white;
 							font-weight: 400;
 							font-size: 1em;
 						}

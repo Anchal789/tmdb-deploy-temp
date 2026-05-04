@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "../../assets/tmdb-logo.svg";
 import styles from "./Header.module.scss";
 import Popover from "@mui/material/Popover";
@@ -7,22 +7,29 @@ import { useGlobalState } from "../../store/store";
 
 const Header = () => {
 	const { state, dispatch } = useGlobalState();
-	const [scrollPosition, setScrollPosition] = useState<number>(0);
 	const [hide, setHide] = useState<boolean>(false);
-	const [activeMenu, setActiveMenu] = useState<"movies" | "tv" | null>(null);
+	const [activeMenu, setActiveMenu] = useState<
+		"movies" | "tv" | "people" | "awards" | "more" | null
+	>(null);
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+	const scrollPositionRef = useRef(0);
+	const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	const handlePopoverOpen = (
 		event: React.MouseEvent<HTMLElement>,
-		menu: "movies" | "tv",
+		menu: "movies" | "tv" | "people" | "awards" | "more",
 	) => {
+		if (timeoutRef.current) clearTimeout(timeoutRef.current);
 		setAnchorEl(event.currentTarget);
 		setActiveMenu(menu);
 	};
 
 	const handlePopoverClose = () => {
-		setAnchorEl(null);
-		setActiveMenu(null);
+		timeoutRef.current = setTimeout(() => {
+			setAnchorEl(null);
+			setActiveMenu(null);
+		}, 200);
 	};
 
 	const open = Boolean(anchorEl);
@@ -32,17 +39,17 @@ const Header = () => {
 			const currentPosition = window.pageYOffset;
 
 			if (currentPosition > 100) {
-				setHide(currentPosition > scrollPosition);
+				setHide(currentPosition > scrollPositionRef.current);
 			} else {
 				setHide(false);
 			}
-			setScrollPosition(currentPosition);
+			scrollPositionRef.current = currentPosition;
 		};
 
 		if (!state.isDrawerOpen)
 			window.addEventListener("scroll", handleScroll, { passive: true });
 		return () => window.removeEventListener("scroll", handleScroll);
-	}, [scrollPosition, state.isDrawerOpen]);
+	}, [state.isDrawerOpen]);
 
 	const handleDrawerToggle = () => {
 		dispatch({ type: "TOGGLE_DRAWER" });
@@ -71,6 +78,10 @@ const Header = () => {
 								<PopoverContent
 									anchorEl={anchorEl}
 									open={activeMenu === "movies"}
+									onMouseEnter={() => {
+										if (timeoutRef.current) clearTimeout(timeoutRef.current);
+									}}
+									onMouseLeave={handlePopoverClose}
 									listContent={[
 										{ name: "Popular", url: "/movie" },
 										{ name: "Now Playing", url: "/movie/now-playing" },
@@ -94,6 +105,10 @@ const Header = () => {
 								<PopoverContent
 									anchorEl={anchorEl}
 									open={activeMenu === "tv"}
+									onMouseEnter={() => {
+										if (timeoutRef.current) clearTimeout(timeoutRef.current);
+									}}
+									onMouseLeave={handlePopoverClose}
 									listContent={[
 										{ name: "Popular", url: "/tv" },
 										{ name: "Airing Today", url: "/tv/airing-today" },
@@ -102,14 +117,80 @@ const Header = () => {
 									]}
 								/>
 							</li>
-							<li>
-								<p className={styles["list-content"]}>People</p>
+							<li
+								onMouseEnter={(e) => handlePopoverOpen(e, "people")}
+								onMouseLeave={handlePopoverClose}
+								style={{ position: "relative" }}
+							>
+								<a
+									className={styles["list-content"]}
+									aria-owns={open ? "mouse-over-popover" : undefined}
+									aria-haspopup='true'
+								>
+									People
+								</a>
+								<PopoverContent
+									anchorEl={anchorEl}
+									open={activeMenu === "people"}
+									onMouseEnter={() => {
+										if (timeoutRef.current) clearTimeout(timeoutRef.current);
+									}}
+									onMouseLeave={handlePopoverClose}
+									listContent={[{ name: "Popular", url: "" }]}
+								/>
 							</li>
-							<li>
-								<p className={styles["list-content"]}>Awards</p>
+							<li
+								onMouseEnter={(e) => handlePopoverOpen(e, "awards")}
+								onMouseLeave={handlePopoverClose}
+								style={{ position: "relative" }}
+							>
+								<a
+									className={styles["list-content"]}
+									aria-owns={open ? "mouse-over-popover" : undefined}
+									aria-haspopup='true'
+								>
+									Awards
+								</a>
+								<PopoverContent
+									anchorEl={anchorEl}
+									open={activeMenu === "awards"}
+									onMouseEnter={() => {
+										if (timeoutRef.current) clearTimeout(timeoutRef.current);
+									}}
+									onMouseLeave={handlePopoverClose}
+									listContent={[
+										{ name: "Popular", url: "/tv" },
+										{ name: "Upcoming", url: "" },
+									]}
+								/>
 							</li>
-							<li>
-								<p className={styles["list-content"]}>More</p>
+							<li
+								onMouseEnter={(e) => handlePopoverOpen(e, "more")}
+								onMouseLeave={handlePopoverClose}
+								style={{ position: "relative" }}
+							>
+								<a
+									className={styles["list-content"]}
+									aria-owns={open ? "mouse-over-popover" : undefined}
+									aria-haspopup='true'
+								>
+									More
+								</a>
+								<PopoverContent
+									anchorEl={anchorEl}
+									open={activeMenu === "more"}
+									onMouseEnter={() => {
+										if (timeoutRef.current) clearTimeout(timeoutRef.current);
+									}}
+									onMouseLeave={handlePopoverClose}
+									listContent={[
+										{ name: "Discussion", url: "" },
+										{ name: "Leaderboard", url: "" },
+										{ name: "Support", url: "" },
+										{ name: "API Documentation", url: "" },
+										{ name: "API for Business", url: "" },
+									]}
+								/>
 							</li>
 						</ul>
 					</div>
@@ -201,10 +282,14 @@ export default Header;
 const PopoverContent = ({
 	anchorEl,
 	open,
+	onMouseEnter,
+	onMouseLeave,
 	listContent,
 }: {
 	anchorEl: HTMLElement | null;
 	open: boolean;
+	onMouseEnter: () => void;
+	onMouseLeave: () => void;
 	listContent?: Array<{
 		name: string;
 		url: string;
@@ -219,10 +304,14 @@ const PopoverContent = ({
 			sx={{
 				pointerEvents: "none",
 			}}
+			onMouseEnter={onMouseEnter}
+			onMouseLeave={onMouseLeave}
 			PaperProps={{
+				onMouseEnter: onMouseEnter,
+				onMouseLeave: onMouseLeave,
 				sx: {
 					pointerEvents: "auto",
-					paddingTop: "6px",
+					paddingY: "6px",
 					marginTop: "-0.35rem",
 				},
 			}}

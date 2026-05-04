@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import styles from "./Movies.module.scss";
 import type { MovieType } from "../../../types/movies";
-import MovieCard from "../../../UI/MovieCard/MovieCard";
+import MovieCard from "../../../shared/MovieCard/MovieCard";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "../../../components/Typography";
 import type { TvNetworksType } from "../../../types/filters";
