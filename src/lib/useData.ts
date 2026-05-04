@@ -51,8 +51,8 @@ export const useInfiniteData = <T>({
 			const response = await fetchData<ApiResponse<T>>({
 				url,
 				params: {
-					page: pageParam,
 					...params,
+					page: pageParam,
 				},
 			});
 			return response;

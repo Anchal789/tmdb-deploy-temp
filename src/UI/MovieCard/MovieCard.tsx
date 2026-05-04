@@ -23,14 +23,17 @@ const MovieCard: FunctionComponent<{
 					component='img'
 					loading='lazy'
 					sx={{
-						backgroundSize: "50%",
+						width: "100%",
+						aspectRatio: "2 / 3",
+						backgroundColor: "#e3e3e3",
+						objectFit: imgUrl ? "cover" : "contain",
+						padding: imgUrl ? "0" : "40px",
+						cursor: "pointer",
 					}}
 					className={styles["movie-card-img"]}
 				/>
 			</div>
-			<div
-				className={styles["movie-card-content"]}
-			>
+			<div className={styles["movie-card-content"]}>
 				<div>
 					<Typography
 						variant='h5'

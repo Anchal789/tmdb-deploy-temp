@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import {
 	type CountriesType,
 	type DiscoverFiltersType,
@@ -71,8 +72,8 @@ export const FILTERS_INITIAL_STATE: DiscoverFiltersType = {
 	debug: null,
 	"first_air_date.gte": null,
 	"first_air_date.lte": null,
-	include_adult: null,
-	include_softcore: null,
+	include_adult: false,
+	include_softcore: false,
 	"latest_ceremony.gte": null,
 	"latest_ceremony.lte": null,
 	page: 1,

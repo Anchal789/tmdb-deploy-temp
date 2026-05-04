@@ -46,6 +46,12 @@
 		}
 
 		.movie-card-title {
+			cursor: pointer;
+			&:hover {
+				text-decoration: underline;
+				text-underline-offset: 3px;
+			}
+
 			@media (max-width: 1160px) {
 				line-height: 16px;
 			}
