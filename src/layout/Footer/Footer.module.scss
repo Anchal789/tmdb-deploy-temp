@@ -6,23 +6,21 @@
 	font-size: 0.9em;
 	background-image: radial-gradient(
 		at 30% top,
-		rgba(3, 29, 51, 1) 0%,
-		#032541 70%
+		$color-brand-primary-rgb 0%,
+		$color-brand-primary 70%
 	);
 
-	@media (max-width: 1160px) {
+	@media (max-width: $breakpoint-md) {
 		justify-content: flex-start;
-		padding: 40px 20px;
+		padding: 40px $nav-padding-x-sm;
 	}
 
 	.footerContent {
-		// padding-top: 80px;
-		// padding-bottom: 80px;
 		display: flex;
 		justify-content: center;
 		gap: 40px;
 
-		@media (max-width: 1160px) {
+		@media (max-width: $breakpoint-md) {
 			flex-direction: column;
 			gap: 30px;
 		}
@@ -32,7 +30,7 @@
 			position: relative;
 			top: -36px;
 
-			@media (max-width: 1160px) {
+			@media (max-width: $breakpoint-md) {
 				top: 0;
 				text-align: left;
 				padding-bottom: 20px;
@@ -46,7 +44,7 @@
 				width: 130px;
 				height: 94px;
 
-				@media screen and (max-width: 1160px) {
+				@media screen and (max-width: $breakpoint-md) {
 					display: none;
 				}
 			}
@@ -54,17 +52,17 @@
 			.joinTheCommunityText {
 				position: relative;
 				top: 140px;
-				background-color: #fff;
-				color: #01b4e4;
+				background-color: $color-white;
+				color: $color-brand-accent;
 				line-height: 1.5;
 				font-size: 1.3em;
 				display: inline-block;
 				word-wrap: break-word;
 				white-space: normal;
 				padding: 8px 16px;
-				border: 2px solid #fff;
+				border: 2px solid $color-white;
 				transition: linear 0.1s;
-				border-radius: 5px;
+				border-radius: $border-radius-lg;
 				font-weight: 700;
 				cursor: pointer;
 
@@ -73,7 +71,7 @@
 					text-underline-offset: 3px;
 				}
 
-				@media (max-width: 1160px) {
+				@media (max-width: $breakpoint-md) {
 					top: 0;
 					color: #235ea7;
 				}
@@ -83,7 +81,7 @@
 		.footerLinksTitle {
 			font-size: 1.4em;
 			line-height: 1.4em;
-			color: #fff;
+			color: $color-white;
 			white-space: nowrap;
 			font-weight: 700;
 			text-transform: uppercase;
@@ -99,8 +97,7 @@
 				text-decoration: none;
 				font-weight: 400;
 				line-height: 1.5rem;
-
-				color: #fff;
+				color: $color-white;
 				cursor: pointer;
 
 				&:hover {
@@ -113,16 +110,34 @@
 				}
 			}
 		}
-	}
-	.buildText {
-		color: $color-white;
-		font-size: 0.7rem;
-		opacity: 0.1;
-		display: flex;
-		justify-content: center;
-		line-height: 17px;
-		@media (max-width: 1160px) {
-			margin-top: 30px;
+		.legal-container {
+			@media (max-width: $breakpoint-md) {
+				margin-bottom: 30px;
+			}
 		}
+	}
+}
+
+.buildText {
+	color: $color-white !important;
+	font-size: 0.7rem !important;
+	opacity: 0.1;
+	display: flex;
+	justify-content: center;
+	line-height: 17px;
+
+	@media (max-width: $breakpoint-md) {
+		margin-top: 30px;
+	}
+}
+
+.large-build-text {
+	@media (max-width: $breakpoint-md) {
+		display: none;
+	}
+}
+.small-build-text {
+	@media (min-width: $breakpoint-md) {
+		display: none;
 	}
 }
