@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "../../assets/tmdb-logo.svg";
 import styles from "./Header.module.scss";
 import Popover from "@mui/material/Popover";
@@ -7,11 +7,13 @@ import { useGlobalState } from "../../store/store";
 
 const Header = () => {
 	const { state, dispatch } = useGlobalState();
-	const [scrollPosition, setScrollPosition] = useState<number>(0);
 	const [hide, setHide] = useState<boolean>(false);
-	const [activeMenu, setActiveMenu] = useState<"movies" | "tv" | "people" | "awards" | "more" | null>(null);
+	const [activeMenu, setActiveMenu] = useState<
+		"movies" | "tv" | "people" | "awards" | "more" | null
+	>(null);
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
+	const scrollPositionRef = useRef(0);
 	const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	const handlePopoverOpen = (
@@ -37,17 +39,17 @@ const Header = () => {
 			const currentPosition = window.pageYOffset;
 
 			if (currentPosition > 100) {
-				setHide(currentPosition > scrollPosition);
+				setHide(currentPosition > scrollPositionRef.current);
 			} else {
 				setHide(false);
 			}
-			setScrollPosition(currentPosition);
+			scrollPositionRef.current = currentPosition;
 		};
 
 		if (!state.isDrawerOpen)
 			window.addEventListener("scroll", handleScroll, { passive: true });
 		return () => window.removeEventListener("scroll", handleScroll);
-	}, [scrollPosition, state.isDrawerOpen]);
+	}, [state.isDrawerOpen]);
 
 	const handleDrawerToggle = () => {
 		dispatch({ type: "TOGGLE_DRAWER" });
@@ -134,9 +136,7 @@ const Header = () => {
 										if (timeoutRef.current) clearTimeout(timeoutRef.current);
 									}}
 									onMouseLeave={handlePopoverClose}
-									listContent={[
-										{ name: "Popular", url: "" },
-									]}
+									listContent={[{ name: "Popular", url: "" }]}
 								/>
 							</li>
 							<li
@@ -289,7 +289,7 @@ const PopoverContent = ({
 	anchorEl: HTMLElement | null;
 	open: boolean;
 	onMouseEnter: () => void;
-    onMouseLeave: () => void;
+	onMouseLeave: () => void;
 	listContent?: Array<{
 		name: string;
 		url: string;
@@ -305,10 +305,10 @@ const PopoverContent = ({
 				pointerEvents: "none",
 			}}
 			onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
+			onMouseLeave={onMouseLeave}
 			PaperProps={{
 				onMouseEnter: onMouseEnter,
-                onMouseLeave: onMouseLeave,
+				onMouseLeave: onMouseLeave,
 				sx: {
 					pointerEvents: "auto",
 					paddingY: "6px",

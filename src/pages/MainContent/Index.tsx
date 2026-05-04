@@ -1,4 +1,4 @@
-import { lazy, useCallback, useEffect, useRef, useState } from "react";
+import { lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./MoviesContent.module.scss";
 import type { MovieType } from "../../types/movies";
 import {
@@ -54,7 +54,7 @@ const MoviesContent = () => {
 		params: {},
 	});
 
-	const headerTitle = useCallback(() => {
+	const headerTitle = useMemo(() => {
 		return PAGE_URL_TITLE_MAP[pageUrl] || "Movies";
 	}, [pageUrl]);
 
@@ -105,7 +105,7 @@ const MoviesContent = () => {
 			{(isLoading || isFetchingNextPage) && <TopLoader />}
 			<main className={styles.moviesContent}>
 				<div className={styles.container}>
-					<h3 className={styles.heading}>{headerTitle()}</h3>
+					<h3 className={styles.heading}>{headerTitle}</h3>
 					<div className={styles.mainContent}>
 						<div>
 							<div className={styles.filtersContainer} ref={filterContainerRef}>

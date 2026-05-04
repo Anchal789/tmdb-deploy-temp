@@ -19,7 +19,9 @@ export interface DiscoverFiltersType {
 	"release_date.gte"?: string | null;
 	"release_date.lte"?: string | null;
 	show_me?: string | null;
-	sort_by?: typeof SORTING_PAYLOAD_KEYS | null;
+	sort_by?:
+		| (typeof SORTING_PAYLOAD_KEYS)[keyof typeof SORTING_PAYLOAD_KEYS]
+		| null;
 	"vote_average.gte"?: number | null;
 	"vote_average.lte"?: number | null;
 	"vote_count.gte"?: number | null;
