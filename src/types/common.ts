@@ -63,12 +63,14 @@ export interface State {
 	appliedFilters: DiscoverFiltersType;
 	isDirty: boolean;
 	isFiltered: boolean;
+	isDrawerOpen: boolean;
 }
 
 export type Action =
 	| { type: "SET_FILTERS"; payload: DiscoverFiltersType }
 	| { type: "APPLY_FILTERS" }
-	| { type: "INIT_PAGE_FILTERS"; payload: DiscoverFiltersType };
+	| { type: "INIT_PAGE_FILTERS"; payload: DiscoverFiltersType }
+	| { type: "TOGGLE_DRAWER" };
 
 export interface CustomDatePickerProps extends DatePickerProps {
 	error?: boolean;

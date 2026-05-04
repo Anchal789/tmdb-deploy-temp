@@ -2,7 +2,7 @@ import { lazy, useEffect, type FunctionComponent } from "react";
 import AccordionDetails from "../../../../components/AccordionDetails";
 import Typography from "../../../../components/Typography";
 import { Box, Chip, RadioGroup } from "@mui/material";
-import { useFilters } from "../../../../store/store";
+import { useGlobalState } from "../../../../store/store";
 import { useLocation } from "react-router";
 import { FILTERS_INITIAL_STATE } from "../../../../constants/filterConstants";
 import type { CountriesType } from "../../../../types/filters";
@@ -24,7 +24,7 @@ const FilterTab: FunctionComponent<{
 	countriesData: Array<CountriesType>;
 	selectedCountry?: CountriesType;
 }> = ({ countriesData, selectedCountry }) => {
-	const { state, dispatch } = useFilters();
+	const { state, dispatch } = useGlobalState();
 	const { filters } = state;
 
 	const pageURl = useLocation().pathname;

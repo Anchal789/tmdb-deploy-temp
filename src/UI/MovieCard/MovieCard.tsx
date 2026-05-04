@@ -1,26 +1,17 @@
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "../../components/Typography";
 import { type FunctionComponent } from "react";
 import dayjs from "dayjs";
+import styles from "./MovieCard.module.scss";
 
 const MovieCard: FunctionComponent<{
 	imgUrl?: string;
 	title?: string;
 	date?: string;
-}> = ({ imgUrl, title, date }) => {
+	description?: string;
+}> = ({ imgUrl, title, date, description }) => {
 	return (
-		<Card
-			sx={{
-				boxShadow:
-					"0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-				border: "1px solid #e3e3e3",
-				borderRadius: "0.5rem",
-				display: "flex",
-				flexDirection: "column",
-			}}
-		>
+		<div className={styles["movie-card"]}>
 			<div>
 				<CardMedia
 					image={
@@ -34,31 +25,37 @@ const MovieCard: FunctionComponent<{
 					sx={{
 						backgroundSize: "50%",
 					}}
+					className={styles["movie-card-img"]}
 				/>
 			</div>
-			<CardContent
-				component={"div"}
-				sx={{
-					padding: ".5rem.75rem .75rem .75rem",
-					"&:last-child": { paddingBottom: ".75rem" },
-				}}
+			<div
+				className={styles["movie-card-content"]}
 			>
-				<Typography
-					variant='h5'
-					sx={{
-						fontSize: "1rem",
-						lineHeight: "1.5rem",
-					}}
-					fontWeight={600}
-					component='div'
-				>
-					{title}
+				<div>
+					<Typography
+						variant='h5'
+						sx={{
+							fontSize: "1rem",
+							lineHeight: "1rem",
+						}}
+						fontWeight={600}
+						component='div'
+						className={styles["movie-card-title"]}
+					>
+						{title}
+					</Typography>
+					<Typography
+						className={styles["movie-card-date"]}
+						sx={{ color: "text.secondary", lineHeight: "24px" }}
+					>
+						{dayjs(date).format("MMMM D, YYYY")}
+					</Typography>
+				</div>
+				<Typography className={styles["movie-card-description"]}>
+					{description}
 				</Typography>
-				<Typography sx={{ color: "text.secondary", lineHeight: "24px" }}>
-					{dayjs(date).format("MMMM D, YYYY")}
-				</Typography>
-			</CardContent>
-		</Card>
+			</div>
+		</div>
 	);
 };
 export default MovieCard;

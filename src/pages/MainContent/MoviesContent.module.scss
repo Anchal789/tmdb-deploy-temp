@@ -8,20 +8,93 @@
 		margin: 0 auto;
 		max-width: $maxScreenWidth;
 		padding: 30px 40px;
-		
+
+		@media (max-width: 1160px) {
+			padding: 20px;
+		}
+
 		.heading {
 			font-size: 1.6rem;
 			line-height: $line-height-26;
 			margin-bottom: 20px;
 			font-weight: 600;
 		}
-		
+
 		.mainContent {
 			display: flex;
 			gap: 30px;
 
 			@media (max-width: 1160px) {
 				flex-direction: column;
+				gap: 20px;
+			}
+		}
+	}
+	.drawer {
+		position: fixed;
+		top: 64px;
+		left: 0;
+		width: 80%; 
+		height: 100%;
+		background: #032541e6;
+		-webkit-backdrop-filter: blur(20px);
+		backdrop-filter: blur(20px);
+		z-index: 9999;
+		padding: 20px;
+		box-sizing: border-box;
+
+		transition: transform 0.3s ease-in-out;
+		transform: translateX(-100%);
+
+		&.show {
+			transform: translateX(0);
+		}
+
+		.drawerList {
+			list-style-type: none;
+
+			.drawerListItem {
+				.drawerListItemTitle {
+					padding-bottom: 10px;
+					color: #fff;
+					font-weight: 600;
+					font-size: 1.3em;
+				}
+
+				.listMenu {
+					list-style-type: none;
+					margin-bottom: 20px;
+
+					.listMenuItem {
+						padding-bottom: 10px;
+
+						.listMenuItemTitle {
+							color: #fff;
+							font-weight: 400;
+							font-size: 1em;
+						}
+					}
+
+					.upcomingMenuItem {
+						padding-bottom: 0;
+					}
+				}
+			}
+		}
+
+		.drawerSubList {
+			margin-top: 10px;
+			list-style-type: none;
+
+			.drawerListSubItem {
+				color: #fff9;
+				font-size: 1em;
+				font-weight: 600;
+				padding-bottom: 10px;
+			}
+
+			.loginSubItem {
+				margin-top: 10px;
 			}
 		}
 	}

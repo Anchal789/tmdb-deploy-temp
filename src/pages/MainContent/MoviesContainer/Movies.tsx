@@ -33,6 +33,7 @@ const MoviesContainer: FunctionComponent<{
 								? movie.release_date
 								: movie.first_air_date
 						}
+						description={movie.overview}
 					/>
 				))}
 			</div>
