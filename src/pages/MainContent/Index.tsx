@@ -8,7 +8,7 @@ import {
 import { useLocation } from "react-router";
 import { useData, useInfiniteData } from "../../lib/useData";
 import Button from "../../components/Button";
-import TopLoader from "../../UI/TopLoader";
+import TopLoader from "../../shared/TopLoader";
 import { useGlobalState } from "../../store/store";
 import type { CountriesType } from "../../types/filters";
 import dayjs from "dayjs";
