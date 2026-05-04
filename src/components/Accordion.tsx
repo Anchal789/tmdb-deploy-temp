@@ -11,7 +11,7 @@ import styles from "./Components.module.scss";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type AppAccordionProps = Omit<AccordionProps, "children" | "onChange"> & {
+type AppAccordionProps = Omit<AccordionProps, "children"> & {
 	title: ReactNode;
 	children: ReactNode;
 	summaryProps?: Omit<AccordionSummaryProps, "expandIcon" | "children">;
@@ -37,8 +37,8 @@ const Accordion = ({
 			disableGutters
 			elevation={0}
 			className={className}
-			{...props}
 			onChange={onToggle}
+			{...props}
 			sx={{
 				border: "1px solid #e5e7eb",
 				borderRadius: "8px !important",

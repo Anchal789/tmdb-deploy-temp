@@ -11,7 +11,6 @@ import Typography from "../../../components/Typography";
 import { lazy, useEffect, useState, type FunctionComponent } from "react";
 import type {
 	CountriesType,
-	DiscoverFiltersType,
 	OTTProviderType,
 } from "../../../types/filters";
 import AccordionDetails from "../../../components/AccordionDetails";
@@ -82,10 +81,8 @@ const AllFiltersComponent: FunctionComponent<{
 					<Autocomplete
 						options={SORT_BY_OPTIONS.map((option) => option.label)}
 						value={
-							SORT_BY_OPTIONS.find(
-								(option) =>
-									(option.value as DiscoverFiltersType) === filters.sort_by,
-							)?.label
+							SORT_BY_OPTIONS.find((option) => option.value === filters.sort_by)
+								?.label
 						}
 						defaultValue={"Popularity Descending"}
 						slotProps={{

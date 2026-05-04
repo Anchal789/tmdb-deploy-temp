@@ -1,4 +1,4 @@
-import { lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./MoviesContent.module.scss";
 import type { MovieType } from "../../types/movies";
 import {
