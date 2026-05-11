@@ -1,0 +1,96 @@
+@use "../../../styles/variables.scss" as *;
+
+.filtersContainer {
+	min-width: $filter-sidebar-width;
+	width: $filter-sidebar-width;
+
+	@media (max-width: $breakpoint-md) {
+		min-width: 100%;
+	}
+
+	.whereToWatchTitleContainer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding-right: 10px;
+		max-height: 1.1rem;
+
+		.whereToWatchTitle {
+			font-size: 1.6rem;
+			line-height: $line-height-26;
+			margin-bottom: 20px;
+			font-weight: 600;
+		}
+
+		.countryCount {
+			font-size: 0.975rem;
+			line-height: "1";
+			height: "100%";
+			background-color: #00000014;
+			padding: 0 10px;
+			border-radius: $border-radius-md;
+			display: inline-flex;
+			align-items: center;
+			font-family: "Roboto Mono", monospace;
+			font-weight: 300;
+		}
+	}
+
+	.providerContainer {
+		display: inline-flex;
+		cursor: pointer;
+
+		.providerLogo {
+			width: 50px;
+			height: 50px;
+			object-fit: cover;
+			border-radius: $border-radius-md;
+			cursor: pointer;
+			position: relative;
+			z-index: 0;
+		}
+
+		.providerHover {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			align-content: center;
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			background: rgba(1, 180, 228, 0.9);
+			z-index: 2;
+			border-radius: $border-radius-md;
+			font-size: 2em;
+
+			.providerHoverImage {
+				background: url("https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-739-check-white-a09b2a26e235b77489dfd57be3b66a17ff86efd5fb94d6db5f10cd3ced01e5a6.svg");
+				position: relative;
+				top: 0;
+				left: 0;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				min-width: 1em;
+				width: 1em;
+				min-height: 1em;
+				height: 1em;
+				line-height: inherit;
+				background-position: center center;
+				background-repeat: no-repeat;
+				color: inherit;
+				box-sizing: border-box;
+			}
+		}
+	}
+
+	.hideProviderHover {
+		display: none;
+	}
+
+	.availabilitiesCheckboxesContainer {
+		display: flex;
+		flex-direction: column;
+	}
+}

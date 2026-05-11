@@ -1,0 +1,19 @@
+@use "../styles/variables.scss" as *;
+
+.accordion-expand-icon {
+	min-width: 1rem;
+	width: 1rem;
+	min-height: 1rem;
+	height: 1rem;
+}
+
+.questionMarkTooltip {
+	width: 1rem;
+	height: 1rem;
+	opacity: 0.4;
+	margin-left: 6px;
+}
+
+.checkboxContainer {
+    display: flex;
+}
