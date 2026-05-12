@@ -15,7 +15,7 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
 		padding: "0.25rem 0.5rem",
 		borderRadius: "0.375rem",
 		boxShadow: "0px 2px 7px rgba(0, 0, 0, 0.075)",
-		height: "29px",
+		minHeight: "29px",
 		display: "flex",
 		alignItems: "center",
 	},
