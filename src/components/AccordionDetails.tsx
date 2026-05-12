@@ -9,6 +9,7 @@ const AccordionDetails = (props: AccordionDetailsProps) => {
 			{...props}
 			sx={{
 				padding: "14px 16px 16px",
+				position: "relative",
 				...props?.sx,
 			}}
 		/>

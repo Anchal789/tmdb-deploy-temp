@@ -16,8 +16,8 @@ import {
 } from "@mui/material";
 import {
 	LANGUAGES_OPTIONS,
-	MENU_PAPER_PROPS,
 	SELECT_STYLES,
+	withMenuProps,
 } from "../../../../constants/filterConstants";
 import Typography from "../../../../components/Typography";
 import TextField from "../../../../components/TextField";
@@ -33,6 +33,7 @@ const LanguageFilter: FunctionComponent<{
 }> = ({ dispatch, filters }) => {
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const searchFieldRef = useRef<HTMLInputElement>(null);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 
 	const activeSelection = useMemo(
@@ -116,22 +117,36 @@ const LanguageFilter: FunctionComponent<{
 			<Select
 				fullWidth
 				displayEmpty
+				open={isOpen}
+				onClose={() => setIsOpen(false)}
 				value={activeSelection.iso_639_1 || ""}
-				onOpen={() => setSearchTerm("")}
+				onOpen={() => {
+					setSearchTerm("");
+					setIsOpen(true);
+				}}
 				renderValue={() => renderOptionLabel(activeSelection, true)}
 				MenuProps={{
 					autoFocus: false,
-					PaperProps: MENU_PAPER_PROPS,
+					PaperProps: withMenuProps({ width: "226.4px", height: "217.6px" }),
 					TransitionProps: { onEntered: handleMenuOpened },
+					anchorOrigin: { vertical: "bottom", horizontal: "left" },
+					transformOrigin: { vertical: "top", horizontal: "left" },
 				}}
 				sx={SELECT_STYLES}
 				IconComponent={() => (
-					<Box sx={{
-						padding: "0.375rem",
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-					}}>
+					<Box
+						sx={{
+							padding: "0.375rem",
+							display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+							cursor: "pointer",
+						}}
+						onClick={(e) => {
+							e.stopPropagation();
+							setIsOpen((prev) => !prev);
+						}}
+					>
 						<svg
 							viewBox='0 0 512 512'
 							focusable='false'

@@ -99,13 +99,20 @@ export const FILTERS_INITIAL_STATE: DiscoverFiltersType = {
 	"with_runtime.lte": 400,
 };
 
+export const withMenuProps = (overrides: Record<string, string> = {}) => ({
+    sx: {
+        ...MENU_PAPER_PROPS.sx,
+        ...overrides,
+    },
+});
 
 export const MENU_PAPER_PROPS = {
 	sx: {
 		marginTop: "0.25rem",
 		paddingTop: ".5rem",
-		width: "226.4px",
-		height: "217.6px",
+		width: "378.641px",
+		minWidth: "226px",
+		height: "268px",
 		display: "flex",
 		flexDirection: "column",
 		overflow: "hidden",
@@ -155,9 +162,9 @@ export const SELECT_STYLES = {
 		borderWidth: "1px !important",
 	},
 	"& .MuiSelect-icon": {
-        transform: "none !important",
-        pointerEvents: "none", 
-    }
+		transform: "none !important",
+		pointerEvents: "none",
+	},
 };
 
 export const COUNTRY_OPTIONS: Array<CountriesType> = [
