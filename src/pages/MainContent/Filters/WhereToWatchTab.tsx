@@ -63,7 +63,6 @@ const WhereToWatchFilter: FunctionComponent<{
 			<Box
 				display={"flex"}
 				my={"14px"}
-				justifyContent={"space-between"}
 				flexWrap={"wrap"}
 				columnGap={"6px"}
 				rowGap={"10px"}
@@ -141,6 +140,7 @@ const CountryFilter: FunctionComponent<{
 }> = ({ dispatch, filters }) => {
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const searchFieldRef = useRef<HTMLInputElement>(null);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
 
 	const activeSelection = useMemo(
@@ -195,12 +195,10 @@ const CountryFilter: FunctionComponent<{
 				}),
 			}}
 		>
-			<img
-				loading='lazy'
-				width={selectedValue ? "24" : "20"}
-				srcSet={`https://www.themoviedb.org${option.flagUrl}`}
-				src={`https://www.themoviedb.org${option.flagUrl}`}
-				alt={`${option.native_name} flag`}
+			<CountryFlag
+				flagUrl={option.flagUrl || ""}
+				countryName={option.native_name || ""}
+				size={selectedValue ? 24 : 20}
 			/>
 			<Typography sx={{ fontSize: "0.9rem", color: "getContrastText()" }}>
 				{option.native_name}
@@ -212,15 +210,26 @@ const CountryFilter: FunctionComponent<{
 		<Select
 			fullWidth
 			displayEmpty
-			onOpen={() => setSearchTerm("")}
+			onOpen={() => {
+				setSearchTerm("");
+				setIsOpen(true);
+			}}
+			open={isOpen}
+			onClose={() => setIsOpen(false)}
 			renderValue={() => renderOptionLabel(activeSelection, true)}
 			MenuProps={{
 				autoFocus: false,
 				PaperProps: MENU_PAPER_PROPS,
 				TransitionProps: { onEntered: handleMenuOpened },
+				anchorOrigin: { vertical: "bottom", horizontal: "left" },
+				transformOrigin: { vertical: "top", horizontal: "left" },
 			}}
 			IconComponent={() => (
 				<Box
+					onClick={(e) => {
+						e.stopPropagation();
+						setIsOpen((prev) => !prev);
+					}}
 					sx={{
 						padding: "0.375rem",
 						display: "flex",
@@ -344,5 +353,36 @@ const CountryFilter: FunctionComponent<{
 				)}
 			</Box>
 		</Select>
+	);
+};
+
+const CountryFlag: FunctionComponent<{
+	flagUrl: string;
+	countryName: string;
+	size: number;
+}> = ({ flagUrl, countryName, size }) => {
+	const [hasError, setHasError] = useState(false);
+
+	if (hasError) {
+		return (
+			<Box
+				sx={{
+					color: "#888",
+					width: size,
+					height: size,
+				}}
+			/>
+		);
+	}
+
+	return (
+		<img
+			loading='lazy'
+			width={size}
+			srcSet={`https://www.themoviedb.org${flagUrl}`}
+			src={`https://www.themoviedb.org${flagUrl}`}
+			alt={`${countryName} flag`}
+			onError={() => setHasError(true)}
+		/>
 	);
 };

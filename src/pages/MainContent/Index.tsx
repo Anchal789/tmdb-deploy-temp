@@ -137,8 +137,9 @@ const MoviesContent = () => {
 								movies={data?.pages?.flatMap((page) => page.results) || []}
 								isLoading={isLoading || isFetchingNextPage}
 							/>
-							{data?.pages?.flatMap((page) => page.results).length ===
-							0 ? null : (
+							{data?.pages[0]?.total_pages === 1 ? null : data?.pages?.flatMap(
+									(page) => page.results,
+							  ).length === 0 ? null : (
 								<Button
 									sx={{
 										backgroundColor: "#02B4E4",
@@ -148,6 +149,10 @@ const MoviesContent = () => {
 										height: "50px",
 										marginTop: "50px",
 										boxShadow: "none",
+										":hover": {
+											color: "rgba(10, 21, 38, 0.7)",
+											boxShadow: "none",
+										},
 									}}
 									onClick={() => fetchNextPage()}
 								>

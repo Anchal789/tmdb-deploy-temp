@@ -136,7 +136,7 @@ const Header = () => {
 										if (timeoutRef.current) clearTimeout(timeoutRef.current);
 									}}
 									onMouseLeave={handlePopoverClose}
-									listContent={[{ name: "Popular", url: "" }]}
+									listContent={[{ name: "Popular", url: null }]}
 								/>
 							</li>
 							<li
@@ -159,8 +159,8 @@ const Header = () => {
 									}}
 									onMouseLeave={handlePopoverClose}
 									listContent={[
-										{ name: "Popular", url: "/tv" },
-										{ name: "Upcoming", url: "" },
+										{ name: "Popular", url: null },
+										{ name: "Upcoming", url: null },
 									]}
 								/>
 							</li>
@@ -184,11 +184,11 @@ const Header = () => {
 									}}
 									onMouseLeave={handlePopoverClose}
 									listContent={[
-										{ name: "Discussion", url: "" },
-										{ name: "Leaderboard", url: "" },
-										{ name: "Support", url: "" },
-										{ name: "API Documentation", url: "" },
-										{ name: "API for Business", url: "" },
+										{ name: "Discussion", url: null },
+										{ name: "Leaderboard", url: null },
+										{ name: "Support", url: null },
+										{ name: "API Documentation", url: null },
+										{ name: "API for Business", url: null },
 									]}
 								/>
 							</li>
@@ -292,7 +292,7 @@ const PopoverContent = ({
 	onMouseLeave: () => void;
 	listContent?: Array<{
 		name: string;
-		url: string;
+		url: string | null;
 	}>;
 }) => {
 	const navigate = useNavigate();
