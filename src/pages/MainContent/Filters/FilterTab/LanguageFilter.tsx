@@ -106,7 +106,7 @@ const LanguageFilter: FunctionComponent<{
 			<Box>
 				<FilterSectionTitle title='Language' sx={{ width: "fit-content" }} />
 				<CustomTooltip
-					title={"Filter items based on their original language. ihdjs njbd jsadj sbdjabsda sdjsb ajdabs djhasbd asd asjdbasd"}
+					title={"Filter items based on their original language."}
 					sx={{ display: "flex" }}
 				>
 					<span>
