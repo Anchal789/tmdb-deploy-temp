@@ -1,20 +1,17 @@
 import {
 	COUNTRY_OPTIONS,
-	MENU_PAPER_PROPS,
 	SELECT_STYLES,
 	SORT_BY_OPTIONS,
 	withMenuProps,
 } from "../../../constants/filterConstants";
 import Accordion from "../../../components/Accordion";
-import Autocomplete from "../../../components/AutoComplete";
-import TextField from "../../../components/TextField";
 import styles from "./AllFiltersComponent.module.scss";
 import { useGlobalState } from "../../../store/store";
 import Typography from "../../../components/Typography";
 import { lazy, useEffect, useState, type FunctionComponent } from "react";
 import type { CountriesType, OTTProviderType } from "../../../types/filters";
 import AccordionDetails from "../../../components/AccordionDetails";
-import { Box, ListSubheader, MenuItem, Select } from "@mui/material";
+import { Box, MenuItem, Select } from "@mui/material";
 import Checkbox from "../../../components/Checkbox";
 import { useLocation } from "react-router";
 import { useData } from "../../../lib/useData";
@@ -99,6 +96,7 @@ const AllFiltersComponent: FunctionComponent<{
 								width: "226.4px",
 								height: "217.6px",
 								overflow: "auto",
+								paddingTop: "0.75rem",
 								paddingBottom: "0.5rem",
 							}),
 							anchorOrigin: { vertical: "bottom", horizontal: "left" },
@@ -140,43 +138,32 @@ const AllFiltersComponent: FunctionComponent<{
 							marginBottom: "10px",
 						}}
 					>
-						<ListSubheader
-							sx={{
-								padding: "0.25rem 0 .5rem 0",
-								backgroundColor: "white",
-								zIndex: 10,
-								position: "sticky",
-								top: 0,
-							}}
-							onKeyDown={(e) => e.stopPropagation()}
-						>
-							{SORT_BY_OPTIONS.map((option) => (
-								<MenuItem
-									key={option.value || "none"}
-									value={option.value || ""}
-									selected={option.value === filters.sort_by}
-									onClick={() => {
-										dispatch({
-											type: "SET_FILTERS",
-											payload: {
-												...filters,
-												sort_by: option.value,
-											},
-										});
-									}}
-									sx={{
-										padding: "0.25rem 1rem",
-										"&.Mui-selected": {
-											backgroundColor: "#01b3e4 !important",
-											color: "#fff",
-											"&:hover": { backgroundColor: "#032541 !important" },
+						{SORT_BY_OPTIONS.map((option) => (
+							<MenuItem
+								key={option.value || "none"}
+								value={option.value || ""}
+								selected={option.value === filters.sort_by}
+								onClick={() => {
+									dispatch({
+										type: "SET_FILTERS",
+										payload: {
+											...filters,
+											sort_by: option.value,
 										},
-									}}
-								>
-									{option.label}
-								</MenuItem>
-							))}
-						</ListSubheader>
+									});
+								}}
+								sx={{
+									padding: "0.25rem 1rem",
+									"&.Mui-selected": {
+										backgroundColor: "#01b3e4 !important",
+										color: "#fff",
+										"&:hover": { backgroundColor: "#032541 !important" },
+									},
+								}}
+							>
+								{option.label}
+							</MenuItem>
+						))}
 					</Select>
 				</AccordionDetails>
 			</Accordion>

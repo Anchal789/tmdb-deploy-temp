@@ -99,7 +99,7 @@ export const FILTERS_INITIAL_STATE: DiscoverFiltersType = {
 	"with_runtime.lte": 400,
 };
 
-export const withMenuProps = (overrides: Record<string, string> = {}) => ({
+export const withMenuProps = (overrides: Record<string, any> = {}) => ({
     sx: {
         ...MENU_PAPER_PROPS.sx,
         ...overrides,
