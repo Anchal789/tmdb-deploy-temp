@@ -1,24 +1,22 @@
 import {
 	COUNTRY_OPTIONS,
+	SELECT_STYLES,
 	SORT_BY_OPTIONS,
+	withMenuProps,
 } from "../../../constants/filterConstants";
 import Accordion from "../../../components/Accordion";
-import Autocomplete from "../../../components/AutoComplete";
-import TextField from "../../../components/TextField";
 import styles from "./AllFiltersComponent.module.scss";
 import { useGlobalState } from "../../../store/store";
 import Typography from "../../../components/Typography";
 import { lazy, useEffect, useState, type FunctionComponent } from "react";
-import type {
-	CountriesType,
-	OTTProviderType,
-} from "../../../types/filters";
+import type { CountriesType, OTTProviderType } from "../../../types/filters";
 import AccordionDetails from "../../../components/AccordionDetails";
-import { Box } from "@mui/material";
+import { Box, MenuItem, Select } from "@mui/material";
 import Checkbox from "../../../components/Checkbox";
 import { useLocation } from "react-router";
 import { useData } from "../../../lib/useData";
 import QuestionMarkTooltip from "../../../components/QuestionMarkTooltip";
+import CustomTooltip from "../../../components/Tooltip";
 
 const WhereToWatchFilter = lazy(() => import("./WhereToWatchTab"));
 const FilterTab = lazy(() => import("./FilterTab/FiltersTab"));
@@ -26,10 +24,11 @@ const FilterTab = lazy(() => import("./FilterTab/FiltersTab"));
 const AllFiltersComponent: FunctionComponent<{
 	countriesData: Array<CountriesType>;
 }> = ({ countriesData }) => {
-	const [countriesCount, setCountriesCount] = useState<number>(0);
 	const { state, dispatch } = useGlobalState();
 	const { filters } = state;
 
+	const [countriesCount, setCountriesCount] = useState<number>(0);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [filterTabExpand, setFilterTabExpand] = useState<boolean>(
 		window.innerWidth < 1160,
 	);
@@ -78,30 +77,94 @@ const AllFiltersComponent: FunctionComponent<{
 					>
 						Sort Results By
 					</Typography>
-					<Autocomplete
-						options={SORT_BY_OPTIONS.map((option) => option.label)}
-						value={
+					<Select
+						fullWidth
+						displayEmpty
+						onOpen={() => {
+							setIsOpen(true);
+						}}
+						open={isOpen}
+						onClose={() => setIsOpen(false)}
+						renderValue={() =>
 							SORT_BY_OPTIONS.find((option) => option.value === filters.sort_by)
 								?.label
 						}
-						defaultValue={"Popularity Descending"}
-						slotProps={{
-							paper: {},
+						defaultValue={"popularity.desc"}
+						MenuProps={{
+							autoFocus: false,
+							PaperProps: withMenuProps({
+								width: "226.4px",
+								height: "217.6px",
+								overflow: "auto",
+								paddingTop: "0.75rem",
+								paddingBottom: "0.5rem",
+							}),
+							anchorOrigin: { vertical: "bottom", horizontal: "left" },
+							transformOrigin: { vertical: "top", horizontal: "left" },
 						}}
-						renderInput={() => <TextField />}
-						onChange={(_event, value) =>
-							dispatch({
-								type: "SET_FILTERS",
-								payload: {
-									...filters,
-									sort_by: SORT_BY_OPTIONS.find(
-										(option) => option.label === value,
-									)?.value as typeof filters.sort_by,
-								},
-							})
-						}
-						disableClearable
-					/>
+						IconComponent={() => (
+							<Box
+								onClick={(e) => {
+									e.stopPropagation();
+									setIsOpen((prev) => !prev);
+								}}
+								sx={{
+									padding: "0.375rem",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+									cursor: "pointer",
+								}}
+							>
+								<svg
+									viewBox='0 0 512 512'
+									focusable='false'
+									xmlns='http://www.w3.org/2000/svg'
+									fill='#212529'
+									width={"1rem"}
+									height={"1rem"}
+								>
+									<path d='M256 352 128 160h256z'></path>
+								</svg>
+							</Box>
+						)}
+						sx={{
+							...SELECT_STYLES,
+							"& .MuiSelect-select": {
+								padding: ".375rem .75rem",
+								fontSize: "14px",
+								lineHeight: "1.5rem",
+							},
+							marginBottom: "10px",
+						}}
+					>
+						{SORT_BY_OPTIONS.map((option) => (
+							<MenuItem
+								key={option.value || "none"}
+								value={option.value || ""}
+								selected={option.value === filters.sort_by}
+								onClick={() => {
+									dispatch({
+										type: "SET_FILTERS",
+										payload: {
+											...filters,
+											sort_by: option.value,
+										},
+									});
+								}}
+								sx={{
+									padding: "0.25rem 1rem",
+									"&.Mui-selected": {
+										backgroundColor: "#01b3e4 !important",
+										color: "#fff",
+										"&:hover": { backgroundColor: "#032541 !important" },
+									},
+								}}
+							>
+								{option.label}
+							</MenuItem>
+						))}
+					</Select>
 				</AccordionDetails>
 			</Accordion>
 			<Accordion
@@ -143,7 +206,15 @@ const AllFiltersComponent: FunctionComponent<{
 							alignItems: "center",
 						}}
 					>
-						My Services <QuestionMarkTooltip />
+						My Services{" "}
+						<CustomTooltip
+							title={"Log in to manage your subscribed services."}
+							sx={{ display: "flex" }}
+						>
+							<span>
+								<QuestionMarkTooltip />
+							</span>
+						</CustomTooltip>
 					</Typography>
 					<Box display={"flex"} alignItems={"center"}>
 						<Checkbox disabled />
