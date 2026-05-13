@@ -82,7 +82,7 @@ export const FILTERS_INITIAL_STATE: DiscoverFiltersType = {
 	"release_date.gte": null,
 	"release_date.lte": null,
 	show_me: "everything",
-	sort_by: null,
+	sort_by: SORTING_PAYLOAD_KEYS.POPULARITY_DESC,
 	"vote_average.gte": 0,
 	"vote_average.lte": 10,
 	"vote_count.gte": 0,

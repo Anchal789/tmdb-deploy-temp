@@ -1,0 +1,172 @@
+/* ============================================
+   Source Sans Pro
+   ============================================ */
+
+/* source-sans-pro-300 */
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('./source-sans-pro-300.woff2') format('woff2'),
+         url('./source-sans-pro-300.woff') format('woff');
+}
+
+/* source-sans-pro-300italic */
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 300;
+    font-display: swap;
+    src: url('./source-sans-pro-300italic.woff2') format('woff2'),
+         url('./source-sans-pro-300italic.woff') format('woff');
+}
+
+/* source-sans-pro-regular (400) */
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./source-sans-pro-regular.woff2') format('woff2'),
+         url('./source-sans-pro-regular.woff') format('woff');
+}
+
+/* source-sans-pro-italic (400) */
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./source-sans-pro.woff2') format('woff2'),
+         url('./source-sans-pro.woff') format('woff');
+}
+
+/* source-sans-pro-600 */
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('./source-sans-pro-600.woff2') format('woff2'),
+         url('./source-sans-pro-600.woff') format('woff');
+}
+
+/* source-sans-pro-600italic */
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 600;
+    font-display: swap;
+    src: url('./source-sans-pro-600italic.woff2') format('woff2'),
+         url('./source-sans-pro-600italic.woff') format('woff');
+}
+
+/* source-sans-pro-700 */
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('./source-sans-pro-700.woff2') format('woff2'),
+         url('./source-sans-pro-700.woff') format('woff');
+}
+
+/* source-sans-pro-700italic */
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: url('./source-sans-pro-700italic.woff2') format('woff2'),
+         url('./source-sans-pro-700italic.woff') format('woff');
+}
+
+/* ============================================
+   Roboto Mono
+   ============================================ */
+
+/* roboto-mono-300 */
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('./roboto-mono-300.woff2') format('woff2'),
+         url('./roboto-mono-300.woff') format('woff');
+}
+
+/* roboto-mono-300italic */
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: italic;
+    font-weight: 300;
+    font-display: swap;
+    src: url('./roboto-mono-300italic.woff2') format('woff2'),
+         url('./roboto-mono-300italic.woff') format('woff');
+}
+
+/* roboto-mono-regular (400) */
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./roboto-mono-regular.woff2') format('woff2'),
+         url('./roboto-mono-regular.woff') format('woff');
+}
+
+/* roboto-mono-italic (400) */
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./roboto-mono.woff2') format('woff2'),
+         url('./roboto-mono.woff') format('woff');
+}
+
+/* roboto-mono-600 */
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('./roboto-mono-600.woff2') format('woff2'),
+         url('./roboto-mono-600.woff') format('woff');
+}
+
+/* roboto-mono-600italic */
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: italic;
+    font-weight: 600;
+    font-display: swap;
+    src: url('./roboto-mono-600italic.woff2') format('woff2'),
+         url('./roboto-mono-600italic.woff') format('woff');
+}
+
+/* ============================================
+   Consensus
+   ============================================ */
+
+@font-face {
+    font-family: 'Consensus';
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    src: url('./Consensus.woff2') format('woff2'),
+         url('./Consensus.woff') format('woff');
+}
+
+/* ============================================
+   Nevrada Neue
+   ============================================ */
+
+@font-face {
+    font-family: 'Nevrada Neue';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('./NevradaNeue.woff2') format('woff2');
+}

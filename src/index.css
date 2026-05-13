@@ -1,11 +1,4 @@
-@font-face {
-	font-family: "Source Sans Pro";
-	src: url("https://www.themoviedb.org/assets/2/source-sans-pro-v14-vietnamese_latin-ext_latin_greek-ext_greek_cyrillic-ext_cyrillic-300-db9f15a13a9f8b8bc46db7756ab863e8834bd20a7a1124c4c0a5a8f7892f3e99.woff2")
-		format("woff2");
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
+@import url('./assets/fonts/font.css');
 
 html {
 	font-size: 16px;
