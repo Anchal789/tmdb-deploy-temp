@@ -187,14 +187,10 @@ const LanguageFilter: FunctionComponent<{
 						sx={{
 							"& .MuiSelect-select": {
 								padding: "8.5px 14px",
-
-								fontSize: "14px",
 							},
 
 							"& .MuiOutlinedInput-root": {
 								borderRadius: "0.375rem",
-
-								fontSize: "14px",
 							},
 
 							"& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
@@ -212,7 +208,6 @@ const LanguageFilter: FunctionComponent<{
 
 							"& .MuiOutlinedInput-notchedOutline": {
 								border: "0.8px solid #01b3e460 !important",
-
 								borderRadius: "0.375rem",
 							},
 						}}

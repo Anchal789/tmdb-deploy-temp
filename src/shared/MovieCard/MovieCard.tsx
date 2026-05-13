@@ -51,7 +51,7 @@ const MovieCard: FunctionComponent<{
 						className={styles["movie-card-date"]}
 						sx={{ color: "text.secondary", lineHeight: "24px" }}
 					>
-						{dayjs(date).format("MMMM D, YYYY")}
+						{date ? dayjs(date).format("MMMM D, YYYY") : "-"}
 					</Typography>
 				</div>
 				<Typography className={styles["movie-card-description"]}>
